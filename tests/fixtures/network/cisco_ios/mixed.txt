@@ -3,6 +3,7 @@ KCII-IOS# show running-config
 ! running
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
@@ -21,6 +22,7 @@ KCII-IOS# show startup-config
 ! startup
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]

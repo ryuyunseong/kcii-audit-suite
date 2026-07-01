@@ -284,10 +284,23 @@ items:
     severity: low
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - timestamp_log_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: timestamp_log_configured
+          operator: equals
+          value: true
+        reason: 로그 timestamp 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: timestamp_log_configured
+          operator: equals
+          value: false
+        reason: 로그 timestamp 설정 차단 또는 미사용 지표가 확인되었습니다.
     remediation: 로그 timestamp 설정이 기관 기준에 맞는지 확인합니다.
-    report_text: Timestamp 로그 설정 여부를 수동 확인합니다.
+    report_text: Timestamp 로그 설정 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-17
@@ -330,10 +343,23 @@ items:
     severity: high
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - snmp_acl_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: snmp_acl_configured
+          operator: equals
+          value: true
+        reason: SNMP community에 ACL 제한 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: snmp_acl_configured
+          operator: equals
+          value: false
+        reason: SNMP community에 ACL 제한 지표를 확인하지 못했습니다.
     remediation: SNMP 접근 ACL이 승인된 관리망으로 제한되는지 확인합니다.
-    report_text: SNMP ACL 설정 여부를 수동 확인합니다.
+    report_text: SNMP ACL 설정 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-20
@@ -341,10 +367,23 @@ items:
     severity: high
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - snmp_read_only
+    decision_rules:
+      - status: GOOD
+        when:
+          field: snmp_read_only
+          operator: equals
+          value: true
+        reason: SNMP community가 읽기 권한 중심으로 제한된 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: snmp_read_only
+          operator: equals
+          value: false
+        reason: SNMP community에서 쓰기 권한 지표가 확인되었습니다.
     remediation: SNMP Community 권한이 최소 권한 원칙에 맞는지 확인합니다.
-    report_text: SNMP Community 권한 설정 여부를 수동 확인합니다.
+    report_text: SNMP Community 권한 설정 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-21
@@ -352,10 +391,23 @@ items:
     severity: high
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - tftp_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: tftp_service_blocked
+          operator: equals
+          value: true
+        reason: TFTP server 설정 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when:
+          field: tftp_service_blocked
+          operator: equals
+          value: false
+        reason: TFTP server 설정 지표가 확인되었습니다.
     remediation: 불필요한 TFTP 서비스 사용 여부와 차단 설정을 확인합니다.
-    report_text: TFTP 서비스 차단 여부를 수동 확인합니다.
+    report_text: TFTP 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-22
@@ -396,10 +448,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - tcp_keepalives_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: tcp_keepalives_configured
+          operator: equals
+          value: true
+        reason: TCP keepalive 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: tcp_keepalives_configured
+          operator: equals
+          value: false
+        reason: TCP keepalive 설정 증적을 확인하지 못했습니다.
     remediation: TCP Keepalive 관련 설정이 기관 기준에 맞는지 확인합니다.
-    report_text: TCP Keepalive 서비스 설정 여부를 수동 확인합니다.
+    report_text: TCP Keepalive 서비스 설정 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-26
@@ -407,10 +472,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - finger_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: finger_service_blocked
+          operator: equals
+          value: true
+        reason: Finger 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: finger_service_blocked
+          operator: equals
+          value: false
+        reason: Finger 서비스 사용 지표가 확인되었습니다.
     remediation: Finger 서비스 비활성화 상태를 확인합니다.
-    report_text: Finger 서비스 차단 여부를 수동 확인합니다.
+    report_text: Finger 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-27
@@ -418,10 +496,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - web_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: web_service_blocked
+          operator: equals
+          value: true
+        reason: HTTP/HTTPS 관리 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: web_service_blocked
+          operator: equals
+          value: false
+        reason: HTTP/HTTPS 관리 서비스 사용 지표가 확인되었습니다.
     remediation: 불필요한 HTTP/HTTPS 관리 서비스가 차단되어 있는지 확인합니다.
-    report_text: 웹 서비스 차단 여부를 수동 확인합니다.
+    report_text: 웹 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-28
@@ -429,10 +520,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - small_services_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: small_services_blocked
+          operator: equals
+          value: true
+        reason: TCP/UDP small 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: small_services_blocked
+          operator: equals
+          value: false
+        reason: TCP/UDP small 서비스 사용 지표가 확인되었습니다.
     remediation: TCP/UDP small 서비스 비활성화 상태를 확인합니다.
-    report_text: TCP/UDP small 서비스 차단 여부를 수동 확인합니다.
+    report_text: TCP/UDP small 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-29
@@ -440,10 +544,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - bootp_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: bootp_service_blocked
+          operator: equals
+          value: true
+        reason: Bootp 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: bootp_service_blocked
+          operator: equals
+          value: false
+        reason: Bootp 서비스 사용 지표가 확인되었습니다.
     remediation: Bootp 서비스 비활성화 상태를 확인합니다.
-    report_text: Bootp 서비스 차단 여부를 수동 확인합니다.
+    report_text: Bootp 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-30
@@ -451,10 +568,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - cdp_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: cdp_service_blocked
+          operator: equals
+          value: true
+        reason: CDP 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: cdp_service_blocked
+          operator: equals
+          value: false
+        reason: CDP 서비스 사용 지표가 확인되었습니다.
     remediation: CDP 사용 필요성을 검토하고 불필요한 경우 비활성화합니다.
-    report_text: CDP 서비스 차단 여부를 수동 확인합니다.
+    report_text: CDP 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-31
@@ -462,10 +592,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - directed_broadcast_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: directed_broadcast_blocked
+          operator: equals
+          value: true
+        reason: Directed-broadcast 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: directed_broadcast_blocked
+          operator: equals
+          value: false
+        reason: Directed-broadcast 사용 지표가 확인되었습니다.
     remediation: Directed-broadcast 차단 설정을 확인합니다.
-    report_text: Directed-broadcast 차단 여부를 수동 확인합니다.
+    report_text: Directed-broadcast 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-32
@@ -473,10 +616,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - source_route_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: source_route_blocked
+          operator: equals
+          value: true
+        reason: Source routing 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: source_route_blocked
+          operator: equals
+          value: false
+        reason: Source routing 사용 지표가 확인되었습니다.
     remediation: Source routing 차단 설정을 확인합니다.
-    report_text: Source 라우팅 차단 여부를 수동 확인합니다.
+    report_text: Source 라우팅 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-33
@@ -484,10 +640,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - proxy_arp_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: proxy_arp_blocked
+          operator: equals
+          value: true
+        reason: Proxy ARP 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: proxy_arp_blocked
+          operator: equals
+          value: false
+        reason: Proxy ARP 사용 지표가 확인되었습니다.
     remediation: Proxy ARP 사용 필요성을 검토하고 불필요한 경우 차단합니다.
-    report_text: Proxy ARP 차단 여부를 수동 확인합니다.
+    report_text: Proxy ARP 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-34
@@ -495,10 +664,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - icmp_control_messages_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: icmp_control_messages_blocked
+          operator: equals
+          value: true
+        reason: ICMP unreachable 및 redirect 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: icmp_control_messages_blocked
+          operator: equals
+          value: false
+        reason: ICMP unreachable 또는 redirect 사용 지표가 확인되었습니다.
     remediation: ICMP unreachable 및 Redirect 차단 설정을 확인합니다.
-    report_text: ICMP unreachable, Redirect 차단 여부를 수동 확인합니다.
+    report_text: ICMP unreachable, Redirect 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-35
@@ -506,10 +688,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - identd_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: identd_service_blocked
+          operator: equals
+          value: true
+        reason: identd 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: identd_service_blocked
+          operator: equals
+          value: false
+        reason: identd 서비스 사용 지표가 확인되었습니다.
     remediation: identd 서비스 비활성화 상태를 확인합니다.
-    report_text: identd 서비스 차단 여부를 수동 확인합니다.
+    report_text: identd 서비스 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-36
@@ -517,10 +712,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - domain_lookup_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: domain_lookup_blocked
+          operator: equals
+          value: true
+        reason: Domain Lookup 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: domain_lookup_blocked
+          operator: equals
+          value: false
+        reason: Domain Lookup 사용 지표가 확인되었습니다.
     remediation: 불필요한 Domain Lookup 동작 차단 설정을 확인합니다.
-    report_text: Domain Lookup 차단 여부를 수동 확인합니다.
+    report_text: Domain Lookup 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-37
@@ -528,10 +736,23 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - pad_service_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: pad_service_blocked
+          operator: equals
+          value: true
+        reason: pad 서비스 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: pad_service_blocked
+          operator: equals
+          value: false
+        reason: pad 서비스 사용 지표가 확인되었습니다.
     remediation: pad 관련 서비스 차단 설정을 확인합니다.
-    report_text: pad 차단 여부를 수동 확인합니다.
+    report_text: pad 차단 여부를 점검합니다.
 
   - category: 기능 관리
     item_id: N-38
@@ -539,7 +760,20 @@ items:
     severity: medium
     target_platforms: *network_platforms
     collector: *network_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - mask_reply_blocked
+    decision_rules:
+      - status: GOOD
+        when:
+          field: mask_reply_blocked
+          operator: equals
+          value: true
+        reason: mask-reply 차단 지표가 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: mask_reply_blocked
+          operator: equals
+          value: false
+        reason: mask-reply 사용 지표가 확인되었습니다.
     remediation: mask-reply 차단 설정을 확인합니다.
-    report_text: mask-reply 차단 여부를 수동 확인합니다.
+    report_text: mask-reply 차단 여부를 점검합니다.

@@ -16,7 +16,8 @@ def test_cisco_ios_simulator_generates_default_command_responses():
     assert "KCII-IOS# show running-config" in output
     assert "KCII-IOS# show ip ssh" in output
     assert "enable password [REDACTED_DEFAULT_PASSWORD]" in output
-    assert "snmp-server community [COMMUNITY_WEAK] RO" in output
+    assert "snmp-server community [COMMUNITY_WEAK] RW" in output
+    assert "tftp-server flash:[CONFIG_BACKUP]" in output
 
 
 def test_cisco_ios_simulator_handles_unsupported_command_as_output():

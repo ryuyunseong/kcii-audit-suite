@@ -46,4 +46,32 @@ def test_network_manifest_automation_levels_are_explicit():
     auto_items = {item["item_id"] for item in manifest["items"] if item["automation_level"] == "auto"}
 
     assert {item["automation_level"] for item in manifest["items"]} <= allowed
-    assert {"N-01", "N-03", "N-06", "N-07", "N-08", "N-10", "N-11", "N-15", "N-18"} <= auto_items
+    assert {
+        "N-01",
+        "N-03",
+        "N-06",
+        "N-07",
+        "N-08",
+        "N-10",
+        "N-11",
+        "N-15",
+        "N-16",
+        "N-18",
+        "N-19",
+        "N-20",
+        "N-21",
+        "N-25",
+        "N-26",
+        "N-27",
+        "N-28",
+        "N-29",
+        "N-30",
+        "N-31",
+        "N-32",
+        "N-33",
+        "N-34",
+        "N-35",
+        "N-36",
+        "N-37",
+        "N-38",
+    } <= auto_items

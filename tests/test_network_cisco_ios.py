@@ -42,6 +42,17 @@ def test_cisco_ios_vulnerable_fixture_is_classified():
     assert statuses["N-08"] == AssessmentStatus.VULNERABLE
     assert statuses["N-11"] == AssessmentStatus.VULNERABLE
     assert statuses["N-18"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-19"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-20"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-21"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-27"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-29"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-30"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-31"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-32"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-33"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-34"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-36"] == AssessmentStatus.VULNERABLE
     assert statuses["N-15"] == AssessmentStatus.MANUAL_REQUIRED
 
 
@@ -52,6 +63,11 @@ def test_cisco_ios_mixed_fixture_keeps_distinct_statuses():
     assert statuses["N-06"] == AssessmentStatus.VULNERABLE
     assert statuses["N-08"] == AssessmentStatus.VULNERABLE
     assert statuses["N-11"] == AssessmentStatus.GOOD
+    assert statuses["N-16"] == AssessmentStatus.GOOD
+    assert statuses["N-19"] == AssessmentStatus.VULNERABLE
+    assert statuses["N-20"] == AssessmentStatus.GOOD
+    assert statuses["N-27"] == AssessmentStatus.MANUAL_REQUIRED
+    assert statuses["N-30"] == AssessmentStatus.MANUAL_REQUIRED
     assert statuses["N-15"] == AssessmentStatus.MANUAL_REQUIRED
     assert statuses["N-18"] == AssessmentStatus.GOOD
 

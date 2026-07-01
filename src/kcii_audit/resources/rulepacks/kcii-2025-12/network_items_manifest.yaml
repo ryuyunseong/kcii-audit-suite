@@ -118,9 +118,9 @@ items:
     title: Timestamp 로그 설정
     category: 로그 관리
     severity: low
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Timestamp logging command coverage is reserved for a later parser slice."
+    source_note: "Cisco IOS parser checks service timestamps log evidence."
   - item_id: N-17
     title: SNMP 서비스 확인
     category: 기능 관리
@@ -139,23 +139,23 @@ items:
     title: SNMP ACL 설정
     category: 기능 관리
     severity: high
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "SNMP ACL binding is reserved for a later parser slice."
+    source_note: "Cisco IOS parser checks ACL binding on SNMP community lines without storing the community value."
   - item_id: N-20
     title: SNMP Community 권한 설정
     category: 기능 관리
     severity: high
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "SNMP community authorization requires additional policy context."
+    source_note: "Cisco IOS parser checks read-only versus read-write SNMP community authorization indicators."
   - item_id: N-21
     title: TFTP 서비스 차단
     category: 기능 관리
     severity: high
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "TFTP service checks are registered but not automated in this MVP."
+    source_note: "Cisco IOS parser checks tftp-server configuration indicators."
   - item_id: N-22
     title: Spoofing 방지 필터링 적용
     category: 기능 관리
@@ -181,97 +181,97 @@ items:
     title: TCP Keepalive 서비스 설정
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks service tcp-keepalives-in/out evidence."
   - item_id: N-26
     title: Finger 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks explicit service finger enable or disable indicators."
   - item_id: N-27
     title: 웹 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks HTTP and HTTPS management service indicators."
   - item_id: N-28
     title: TCP/UDP small 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks tcp-small-servers and udp-small-servers indicators."
   - item_id: N-29
     title: Bootp 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip bootp server indicators."
   - item_id: N-30
     title: CDP 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks cdp run indicators."
   - item_id: N-31
     title: Directed-broadcast 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip directed-broadcast indicators."
   - item_id: N-32
     title: Source 라우팅 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip source-route indicators."
   - item_id: N-33
     title: Proxy ARP 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip proxy-arp indicators."
   - item_id: N-34
     title: ICMP unreachable, Redirect 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip redirects and ip unreachables indicators."
   - item_id: N-35
     title: identd 서비스 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip identd indicators."
   - item_id: N-36
     title: Domain Lookup 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip domain-lookup indicators."
   - item_id: N-37
     title: pad 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks service pad indicators."
   - item_id: N-38
     title: mask-reply 차단
     category: 기능 관리
     severity: medium
-    automation_level: manual
+    automation_level: auto
     supported_vendors: [cisco_ios]
-    source_note: "Registered for full manifest completeness; parser automation is pending."
+    source_note: "Cisco IOS parser checks ip mask-reply indicators."

@@ -3,6 +3,13 @@ KCII-IOS# show running-config
 ! running
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service finger
+no service tcp-small-servers
+no service udp-small-servers
+no service pad
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
@@ -10,8 +17,17 @@ banner motd ^C[AUTHORIZED_ACCESS_ONLY]^C
 logging host [LOG_SERVER]
 ntp server [NTP_SERVER]
 ip ssh version 2
+no ip source-route
+no ip domain-lookup
+no ip identd
+no ip mask-reply
 ip access-list standard MGMT-ACL
  permit [MGMT_NET] [WILDCARD]
+interface GigabitEthernet0/0
+ no ip directed-broadcast
+ no ip proxy-arp
+ no ip redirects
+ no ip unreachables
 line vty 0 4
  access-class MGMT-ACL in
  exec-timeout 10 0
@@ -19,6 +35,7 @@ line vty 0 4
  transport input ssh
 snmp-server community [COMMUNITY_COMPLEX] RO MGMT-ACL
 no ip http server
+no ip http secure-server
 no ip bootp server
 no cdp run
 end
@@ -28,6 +45,13 @@ KCII-IOS# show startup-config
 ! startup
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service finger
+no service tcp-small-servers
+no service udp-small-servers
+no service pad
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
@@ -35,8 +59,17 @@ banner motd ^C[AUTHORIZED_ACCESS_ONLY]^C
 logging host [LOG_SERVER]
 ntp server [NTP_SERVER]
 ip ssh version 2
+no ip source-route
+no ip domain-lookup
+no ip identd
+no ip mask-reply
 ip access-list standard MGMT-ACL
  permit [MGMT_NET] [WILDCARD]
+interface GigabitEthernet0/0
+ no ip directed-broadcast
+ no ip proxy-arp
+ no ip redirects
+ no ip unreachables
 line vty 0 4
  access-class MGMT-ACL in
  exec-timeout 10 0
@@ -44,6 +77,7 @@ line vty 0 4
  transport input ssh
 snmp-server community [COMMUNITY_COMPLEX] RO MGMT-ACL
 no ip http server
+no ip http secure-server
 no ip bootp server
 no cdp run
 end

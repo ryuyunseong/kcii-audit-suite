@@ -10,7 +10,7 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 | Linux Server | 8 | 0 | 8 | 0 | MVP-only rulepack, not full official Linux coverage |
 | Unix Server | 67 | 0 | 28 | 39 | AIX, Solaris, HP-UX, Linux fixture-based parser |
 | DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser with JSON and key/value fixture coverage |
-| Network | 38 | 9 | 0 | 29 | Cisco IOS simulator/parser MVP |
+| Network | 38 | 27 | 0 | 11 | Cisco IOS simulator/parser with expanded command-response checks |
 | Security Appliance | 23 | 0 | 23 | 0 | Questionnaire-centered evidence flow |
 
 ## Windows Server
@@ -71,14 +71,25 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 - Supported MVP vendor: Cisco IOS
 - Status: simulator/parser MVP
 - Known limits:
-  - Cisco IOS parser coverage is intentionally narrow.
+  - Cisco IOS parser coverage is limited to deterministic command-response evidence.
   - Juniper, FortiGate, and other network OS support remains future work.
   - Configuration context often requires manual review.
 - Next automation candidates:
   - AAA and management access policy
-  - SNMP hardening
-  - Logging/NTP policy
+  - Real Cisco IOS, GNS3, CML, and lab output normalization
   - Additional vendor fixture sets
+
+## v1.1.0 Development Scope
+
+The `dev/v1.1.0` branch starts after the private `v1.0.0` release. The first development slice expands Cisco IOS automatic judgment only where sanitized command output can be interpreted deterministically.
+
+Included in this slice:
+
+- Preserve the published `v1.0.0`, `v1.0.0rc1`, and `v1.0.0rc2` tags.
+- Keep `kcii-netlab-sim` as a command-response simulator, not a packet or routing emulator.
+- Expand Cisco IOS checks for timestamp logging, SNMP ACL and authorization, TFTP, TCP keepalives, management web service, small services, Bootp, CDP, directed-broadcast, source-route, proxy ARP, ICMP control messages, identd, domain lookup, pad, and mask-reply indicators.
+- Leave policy-dependent items such as password complexity, AAA lockout, user privilege design, auxiliary port review, patch status, logging policy completeness, SNMP necessity, spoofing controls, DDoS controls, and unused interface judgment as `MANUAL_REQUIRED`.
+- Keep fixtures synthetic and sanitized; do not store customer configuration exports or live device output.
 
 ## Security Appliance
 

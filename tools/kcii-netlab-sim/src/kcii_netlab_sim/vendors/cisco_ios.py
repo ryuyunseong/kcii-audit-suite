@@ -92,6 +92,13 @@ _SHOW_LINE = """Tty Line Typ     Tx/Rx     A Modem  Roty AccO AccI  Uses  Noise 
 _GOOD_RUNNING_CONFIG = """! running
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service finger
+no service tcp-small-servers
+no service udp-small-servers
+no service pad
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
@@ -99,8 +106,17 @@ banner motd ^C[AUTHORIZED_ACCESS_ONLY]^C
 logging host [LOG_SERVER]
 ntp server [NTP_SERVER]
 ip ssh version 2
+no ip source-route
+no ip domain-lookup
+no ip identd
+no ip mask-reply
 ip access-list standard MGMT-ACL
  permit [MGMT_NET] [WILDCARD]
+interface GigabitEthernet0/0
+ no ip directed-broadcast
+ no ip proxy-arp
+ no ip redirects
+ no ip unreachables
 line vty 0 4
  access-class MGMT-ACL in
  exec-timeout 10 0
@@ -108,6 +124,7 @@ line vty 0 4
  transport input ssh
 snmp-server community [COMMUNITY_COMPLEX] RO MGMT-ACL
 no ip http server
+no ip http secure-server
 no ip bootp server
 no cdp run
 end
@@ -115,17 +132,33 @@ end
 
 _VULNERABLE_RUNNING_CONFIG = """! running
 version 17.9
+no service timestamps log
+service finger
+service tcp-small-servers
+service udp-small-servers
+service pad
 hostname KCII-IOS-SIM
 enable password [REDACTED_DEFAULT_PASSWORD]
 username [USER_ADMIN] privilege 15 password 0 [REDACTED_USER_PASSWORD]
+ip source-route
+ip domain-lookup
+ip identd
+ip mask-reply
+interface GigabitEthernet0/0
+ ip directed-broadcast
+ ip proxy-arp
+ ip redirects
+ ip unreachables
 line vty 0 4
  exec-timeout 0 0
  login
  password 0 [REDACTED_LINE_PASSWORD]
  transport input telnet
-snmp-server community [COMMUNITY_WEAK] RO
+snmp-server community [COMMUNITY_WEAK] RW
 ip http server
+ip http secure-server
 ip bootp server
+tftp-server flash:[CONFIG_BACKUP]
 cdp run
 end
 """
@@ -133,6 +166,7 @@ end
 _MIXED_RUNNING_CONFIG = """! running
 version 17.9
 service password-encryption
+service timestamps log datetime msec localtime
 hostname KCII-IOS-SIM
 enable secret 9 [HASHED_ENABLE_SECRET]
 username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]

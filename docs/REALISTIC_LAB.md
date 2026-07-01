@@ -189,7 +189,7 @@ kcii-audit classify-file --profile network --vendor cisco_ios --input lab\realis
 | GNS3 / EVE-NG / Cisco CML | 벤더 이미지 기반 장비 동작 검증 |
 | `kcii-audit-suite` | 오프라인 증적 정규화, rulepack 판정, Excel/Markdown/권고문 산출 |
 
-네트워크 rulepack은 KISA PDF 네트워크 장비 항목 표의 `N-01`~`N-38`을 모두 등록합니다. Cisco IOS MVP parser가 자동 판정하지 못하는 항목은 삭제하지 않고 수동확인으로 남겨 후속 증적 수집 범위를 명확히 합니다.
+네트워크 rulepack은 KISA PDF 네트워크 장비 항목 표의 `N-01`~`N-38`을 모두 등록합니다. Cisco IOS parser가 명령어 출력만으로 자동 판정하지 못하는 항목은 삭제하지 않고 수동확인으로 남겨 후속 증적 수집 범위를 명확히 합니다.
 
 네트워크 랩은 Containerlab + FRRouting을 기본 경량 테스트로 둡니다. GNS3/EVE-NG는 Cisco, Juniper, FortiGate 등 벤더 이미지 기반 검증이 필요한 경우 선택적으로 사용합니다. 상용 장비 이미지, 라이선스 파일, 운영 설정 원문은 저장소에 포함하지 않습니다.
 

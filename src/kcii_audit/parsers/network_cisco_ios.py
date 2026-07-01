@@ -48,7 +48,56 @@ NETWORK_ITEMS: list[tuple[str, str]] = [
     ("N-38", "mask-reply 차단"),
 ]
 
-AUTO_ITEMS = {"N-01", "N-03", "N-06", "N-07", "N-08", "N-10", "N-11", "N-15", "N-18"}
+AUTO_ITEMS = {
+    "N-01",
+    "N-03",
+    "N-06",
+    "N-07",
+    "N-08",
+    "N-10",
+    "N-11",
+    "N-15",
+    "N-16",
+    "N-18",
+    "N-19",
+    "N-20",
+    "N-21",
+    "N-25",
+    "N-26",
+    "N-27",
+    "N-28",
+    "N-29",
+    "N-30",
+    "N-31",
+    "N-32",
+    "N-33",
+    "N-34",
+    "N-35",
+    "N-36",
+    "N-37",
+    "N-38",
+}
+
+SIMPLE_BOOLEAN_ITEM_FIELDS = {
+    "N-16": "timestamp_log_configured",
+    "N-19": "snmp_acl_configured",
+    "N-20": "snmp_read_only",
+    "N-21": "tftp_service_blocked",
+    "N-25": "tcp_keepalives_configured",
+    "N-26": "finger_service_blocked",
+    "N-27": "web_service_blocked",
+    "N-28": "small_services_blocked",
+    "N-29": "bootp_service_blocked",
+    "N-30": "cdp_service_blocked",
+    "N-31": "directed_broadcast_blocked",
+    "N-32": "source_route_blocked",
+    "N-33": "proxy_arp_blocked",
+    "N-34": "icmp_control_messages_blocked",
+    "N-35": "identd_service_blocked",
+    "N-36": "domain_lookup_blocked",
+    "N-37": "pad_service_blocked",
+    "N-38": "mask_reply_blocked",
+}
 
 
 def records_from_cisco_ios_paste(
@@ -139,8 +188,89 @@ def _extract_facts(text: str) -> dict[str, Any]:
         "banner_configured": _line_exists(text, r"banner\s+(motd|login)\b"),
         "logging_host_configured": _line_exists(text, r"logging\s+host\b") or "logging to [" in lower,
         "ntp_configured": _line_exists(text, r"ntp\s+server\b") or "clock is synchronized" in lower,
+        "timestamp_log_configured": _explicit_enabled_state(
+            text,
+            enabled_pattern=r"service\s+timestamps\s+log\b",
+            disabled_pattern=r"no\s+service\s+timestamps\s+log\b",
+        ),
         "snmp_community_complex": not weak_snmp_community_present,
         "snmp_service_present": bool(snmp_lines or "snmp agent enabled" in lower),
+        "snmp_acl_configured": _snmp_acl_configured(snmp_lines),
+        "snmp_read_only": _snmp_read_only(snmp_lines),
+        "tftp_service_blocked": not _line_exists(text, r"tftp-server\b"),
+        "tcp_keepalives_configured": _line_exists(text, r"service\s+tcp-keepalives-in\b")
+        and _line_exists(text, r"service\s+tcp-keepalives-out\b"),
+        "finger_service_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"service\s+finger\b",
+            disabled_pattern=r"no\s+service\s+finger\b",
+        ),
+        "web_service_blocked": _all_blocked_state(
+            text,
+            [
+                (r"ip\s+http\s+server\b", r"no\s+ip\s+http\s+server\b"),
+                (r"ip\s+http\s+secure-server\b", r"no\s+ip\s+http\s+secure-server\b"),
+            ],
+        ),
+        "small_services_blocked": _all_blocked_state(
+            text,
+            [
+                (r"service\s+tcp-small-servers\b", r"no\s+service\s+tcp-small-servers\b"),
+                (r"service\s+udp-small-servers\b", r"no\s+service\s+udp-small-servers\b"),
+            ],
+        ),
+        "bootp_service_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+bootp\s+server\b",
+            disabled_pattern=r"no\s+ip\s+bootp\s+server\b",
+        ),
+        "cdp_service_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"cdp\s+run\b",
+            disabled_pattern=r"no\s+cdp\s+run\b",
+        ),
+        "directed_broadcast_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+directed-broadcast\b",
+            disabled_pattern=r"no\s+ip\s+directed-broadcast\b",
+        ),
+        "source_route_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+source-route\b",
+            disabled_pattern=r"no\s+ip\s+source-route\b",
+        ),
+        "proxy_arp_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+proxy-arp\b",
+            disabled_pattern=r"no\s+ip\s+proxy-arp\b",
+        ),
+        "icmp_control_messages_blocked": _all_blocked_state(
+            text,
+            [
+                (r"ip\s+redirects\b", r"no\s+ip\s+redirects\b"),
+                (r"ip\s+unreachables\b", r"no\s+ip\s+unreachables\b"),
+            ],
+        ),
+        "identd_service_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+identd\b",
+            disabled_pattern=r"no\s+ip\s+identd\b",
+        ),
+        "domain_lookup_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+domain-lookup\b",
+            disabled_pattern=r"no\s+ip\s+domain-lookup\b",
+        ),
+        "pad_service_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"service\s+pad\b",
+            disabled_pattern=r"no\s+service\s+pad\b",
+        ),
+        "mask_reply_blocked": _explicit_blocked_state(
+            text,
+            enabled_pattern=r"ip\s+mask-reply\b",
+            disabled_pattern=r"no\s+ip\s+mask-reply\b",
+        ),
     }
 
 
@@ -202,6 +332,12 @@ def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
             "snmp_service_present": facts["snmp_service_present"],
             "snmp_community_complex": facts["snmp_community_complex"],
         }
+    if item_id in SIMPLE_BOOLEAN_ITEM_FIELDS:
+        field = SIMPLE_BOOLEAN_ITEM_FIELDS[item_id]
+        return {
+            "collection_status": facts["collection_status"],
+            field: facts[field],
+        }
     return {
         "collection_status": "not_automated_by_cisco_ios_mvp",
         "manual_required": True,
@@ -222,6 +358,34 @@ def _line_exists(text: str, pattern: str) -> bool:
     return bool(re.search(rf"(?im)^\s*{pattern}", text))
 
 
+def _explicit_enabled_state(text: str, *, enabled_pattern: str, disabled_pattern: str) -> bool | None:
+    if _line_exists(text, enabled_pattern):
+        return True
+    if _line_exists(text, disabled_pattern):
+        return False
+    return None
+
+
+def _explicit_blocked_state(text: str, *, enabled_pattern: str, disabled_pattern: str) -> bool | None:
+    if _line_exists(text, enabled_pattern):
+        return False
+    if _line_exists(text, disabled_pattern):
+        return True
+    return None
+
+
+def _all_blocked_state(text: str, patterns: list[tuple[str, str]]) -> bool | None:
+    states = [
+        _explicit_blocked_state(text, enabled_pattern=enabled_pattern, disabled_pattern=disabled_pattern)
+        for enabled_pattern, disabled_pattern in patterns
+    ]
+    if any(state is False for state in states):
+        return False
+    if all(state is True for state in states):
+        return True
+    return None
+
+
 def _matching_lines(text: str, pattern: str) -> list[str]:
     regex = re.compile(rf"(?im)^\s*{pattern}.*$")
     return [match.group(0).strip() for match in regex.finditer(text)]
@@ -232,3 +396,24 @@ def _is_weak_snmp_line(line: str) -> bool:
     if "[community_weak]" in lowered:
         return True
     return bool(re.search(r"\b(public|private)\b", lowered))
+
+
+def _snmp_acl_configured(snmp_lines: list[str]) -> bool | None:
+    if not snmp_lines:
+        return None
+    return all(_snmp_line_has_acl(line) for line in snmp_lines)
+
+
+def _snmp_read_only(snmp_lines: list[str]) -> bool | None:
+    if not snmp_lines:
+        return None
+    return all(not _snmp_line_allows_write(line) for line in snmp_lines)
+
+
+def _snmp_line_has_acl(line: str) -> bool:
+    match = re.search(r"(?i)\bsnmp-server\s+community\s+\S+\s+(?:view\s+\S+\s+)?(?:ro|rw)\b(?P<tail>.*)$", line)
+    return bool(match and match.group("tail").strip())
+
+
+def _snmp_line_allows_write(line: str) -> bool:
+    return bool(re.search(r"(?i)\bsnmp-server\s+community\s+\S+\s+(?:view\s+\S+\s+)?rw\b", line))

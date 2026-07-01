@@ -2,17 +2,33 @@ KCII-IOS# show running-config
 
 ! running
 version 17.9
+no service timestamps log
+service finger
+service tcp-small-servers
+service udp-small-servers
+service pad
 hostname KCII-IOS-SIM
 enable password [REDACTED_DEFAULT_PASSWORD]
 username [USER_ADMIN] privilege 15 password 0 [REDACTED_USER_PASSWORD]
+ip source-route
+ip domain-lookup
+ip identd
+ip mask-reply
+interface GigabitEthernet0/0
+ ip directed-broadcast
+ ip proxy-arp
+ ip redirects
+ ip unreachables
 line vty 0 4
  exec-timeout 0 0
  login
  password 0 [REDACTED_LINE_PASSWORD]
  transport input telnet
-snmp-server community [COMMUNITY_WEAK] RO
+snmp-server community [COMMUNITY_WEAK] RW
 ip http server
+ip http secure-server
 ip bootp server
+tftp-server flash:[CONFIG_BACKUP]
 cdp run
 end
 
@@ -20,17 +36,33 @@ KCII-IOS# show startup-config
 
 ! startup
 version 17.9
+no service timestamps log
+service finger
+service tcp-small-servers
+service udp-small-servers
+service pad
 hostname KCII-IOS-SIM
 enable password [REDACTED_DEFAULT_PASSWORD]
 username [USER_ADMIN] privilege 15 password 0 [REDACTED_USER_PASSWORD]
+ip source-route
+ip domain-lookup
+ip identd
+ip mask-reply
+interface GigabitEthernet0/0
+ ip directed-broadcast
+ ip proxy-arp
+ ip redirects
+ ip unreachables
 line vty 0 4
  exec-timeout 0 0
  login
  password 0 [REDACTED_LINE_PASSWORD]
  transport input telnet
-snmp-server community [COMMUNITY_WEAK] RO
+snmp-server community [COMMUNITY_WEAK] RW
 ip http server
+ip http secure-server
 ip bootp server
+tftp-server flash:[CONFIG_BACKUP]
 cdp run
 end
 
