@@ -1,0 +1,2 @@
+NOTICE: this DBMS output shape is not supported by the offline parser yet.
+Please review manually.

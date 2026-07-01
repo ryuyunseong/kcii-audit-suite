@@ -9,7 +9,7 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 | Windows Server | 64 | 8 | 7 | 49 | Full Windows manifest, expanded rc2 automatic and partial judgment |
 | Linux Server | 8 | 0 | 8 | 0 | MVP-only rulepack, not full official Linux coverage |
 | Unix Server | 67 | 0 | 28 | 39 | AIX, Solaris, HP-UX, Linux fixture-based parser |
-| DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser and Docker live verification |
+| DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser with JSON and key/value fixture coverage |
 | Network | 38 | 9 | 0 | 29 | Cisco IOS simulator/parser MVP |
 | Security Appliance | 23 | 0 | 23 | 0 | Questionnaire-centered evidence flow |
 
@@ -54,10 +54,11 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 
 - Scope: `D-01` to `D-26`
 - Supported MVP DBMS: PostgreSQL, MySQL, MariaDB
-- Status: offline parser plus Docker Compose live SQL verification
+- Status: offline parser MVP with JSON and key/value fixture coverage; Docker Compose remains a development verification lab
 - Known limits:
   - Oracle, MSSQL, Tibero, Altibase, and Cubrid are not implemented.
   - Password policy, audit, role, and remote restriction evidence remains conservative.
+  - Permission-denied and unsupported outputs remain `MANUAL_REQUIRED` rather than runtime failures.
 - Next automation candidates:
   - Password policy evidence expansion
   - Audit/log setting checks

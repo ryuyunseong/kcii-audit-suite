@@ -47,6 +47,8 @@ MANUAL_EVIDENCE = {
     "reason": "official DBMS item is registered, but the DBMS MVP parser does not automate this item yet",
 }
 
+MANUAL_SAFE_FIELDS = {"collection_status", "manual_required", "reason"}
+
 
 def records_from_dbms_paste(
     text: str,
@@ -87,6 +89,13 @@ def _parse_facts(text: str) -> dict[str, Any]:
         evidence = payload.get("evidence", payload)
         if isinstance(evidence, dict):
             return dict(evidence)
+    lowered = text.lower()
+    if "permission denied" in lowered or "insufficient privilege" in lowered:
+        return {
+            "collection_status": "permission_denied",
+            "manual_required": True,
+            "reason": "dbms evidence collection returned permission denied or insufficient privilege",
+        }
     return _parse_key_value_text(text)
 
 
@@ -116,7 +125,7 @@ def _parse_key_value_text(text: str) -> dict[str, Any]:
 def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
     keys = SAFE_FIELDS_BY_ITEM.get(item_id)
     if keys is None:
-        return dict(MANUAL_EVIDENCE)
+        return _manual_evidence(facts)
 
     evidence: dict[str, Any] = {"collection_status": "collected"}
     for fact_key, fact_item_id in FACT_TO_ITEM.items():
@@ -125,7 +134,20 @@ def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
         if fact_key in facts:
             evidence[fact_key] = _normalize_fact(fact_key, facts[fact_key])
     if len(evidence) == 1:
-        return dict(MANUAL_EVIDENCE)
+        return _manual_evidence(facts)
+    return evidence
+
+
+def _manual_evidence(facts: dict[str, Any] | None = None) -> dict[str, Any]:
+    evidence = dict(MANUAL_EVIDENCE)
+    if not facts:
+        return evidence
+    for key in MANUAL_SAFE_FIELDS:
+        if key in facts:
+            evidence[key] = _normalize_fact(key, facts[key])
+    if evidence.get("collection_status") in {"permission_denied", "insufficient_privilege"}:
+        evidence["manual_required"] = True
+        evidence.setdefault("reason", "dbms evidence collection requires additional privileges or DBA review")
     return evidence
 
 

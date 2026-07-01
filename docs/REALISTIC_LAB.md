@@ -166,6 +166,8 @@ PostgreSQL/MySQL/MariaDB SQL 출력은 각각 `lab\realistic\transfer\inbox\dbms
 docker compose -f lab\realistic\dbms\docker-compose.yml --env-file lab\realistic\dbms\.env down -v
 ```
 
+DBMS offline parser note for `dev/v1.0.0rc2`: PostgreSQL, MySQL, and MariaDB inputs may be sanitized JSON or key/value summaries. Permission-denied or unsupported DBMS output is classified as `MANUAL_REQUIRED` and should still produce the standard output bundle. Do not place account lists, database lists, connection strings, password hashes, or raw log text in operational samples or fixtures.
+
 ### Network
 
 #### kcii-netlab-sim command-response simulator

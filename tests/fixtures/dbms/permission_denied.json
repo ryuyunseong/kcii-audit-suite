@@ -1,0 +1,7 @@
+{
+  "evidence": {
+    "collection_status": "permission_denied",
+    "manual_required": true,
+    "reason": "read-only evidence query needs DBA-approved privileges"
+  }
+}

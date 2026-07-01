@@ -1,0 +1,21 @@
+{
+  "dbms": "mysql",
+  "evidence": {
+    "risky_default_account_present": true,
+    "sample_or_unused_account_count": 2,
+    "password_policy_configured": false,
+    "excessive_admin_privileges_present": true,
+    "secure_password_algorithm_configured": false,
+    "login_failure_lockout_configured": false,
+    "remote_access_restricted": false,
+    "public_role_privilege_risk_present": true,
+    "grant_option_risk_count": 3,
+    "resource_limits_enabled": false,
+    "version_patch_status_known": true,
+    "audit_logging_enabled": false,
+    "raw_account_names": "[DB_ACCOUNT_ADMIN],[DB_ACCOUNT_APP]",
+    "database_names": "customerdb,secretdb",
+    "connection_string": "mysql://[DB_ACCOUNT_ADMIN]:[SECRET_VALUE]@192.0.2.10:3306/customerdb",
+    "password_hash": "$2a$not-a-real-hash-placeholder"
+  }
+}

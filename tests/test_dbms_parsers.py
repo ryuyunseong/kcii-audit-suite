@@ -31,6 +31,10 @@ def _fixture(dbms: str, name: str) -> str:
     return Path("tests/fixtures/dbms", dbms, name).read_text(encoding="utf-8")
 
 
+def _common_fixture(name: str) -> str:
+    return Path("tests/fixtures/dbms", name).read_text(encoding="utf-8")
+
+
 def _status_by_item(dbms: str, fixture_name: str) -> dict[str, AssessmentStatus]:
     records = PARSERS[dbms](_fixture(dbms, fixture_name))
     results = evaluate_evidence(records)
@@ -70,6 +74,53 @@ def test_dbms_manual_required_fixture_keeps_all_items_manual(dbms: str):
 
     assert set(statuses) == {f"D-{index:02d}" for index in range(1, 27)}
     assert set(statuses.values()) == {AssessmentStatus.MANUAL_REQUIRED}
+
+
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_json_good_fixture_is_classified(dbms: str):
+    statuses = _status_by_item(dbms, "good.json")
+
+    assert statuses["D-01"] == AssessmentStatus.GOOD
+    assert statuses["D-02"] == AssessmentStatus.GOOD
+    assert statuses["D-03"] == AssessmentStatus.GOOD
+    assert statuses["D-04"] == AssessmentStatus.GOOD
+    assert statuses["D-08"] == AssessmentStatus.GOOD
+    assert statuses["D-09"] == AssessmentStatus.GOOD
+    assert statuses["D-10"] == AssessmentStatus.GOOD
+    assert statuses["D-18"] == AssessmentStatus.GOOD
+    assert statuses["D-21"] == AssessmentStatus.GOOD
+    assert statuses["D-22"] == AssessmentStatus.GOOD
+    assert statuses["D-26"] == AssessmentStatus.GOOD
+    assert statuses["D-25"] == AssessmentStatus.MANUAL_REQUIRED
+
+
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_json_vulnerable_fixture_is_classified(dbms: str):
+    statuses = _status_by_item(dbms, "vulnerable.json")
+
+    for item_id in ["D-01", "D-02", "D-03", "D-04", "D-08", "D-09", "D-10", "D-18", "D-21", "D-26"]:
+        assert statuses[item_id] == AssessmentStatus.VULNERABLE
+    assert statuses["D-22"] == AssessmentStatus.MANUAL_REQUIRED
+    assert statuses["D-25"] == AssessmentStatus.MANUAL_REQUIRED
+
+
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_permission_denied_fixture_is_manual_required(dbms: str):
+    records = PARSERS[dbms](_common_fixture("permission_denied.json"))
+    results = evaluate_evidence(records)
+
+    assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
+    assert {record.evidence["collection_status"] for record in records} == {"permission_denied"}
+    assert all(record.evidence["manual_required"] is True for record in records)
+
+
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_unsupported_output_fixture_is_manual_required(dbms: str):
+    records = PARSERS[dbms](_common_fixture("unsupported_output.txt"))
+    results = evaluate_evidence(records)
+
+    assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
+    assert all(record.raw_evidence_hash for record in records)
 
 
 @pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
@@ -135,6 +186,34 @@ def test_dbms_classify_paste_creates_full_output_bundle(tmp_path, dbms: str):
     assert "D-26" in advisory_text
 
 
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_json_classify_file_creates_full_output_bundle(tmp_path, dbms: str):
+    output_dir = tmp_path / f"dbms-{dbms}-json"
+    result = runner.invoke(
+        app,
+        [
+            "classify-file",
+            "--profile",
+            "dbms",
+            "--dbms",
+            dbms,
+            "--input",
+            f"tests/fixtures/dbms/{dbms}/vulnerable.json",
+            "--output",
+            str(output_dir),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert (output_dir / "evidence.jsonl").exists()
+    assert (output_dir / "results.json").exists()
+    assert (output_dir / "detail.xlsx").exists()
+    assert (output_dir / "summary.xlsx").exists()
+    assert (output_dir / "report.md").exists()
+    assert (output_dir / "security_advisory.md").exists()
+    assert (output_dir / "security_advisory.xlsx").exists()
+
+
 def test_dbms_no_advisory_keeps_existing_five_output_files(tmp_path):
     output_dir = tmp_path / "dbms-postgresql-no-advisory"
     result = runner.invoke(
@@ -194,6 +273,45 @@ def test_dbms_outputs_do_not_store_sensitive_fixture_values(tmp_path):
         "secretdb",
         "192.0.2.10",
         "postgresql://",
+        "$2a$not-a-real-hash-placeholder",
+    ]:
+        assert sensitive_value not in combined
+
+
+@pytest.mark.parametrize("dbms", ["postgresql", "mysql", "mariadb"])
+def test_dbms_json_outputs_do_not_store_sensitive_fixture_values(tmp_path, dbms: str):
+    output_dir = tmp_path / f"dbms-{dbms}-json-sensitive"
+    result = runner.invoke(
+        app,
+        [
+            "classify-file",
+            "--profile",
+            "dbms",
+            "--dbms",
+            dbms,
+            "--input",
+            f"tests/fixtures/dbms/{dbms}/vulnerable.json",
+            "--output",
+            str(output_dir),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    combined = (
+        (output_dir / "evidence.jsonl").read_text(encoding="utf-8")
+        + (output_dir / "results.json").read_text(encoding="utf-8")
+        + (output_dir / "report.md").read_text(encoding="utf-8")
+        + (output_dir / "security_advisory.md").read_text(encoding="utf-8")
+    )
+    for sensitive_value in [
+        "[DB_ACCOUNT_ADMIN]",
+        "[DB_ACCOUNT_APP]",
+        "customerdb",
+        "secretdb",
+        "192.0.2.10",
+        "postgresql://",
+        "mysql://",
+        "mariadb://",
         "$2a$not-a-real-hash-placeholder",
     ]:
         assert sensitive_value not in combined

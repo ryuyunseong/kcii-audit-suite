@@ -36,6 +36,8 @@ Detailed per-profile counts and known limitations are in [docs/PROFILE_COVERAGE.
 
 For `dev/v1.0.0rc2`, Windows Server classification expands deterministic and partial checks for password policy summaries, default administrative shares, selected risky services, audit policy summaries, and Event Log settings. `secedit /export` and `auditpol /get` are used only as read-only evidence collection inputs; raw export text is not stored in normal outputs.
 
+For `dev/v1.0.0rc2`, DBMS classification accepts sanitized JSON and key/value output for PostgreSQL, MySQL, and MariaDB. The DBMS parser keeps only boolean, integer, enum, count, manual-check state, and `raw_evidence_hash` values; account lists, database lists, connection strings, password hashes, and raw log text are ignored.
+
 ## Outputs
 
 Default classification creates seven files:
@@ -98,7 +100,7 @@ Get-Content tests\fixtures\unix_server\solaris\manual_required.txt | kcii-audit 
 DBMS:
 
 ```powershell
-kcii-audit classify-file --profile dbms --dbms postgresql --input tests\fixtures\dbms\postgresql\good.txt --output out\smoke-dbms-postgresql
+kcii-audit classify-file --profile dbms --dbms postgresql --input tests\fixtures\dbms\postgresql\good.json --output out\smoke-dbms-postgresql
 Get-Content tests\fixtures\dbms\mysql\manual_required.txt | kcii-audit classify-paste --profile dbms --dbms mysql --output out\smoke-dbms-mysql-paste
 ```
 
