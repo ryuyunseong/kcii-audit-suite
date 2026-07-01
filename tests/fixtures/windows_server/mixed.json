@@ -1,0 +1,35 @@
+{
+  "schema_version": "kcii-windows-paste-v2",
+  "platform": "windows",
+  "items": [
+    {
+      "item_id": "W-17",
+      "evidence": {
+        "collection_status": "collected",
+        "default_admin_share_count": 1,
+        "default_admin_shares_disabled": false,
+        "share_names": ["C$", "ADMIN$"],
+        "hostname": "win-prod-01.example.invalid"
+      }
+    },
+    {
+      "item_id": "W-18",
+      "evidence": {
+        "collection_status": "collected",
+        "remote_registry_service_disabled": true,
+        "unnecessary_services_disabled": true,
+        "sid": "S-1-5-21-0000000000-0000000000-0000000000-500"
+      }
+    },
+    {
+      "item_id": "W-42",
+      "evidence": {
+        "collection_status": "collected",
+        "event_log_service_running": true,
+        "minimum_event_log_size_mb": 32,
+        "event_log_config_ok": false,
+        "log_path": "C:\\Windows\\System32\\winevt\\Logs\\Security.evtx"
+      }
+    }
+  ]
+}

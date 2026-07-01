@@ -1,0 +1,6 @@
+[System Access]
+MinimumPasswordLength = 12
+PasswordComplexity = 0
+MaximumPasswordAge = 180
+MinimumPasswordAge = 0
+PasswordHistorySize = 0

@@ -1,0 +1,22 @@
+{
+  "schema_version": "kcii-windows-paste-v2",
+  "platform": "windows",
+  "items": [
+    {
+      "item_id": "W-17",
+      "evidence": {
+        "collection_status": "permission_denied_or_unavailable",
+        "manual_required": true,
+        "reason": "SMB share summary could not be collected"
+      }
+    },
+    {
+      "item_id": "W-40",
+      "evidence": {
+        "collection_status": "permission_denied_or_unavailable",
+        "manual_required": true,
+        "reason": "Audit policy summary could not be collected"
+      }
+    }
+  ]
+}

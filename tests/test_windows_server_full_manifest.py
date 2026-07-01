@@ -50,4 +50,10 @@ def test_windows_manifest_automation_levels_are_explicit():
     assert set(automation_by_item.values()) <= allowed
     assert automation_by_item["W-02"] == "auto"
     assert automation_by_item["W-09"] == "partial"
+    assert automation_by_item["W-17"] == "auto"
+    assert automation_by_item["W-18"] == "partial"
+    assert automation_by_item["W-21"] == "partial"
+    assert automation_by_item["W-29"] == "partial"
+    assert automation_by_item["W-40"] == "partial"
+    assert automation_by_item["W-42"] == "partial"
     assert automation_by_item["W-64"] == "auto"

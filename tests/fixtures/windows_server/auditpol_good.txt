@@ -1,0 +1,6 @@
+System audit policy
+Category/Subcategory                      Setting
+System                                    Success and Failure
+Logon/Logoff                              Success and Failure
+Account Management                        Success and Failure
+Policy Change                             Success and Failure

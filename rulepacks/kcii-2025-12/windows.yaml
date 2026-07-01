@@ -156,20 +156,33 @@ items:
     target_platforms: *windows_platforms
     collector: *windows_collector
     evidence_fields:
+      - password_policy_ok
       - minimum_password_length
     decision_rules:
+      - status: GOOD
+        when:
+          field: password_policy_ok
+          operator: equals
+          value: true
+        reason: Windows password policy summary meets the rc2 minimum length, complexity, age, and history checks.
+      - status: VULNERABLE
+        when:
+          field: password_policy_ok
+          operator: equals
+          value: false
+        reason: Windows password policy summary does not meet one or more rc2 checks.
       - status: GOOD
         when:
           field: minimum_password_length
           operator: gte
           value: 8
-        reason: 최소 암호 길이가 MVP 기준 8자 이상입니다.
+        reason: Minimum password length is at least the rc2 fallback threshold.
       - status: VULNERABLE
         when:
           field: minimum_password_length
           operator: lt
           value: 8
-        reason: 최소 암호 길이가 MVP 기준 8자 미만입니다.
+        reason: Minimum password length is below the rc2 fallback threshold.
     remediation: 비밀번호 복잡성, 최소 길이, 최대/최소 사용 기간, 최근 암호 기억 기준을 기관 정책에 맞게 설정합니다.
     report_text: 비밀번호 관리정책 중 최소 암호 길이를 우선 점검합니다.
 
@@ -282,8 +295,21 @@ items:
     severity: high
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - default_admin_shares_disabled
+    decision_rules:
+      - status: GOOD
+        when:
+          field: default_admin_shares_disabled
+          operator: equals
+          value: true
+        reason: Default administrative shares were not present in the sanitized share summary.
+      - status: VULNERABLE
+        when:
+          field: default_admin_shares_disabled
+          operator: equals
+          value: false
+        reason: One or more default administrative shares were present in the sanitized share summary.
     remediation: 불필요한 기본 관리 공유 사용 여부를 확인하고 제한합니다.
     report_text: 하드디스크 기본 공유 제거 여부를 수동 확인합니다.
 
@@ -293,8 +319,21 @@ items:
     severity: high
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - unnecessary_services_disabled
+    decision_rules:
+      - status: GOOD
+        when:
+          field: unnecessary_services_disabled
+          operator: equals
+          value: true
+        reason: The rc2 unnecessary-service summary did not identify enabled risky services.
+      - status: VULNERABLE
+        when:
+          field: unnecessary_services_disabled
+          operator: equals
+          value: false
+        reason: The rc2 unnecessary-service summary identified an enabled risky service.
     remediation: 불필요한 서비스 구동 여부를 확인하고 중지 또는 제거합니다.
     report_text: 불필요한 서비스 제거 여부를 수동 확인합니다.
 
@@ -326,8 +365,21 @@ items:
     severity: high
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - ftp_service_disabled
+    decision_rules:
+      - status: GOOD
+        when:
+          field: ftp_service_disabled
+          operator: equals
+          value: true
+        reason: FTP service was absent or disabled in the sanitized service summary.
+      - status: VULNERABLE
+        when:
+          field: ftp_service_disabled
+          operator: equals
+          value: false
+        reason: FTP service appeared enabled and requires encrypted-service review.
     remediation: 암호화되지 않는 FTP 서비스 사용을 제한합니다.
     report_text: 암호화되지 않는 FTP 서비스 비활성화 여부를 수동 확인합니다.
 
@@ -414,8 +466,21 @@ items:
     severity: medium
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - snmp_service_disabled
+    decision_rules:
+      - status: GOOD
+        when:
+          field: snmp_service_disabled
+          operator: equals
+          value: true
+        reason: SNMP service was absent or disabled in the sanitized service summary.
+      - status: VULNERABLE
+        when:
+          field: snmp_service_disabled
+          operator: equals
+          value: false
+        reason: SNMP service appeared enabled and requires service-necessity review.
     remediation: SNMP 서비스 사용 필요성과 구동 상태를 확인합니다.
     report_text: 불필요한 SNMP 서비스 구동 여부를 수동 확인합니다.
 
@@ -548,8 +613,21 @@ items:
     severity: medium
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - audit_policy_core_enabled
+    decision_rules:
+      - status: GOOD
+        when:
+          field: audit_policy_core_enabled
+          operator: equals
+          value: true
+        reason: Core audit policy categories were enabled for success and failure auditing in the sanitized summary.
+      - status: VULNERABLE
+        when:
+          field: audit_policy_core_enabled
+          operator: equals
+          value: false
+        reason: One or more core audit policy categories were missing success or failure auditing in the sanitized summary.
     remediation: 시스템 로깅 정책과 감사 설정을 기관 기준에 맞게 확인합니다.
     report_text: 정책에 따른 시스템 로깅 설정을 수동 확인합니다.
 
@@ -570,8 +648,21 @@ items:
     severity: low
     target_platforms: *windows_platforms
     collector: *windows_collector
-    evidence_fields: *manual_evidence_fields
-    decision_rules: *manual_decision_rules
+    evidence_fields:
+      - event_log_config_ok
+    decision_rules:
+      - status: GOOD
+        when:
+          field: event_log_config_ok
+          operator: equals
+          value: true
+        reason: Event Log service and minimum log-size summary met the rc2 check.
+      - status: VULNERABLE
+        when:
+          field: event_log_config_ok
+          operator: equals
+          value: false
+        reason: Event Log service or minimum log-size summary did not meet the rc2 check.
     remediation: 이벤트 로그 크기, 보존, 덮어쓰기 정책을 확인합니다.
     report_text: 이벤트 로그 관리 설정을 수동 확인합니다.
 

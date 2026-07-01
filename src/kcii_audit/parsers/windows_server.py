@@ -22,15 +22,25 @@ SAFE_FIELDS_BY_ITEM = {
     "W-09": {
         "collection_status",
         "minimum_password_length",
+        "password_complexity_enabled",
         "maximum_password_age_days",
         "minimum_password_age_days",
         "password_history_size",
+        "password_policy_ok",
     },
     "W-10": {"collection_status", "last_username_hidden"},
     "W-13": {"collection_status", "blank_password_remote_logon_blocked"},
+    "W-17": {"collection_status", "default_admin_share_count", "default_admin_shares_disabled"},
+    "W-18": {"collection_status", "remote_registry_service_disabled", "unnecessary_services_disabled"},
+    "W-21": {"collection_status", "ftp_service_disabled"},
+    "W-29": {"collection_status", "snmp_service_disabled"},
     "W-34": {"collection_status", "telnet_service_disabled"},
+    "W-40": {"collection_status", "audit_policy_core_enabled"},
+    "W-42": {"collection_status", "event_log_service_running", "minimum_event_log_size_mb", "event_log_config_ok"},
     "W-64": {"collection_status", "firewall_enabled"},
 }
+
+MANUAL_SAFE_FIELDS = {"collection_status", "manual_required", "reason"}
 
 MANUAL_EVIDENCE = {
     "collection_status": "not_automated_by_windows_mvp",
@@ -102,7 +112,7 @@ def _normalize_structured_item_id(item_id: str, evidence: dict[str, Any]) -> str
         return "W-02"
     if "firewall_enabled" in evidence:
         return "W-64"
-    if "minimum_password_length" in evidence:
+    if "minimum_password_length" in evidence or "password_policy_ok" in evidence:
         return "W-09"
     return item_id
 
@@ -170,11 +180,43 @@ def _parse_text_evidence(text: str) -> dict[str, dict[str, Any]]:
     )
     if min_length is None:
         min_length = _extract_minimum_password_length(text)
+    if min_length is None:
+        min_length = _extract_named_int(text, "MinimumPasswordLength")
+    password_complexity = _extract_first_bool_key_value(
+        lower_text,
+        ["password_complexity_enabled", "password_complexity"],
+    )
+    if password_complexity is None:
+        password_complexity = _extract_named_bool(text, "PasswordComplexity")
+    maximum_age = _extract_first_int_key_value(lower_text, ["maximum_password_age_days", "max_password_age_days"])
+    if maximum_age is None:
+        maximum_age = _extract_named_int(text, "MaximumPasswordAge")
+    minimum_age = _extract_first_int_key_value(lower_text, ["minimum_password_age_days", "min_password_age_days"])
+    if minimum_age is None:
+        minimum_age = _extract_named_int(text, "MinimumPasswordAge")
+    password_history = _extract_first_int_key_value(lower_text, ["password_history_size", "password_history"])
+    if password_history is None:
+        password_history = _extract_named_int(text, "PasswordHistorySize")
+    password_policy_ok = _extract_first_bool_key_value(lower_text, ["password_policy_ok"])
+    if password_policy_ok is None:
+        password_policy_ok = _password_policy_ok(
+            min_length=min_length,
+            complexity_enabled=password_complexity,
+            maximum_age_days=maximum_age,
+            minimum_age_days=minimum_age,
+            history_size=password_history,
+        )
     if min_length is not None:
-        parsed["W-09"] = {
+        w09_evidence = {
             "collection_status": "collected",
             "minimum_password_length": min_length,
         }
+        _set_if_not_none(w09_evidence, "password_complexity_enabled", password_complexity)
+        _set_if_not_none(w09_evidence, "maximum_password_age_days", maximum_age)
+        _set_if_not_none(w09_evidence, "minimum_password_age_days", minimum_age)
+        _set_if_not_none(w09_evidence, "password_history_size", password_history)
+        _set_if_not_none(w09_evidence, "password_policy_ok", password_policy_ok)
+        parsed["W-09"] = w09_evidence
 
     _add_bool(parsed, "W-10", "last_username_hidden", lower_text, ["last_username_hidden", "dontdisplaylastusername"])
     _add_bool(
@@ -184,7 +226,57 @@ def _parse_text_evidence(text: str) -> dict[str, dict[str, Any]]:
         lower_text,
         ["blank_password_remote_logon_blocked", "limitblankpassworduse"],
     )
+    _add_bool(
+        parsed,
+        "W-17",
+        "default_admin_shares_disabled",
+        lower_text,
+        ["default_admin_shares_disabled"],
+    )
+    admin_share_count = _extract_first_int_key_value(lower_text, ["default_admin_share_count", "admin_share_count"])
+    if admin_share_count is not None:
+        parsed["W-17"] = {
+            "collection_status": "collected",
+            "default_admin_share_count": admin_share_count,
+            "default_admin_shares_disabled": admin_share_count == 0,
+        }
+    _add_bool(
+        parsed,
+        "W-18",
+        "unnecessary_services_disabled",
+        lower_text,
+        ["unnecessary_services_disabled"],
+    )
+    remote_registry_disabled = _extract_first_bool_key_value(lower_text, ["remote_registry_service_disabled"])
+    if remote_registry_disabled is not None:
+        parsed["W-18"] = {
+            "collection_status": "collected",
+            "remote_registry_service_disabled": remote_registry_disabled,
+            "unnecessary_services_disabled": remote_registry_disabled,
+        }
+    _add_bool(parsed, "W-21", "ftp_service_disabled", lower_text, ["ftp_service_disabled"])
+    _add_bool(parsed, "W-29", "snmp_service_disabled", lower_text, ["snmp_service_disabled"])
     _add_bool(parsed, "W-34", "telnet_service_disabled", lower_text, ["telnet_service_disabled"])
+    _add_bool(parsed, "W-40", "audit_policy_core_enabled", lower_text, ["audit_policy_core_enabled"])
+    if "W-40" not in parsed:
+        audit_policy_core_enabled = _extract_audit_policy_core_enabled(text)
+        if audit_policy_core_enabled is not None:
+            parsed["W-40"] = {
+                "collection_status": "collected",
+                "audit_policy_core_enabled": audit_policy_core_enabled,
+            }
+    event_log_service_running = _extract_first_bool_key_value(lower_text, ["event_log_service_running"])
+    minimum_event_log_size = _extract_first_int_key_value(lower_text, ["minimum_event_log_size_mb"])
+    event_log_config_ok = _extract_first_bool_key_value(lower_text, ["event_log_config_ok"])
+    if event_log_config_ok is None and event_log_service_running is not None and minimum_event_log_size is not None:
+        event_log_config_ok = event_log_service_running and minimum_event_log_size >= 64
+    if event_log_service_running is not None or minimum_event_log_size is not None or event_log_config_ok is not None:
+        parsed["W-42"] = {
+            "collection_status": "collected",
+        }
+        _set_if_not_none(parsed["W-42"], "event_log_service_running", event_log_service_running)
+        _set_if_not_none(parsed["W-42"], "minimum_event_log_size_mb", minimum_event_log_size)
+        _set_if_not_none(parsed["W-42"], "event_log_config_ok", event_log_config_ok)
 
     firewall_enabled = _extract_first_bool_key_value(
         lower_text,
@@ -214,7 +306,7 @@ def _evidence_for_item(item_id: str, evidence: dict[str, Any] | None) -> dict[st
     allowed = SAFE_FIELDS_BY_ITEM[item_id]
     safe: dict[str, Any] = {}
     for key, value in evidence.items():
-        if key not in allowed:
+        if key not in allowed and key not in MANUAL_SAFE_FIELDS:
             continue
         safe[key] = _normalize_field_value(key, value)
     if "collection_status" not in safe:
@@ -235,6 +327,11 @@ def _add_bool(
             "collection_status": "collected",
             evidence_key: value,
         }
+
+
+def _set_if_not_none(target: dict[str, Any], key: str, value: Any) -> None:
+    if value is not None:
+        target[key] = value
 
 
 def _extract_first_bool_key_value(text: str, keys: list[str]) -> bool | None:
@@ -263,6 +360,69 @@ def _extract_bool_key_value(text: str, key: str) -> bool | None:
 def _extract_int_key_value(text: str, key: str) -> int | None:
     match = re.search(rf"^\s*{re.escape(key)}\s*[:=]\s*(\d+)\s*$", text, re.MULTILINE)
     return int(match.group(1)) if match else None
+
+
+def _extract_named_int(text: str, key: str) -> int | None:
+    match = re.search(rf"^\s*{re.escape(key)}\s*=\s*(-?\d+)\s*$", text, re.IGNORECASE | re.MULTILINE)
+    return int(match.group(1)) if match else None
+
+
+def _extract_named_bool(text: str, key: str) -> bool | None:
+    value = _extract_named_int(text, key)
+    if value is None:
+        return None
+    return value != 0
+
+
+def _password_policy_ok(
+    *,
+    min_length: int | None,
+    complexity_enabled: bool | None,
+    maximum_age_days: int | None,
+    minimum_age_days: int | None,
+    history_size: int | None,
+) -> bool | None:
+    values = [min_length, complexity_enabled, maximum_age_days, minimum_age_days, history_size]
+    if any(value is None for value in values):
+        return None
+    return (
+        min_length is not None
+        and min_length >= 8
+        and complexity_enabled is True
+        and maximum_age_days is not None
+        and 0 < maximum_age_days <= 90
+        and minimum_age_days is not None
+        and minimum_age_days >= 1
+        and history_size is not None
+        and history_size >= 5
+    )
+
+
+def _extract_audit_policy_core_enabled(text: str) -> bool | None:
+    required_fragments = [
+        "logon",
+        "account management",
+        "policy change",
+        "system",
+    ]
+    matched: set[str] = set()
+    insufficient = False
+    for line in text.splitlines():
+        normalized = " ".join(line.strip().lower().split())
+        if not normalized:
+            continue
+        if not any(token in normalized for token in ("success", "failure", "auditing")):
+            continue
+        for fragment in required_fragments:
+            if fragment in normalized:
+                matched.add(fragment)
+                if "success" not in normalized or "failure" not in normalized:
+                    insufficient = True
+    if not matched:
+        return None
+    if insufficient:
+        return False
+    return set(required_fragments).issubset(matched)
 
 
 def _extract_net_accounts_int(text: str, labels: list[str]) -> int | None:
@@ -366,10 +526,21 @@ def _normalize_field_value(field: str, value: Any) -> Any:
         "guest_account_enabled",
         "account_lockout_threshold_ok",
         "account_lockout_duration_ok",
+        "password_complexity_enabled",
+        "password_policy_ok",
         "last_username_hidden",
         "blank_password_remote_logon_blocked",
+        "default_admin_shares_disabled",
+        "remote_registry_service_disabled",
+        "unnecessary_services_disabled",
+        "ftp_service_disabled",
+        "snmp_service_disabled",
         "telnet_service_disabled",
+        "audit_policy_core_enabled",
+        "event_log_service_running",
+        "event_log_config_ok",
         "firewall_enabled",
+        "manual_required",
     }:
         if isinstance(value, bool):
             return value
@@ -384,6 +555,8 @@ def _normalize_field_value(field: str, value: Any) -> Any:
         "maximum_password_age_days",
         "minimum_password_age_days",
         "password_history_size",
+        "default_admin_share_count",
+        "minimum_event_log_size_mb",
     }:
         if isinstance(value, bool):
             return None

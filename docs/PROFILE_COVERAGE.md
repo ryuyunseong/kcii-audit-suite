@@ -6,7 +6,7 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 
 | Profile | Registered items | Auto | Partial | Manual | Notes |
 | --- | ---: | ---: | ---: | ---: | --- |
-| Windows Server | 64 | 7 | 2 | 55 | Full Windows manifest, selected automatic judgment |
+| Windows Server | 64 | 8 | 7 | 49 | Full Windows manifest, expanded rc2 automatic and partial judgment |
 | Linux Server | 8 | 0 | 8 | 0 | MVP-only rulepack, not full official Linux coverage |
 | Unix Server | 67 | 0 | 28 | 39 | AIX, Solaris, HP-UX, Linux fixture-based parser |
 | DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser and Docker live verification |
@@ -21,10 +21,11 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
   - Many account, service, share, audit, and IIS-related items require manual review.
   - English and Korean command output coverage needs continued expansion.
 - Next automation candidates:
-  - Password policy details
+  - Password policy edge cases
   - Audit policy
   - Unnecessary services
   - Share and anonymous access checks
+  - Event log retention policy
 
 ## Linux Server
 

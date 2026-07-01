@@ -1,0 +1,2 @@
+unsupported windows command output
+no supported key value or JSON structure is present

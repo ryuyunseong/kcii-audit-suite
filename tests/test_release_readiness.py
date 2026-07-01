@@ -54,7 +54,7 @@ def test_profile_coverage_document_mentions_every_profile_and_counts():
         "`D-01` to `D-26`",
         "`N-01` to `N-38`",
         "`S-01` to `S-23`",
-        "| Windows Server | 64 | 7 | 2 | 55 |",
+        "| Windows Server | 64 | 8 | 7 | 49 |",
         "| Security Appliance | 23 | 0 | 23 | 0 |",
     ]:
         assert expected in coverage
