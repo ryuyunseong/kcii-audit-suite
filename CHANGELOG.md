@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.0.0-rc2] - 2026-07-02
+
+### Added
+
+- Windows Server rc2 automatic and partial judgment expansion for selected read-only evidence summaries.
+- DBMS sanitized JSON fixture coverage for PostgreSQL, MySQL, and MariaDB.
+- DBMS permission-denied and unsupported-output fixtures.
+- `RELEASE_NOTES_v1.0.0rc2.md` and `docs/V1_0_0RC2_READINESS.md`.
+
+### Changed
+
+- Package version moved to `1.0.0rc2` for rc2 build verification.
+- DBMS parser now preserves permission-denied and insufficient-privilege states as `MANUAL_REQUIRED` evidence.
+- Release readiness documentation now describes rc2 smoke, checksum, and tag boundaries.
+
+### Security
+
+- DBMS JSON fixture tests verify that account names, database names, connection strings, IP-like placeholders, and password-hash placeholders are not written to normal outputs.
+- rc2 release notes keep production remote collection, PyPI publishing, and public release out of scope.
+
+### Known Limitations
+
+- rc2 is still a private pre-release candidate.
+- Oracle, MSSQL, Tibero, Altibase, and Cubrid DBMS support remains future work.
+- Many registered items remain intentionally manual.
+
 ## [1.0.0-rc1] - 2026-07-01
 
 ### Added

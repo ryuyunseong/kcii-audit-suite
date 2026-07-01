@@ -139,11 +139,13 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [CHANGELOG.md](CHANGELOG.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
 - [RELEASE_NOTES_v1.0.0rc1.md](RELEASE_NOTES_v1.0.0rc1.md)
+- [RELEASE_NOTES_v1.0.0rc2.md](RELEASE_NOTES_v1.0.0rc2.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
+- [docs/V1_0_0RC2_READINESS.md](docs/V1_0_0RC2_READINESS.md)
 
 ## Current Release Candidate Status
 
 `v1.0.0rc1` is fixed at commit `e93d18b`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc1` tag.
 
-Ongoing development should happen on `dev/v1.0.0rc2`. The rc2 target is to keep full item registration intact, expand deterministic checks where evidence is reliable, and leave unsupported or ambiguous items as `MANUAL_REQUIRED`.
+Ongoing release-candidate stabilization should happen on `dev/v1.0.0rc2`. The rc2 target is to keep full item registration intact, include the Windows and DBMS hardening already completed on the branch, and leave unsupported or ambiguous items as `MANUAL_REQUIRED`.

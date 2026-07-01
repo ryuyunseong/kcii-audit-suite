@@ -57,17 +57,17 @@ tmp\venv-wheel-check\Scripts\kcii-audit questionnaire --help
 Generate checksums after the final package build and before creating a GitHub Release:
 
 ```powershell
-Get-FileHash dist\kcii_audit_suite-1.0.0rc1-py3-none-any.whl -Algorithm SHA256
-Get-FileHash dist\kcii_audit_suite-1.0.0rc1.tar.gz -Algorithm SHA256
+Get-FileHash dist\kcii_audit_suite-1.0.0rc2-py3-none-any.whl -Algorithm SHA256
+Get-FileHash dist\kcii_audit_suite-1.0.0rc2.tar.gz -Algorithm SHA256
 Get-FileHash dist\* -Algorithm SHA256 |
   Format-Table Algorithm,Hash,Path -AutoSize |
   Out-File dist\SHA256SUMS.txt -Encoding utf8
 ```
 
-Release assets for `v1.0.0rc1` should be limited to:
+Release assets for `v1.0.0rc2` should be limited to:
 
-- `kcii_audit_suite-1.0.0rc1-py3-none-any.whl`
-- `kcii_audit_suite-1.0.0rc1.tar.gz`
+- `kcii_audit_suite-1.0.0rc2-py3-none-any.whl`
+- `kcii_audit_suite-1.0.0rc2.tar.gz`
 - `SHA256SUMS.txt`
 
 ## Installed Wheel Self-Contained Classification
@@ -86,7 +86,7 @@ New-Item -ItemType Directory -Force "$tmpRoot\inputs" | Out-Null
 Copy-Item tests\fixtures\windows\paste\good-collector.json "$tmpRoot\inputs\windows-good.json"
 Copy-Item tests\fixtures\linux_server\good.json "$tmpRoot\inputs\linux-good.json"
 Copy-Item tests\fixtures\unix_server\aix\good.json "$tmpRoot\inputs\unix-aix-good.json"
-Copy-Item tests\fixtures\dbms\postgresql\good.txt "$tmpRoot\inputs\dbms-postgresql-good.txt"
+Copy-Item tests\fixtures\dbms\postgresql\good.json "$tmpRoot\inputs\dbms-postgresql-good.json"
 Copy-Item tests\fixtures\network\cisco_ios\good.txt "$tmpRoot\inputs\network-cisco-good.txt"
 Copy-Item tests\fixtures\security_appliance\good.txt "$tmpRoot\inputs\security-appliance-good.txt"
 
@@ -94,7 +94,7 @@ Push-Location $tmpRoot
 .\venv\Scripts\kcii-audit classify-file --profile windows --input .\inputs\windows-good.json --output .\out\windows-good
 .\venv\Scripts\kcii-audit classify-file --profile linux --input .\inputs\linux-good.json --output .\out\linux-good
 .\venv\Scripts\kcii-audit classify-file --profile unix --unix aix --input .\inputs\unix-aix-good.json --output .\out\unix-aix-good
-.\venv\Scripts\kcii-audit classify-file --profile dbms --dbms postgresql --input .\inputs\dbms-postgresql-good.txt --output .\out\dbms-postgresql-good
+.\venv\Scripts\kcii-audit classify-file --profile dbms --dbms postgresql --input .\inputs\dbms-postgresql-good.json --output .\out\dbms-postgresql-good
 .\venv\Scripts\kcii-audit classify-file --profile network --vendor cisco_ios --input .\inputs\network-cisco-good.txt --output .\out\network-cisco-good
 .\venv\Scripts\kcii-audit classify-file --profile security-appliance --appliance-type firewall --input .\inputs\security-appliance-good.txt --output .\out\security-appliance-good
 .\venv\Scripts\kcii-audit classify-file --profile linux --input .\inputs\linux-good.json --output .\out\linux-no-advisory --no-advisory
@@ -132,7 +132,7 @@ tmp\venv-release-check\Scripts\kcii-audit classify-file --profile unix --unix ai
 DBMS:
 
 ```powershell
-tmp\venv-release-check\Scripts\kcii-audit classify-file --profile dbms --dbms postgresql --input tests\fixtures\dbms\postgresql\good.txt --output out\release-smoke-dbms-postgresql
+tmp\venv-release-check\Scripts\kcii-audit classify-file --profile dbms --dbms postgresql --input tests\fixtures\dbms\postgresql\good.json --output out\release-smoke-dbms-postgresql
 ```
 
 Network:
@@ -189,32 +189,30 @@ Findings must be reviewed manually because some policy words may appear in docum
 
 Use a private GitHub repository for the first remote release candidate unless the publication policy explicitly allows public release.
 
-Do not run these commands until the private repository URL and push approval are confirmed:
+Do not run these commands until the private repository URL and push approval are confirmed. For rc2, only push the `dev/v1.0.0rc2` branch and `v1.0.0rc2` tag after explicit approval:
 
 ```powershell
-git remote add origin https://github.com/<OWNER>/kcii-audit-suite.git
-git branch -M main
-git push -u origin main
-git push origin v1.0.0rc1
+git push origin dev/v1.0.0rc2
+git push origin v1.0.0rc2
 ```
 
 Verify the remote branch and tag after push:
 
 ```powershell
 git remote -v
-git ls-remote origin main
-git ls-remote --tags origin v1.0.0rc1
+git ls-remote origin refs/heads/dev/v1.0.0rc2
+git ls-remote --tags origin v1.0.0rc2
 ```
 
 Create the GitHub pre-release only after the tag is available on the private remote:
 
 ```powershell
-gh release create v1.0.0rc1 `
-  dist/kcii_audit_suite-1.0.0rc1-py3-none-any.whl `
-  dist/kcii_audit_suite-1.0.0rc1.tar.gz `
+gh release create v1.0.0rc2 `
+  dist/kcii_audit_suite-1.0.0rc2-py3-none-any.whl `
+  dist/kcii_audit_suite-1.0.0rc2.tar.gz `
   dist/SHA256SUMS.txt `
-  --title "kcii-audit-suite v1.0.0rc1" `
-  --notes-file RELEASE_NOTES_v1.0.0rc1.md `
+  --title "kcii-audit-suite v1.0.0rc2" `
+  --notes-file RELEASE_NOTES_v1.0.0rc2.md `
   --prerelease
 ```
 

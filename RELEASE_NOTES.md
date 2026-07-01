@@ -1,5 +1,32 @@
 # Release Notes
 
+## v1.0.0-rc2 Candidate
+
+This private release-candidate draft keeps the offline assessment-helper boundary from rc1 and adds the scoped rc2 hardening work completed on `dev/v1.0.0rc2`.
+
+### Scope
+
+- Windows Server `W-01` to `W-64` remains fully registered, with expanded deterministic and partial judgment for selected read-only evidence summaries.
+- DBMS `D-01` to `D-26` remains fully registered, with PostgreSQL, MySQL, and MariaDB sanitized JSON/key-value offline parser coverage.
+- Linux, Unix, Network, and Security Appliance profiles retain the rc1 scope.
+- Default classification still creates the seven-file output bundle.
+
+### Validation Gate
+
+Before creating a `v1.0.0rc2` tag or GitHub pre-release, run:
+
+- full `python -m pytest`
+- rc2 smoke commands from `docs/V1_0_0RC2_READINESS.md`
+- sensitive-value search over generated outputs
+- wheel/sdist build and checksum generation
+
+### Known Limits
+
+- `MANUAL_REQUIRED` remains expected for many registered items.
+- DBMS support remains PostgreSQL, MySQL, and MariaDB only.
+- PyPI and TestPyPI publishing remain deferred.
+- `v1.0.0rc1` is fixed at `e93d18b` and must not be moved.
+
 ## v1.0.0-rc1 Candidate
 
 This release candidate freezes the current scope as an offline assessment helper. It is not an official KISA tool, not a production remote collector, and not a fully automated diagnostic product.
