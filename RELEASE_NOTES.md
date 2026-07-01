@@ -1,5 +1,32 @@
 # Release Notes
 
+## v1.0.0 Final Candidate
+
+This final-candidate branch is prepared from `v1.0.0rc2` and stops feature work. The goal is release stabilization only: documentation, smoke checks, package build, checksum generation, and private GitHub Release preparation.
+
+### Scope
+
+- No new functional scope after `v1.0.0rc2`.
+- Package version is `1.0.0`.
+- `v1.0.0rc1` remains fixed at `e93d18b`.
+- `v1.0.0rc2` remains fixed at `59d3d38`.
+
+### Validation Gate
+
+Before creating a `v1.0.0` tag or private GitHub Release, run:
+
+- full `python -m pytest`
+- smoke commands from `docs/V1_0_0_READINESS.md`
+- sensitive-value search over generated outputs
+- wheel/sdist build and checksum generation
+- installed-wheel smoke from a clean environment
+
+### Known Limits
+
+- `MANUAL_REQUIRED` remains expected for many registered items.
+- PyPI and TestPyPI publishing remain deferred.
+- Public repository conversion remains out of scope.
+
 ## v1.0.0-rc2 Candidate
 
 This private release-candidate draft keeps the offline assessment-helper boundary from rc1 and adds the scoped rc2 hardening work completed on `dev/v1.0.0rc2`.
@@ -65,7 +92,7 @@ Release candidate validation must include:
 - Vendor-specific security appliance config parsers are MVP wrappers around sanitized summaries.
 - Windows, Network, DBMS, and Unix automatic judgment coverage is intentionally conservative.
 - The private GitHub pre-release is fixed at commit `e93d18b` with annotated tag `v1.0.0rc1`.
-- Further work should continue on `dev/v1.0.0rc2`; do not move the `v1.0.0rc1` tag.
+- Follow-up work continued on `dev/v1.0.0rc2`; do not move the `v1.0.0rc1` tag.
 - PyPI publishing is intentionally deferred.
 
 ### Security Notes

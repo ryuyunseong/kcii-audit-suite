@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.0] - 2026-07-02
+
+### Added
+
+- `RELEASE_NOTES_v1.0.0.md` final-candidate release notes.
+- `docs/V1_0_0_READINESS.md` final release readiness checklist.
+
+### Changed
+
+- Package version moved to `1.0.0` on `release/v1.0.0`.
+- Release documentation now separates fixed rc2 artifacts from final v1.0.0 stabilization.
+- Release checklist commands now include v1.0.0 build artifacts, checksums, tag, and private GitHub Release preparation.
+
+### Security
+
+- v1.0.0 release notes keep production remote collection, PyPI/TestPyPI publishing, public repository conversion, and real customer evidence out of scope.
+
+### Known Limitations
+
+- No feature scope is added after v1.0.0rc2.
+- Many registered items remain intentionally manual or partially automated.
+
 ## [1.0.0-rc2] - 2026-07-02
 
 ### Added

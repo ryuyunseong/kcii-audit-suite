@@ -15,10 +15,12 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("RELEASE_NOTES_v1.0.0.md"),
         Path("RELEASE_NOTES_v1.0.0rc2.md"),
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/V1_0_0_READINESS.md"),
         Path("docs/V1_0_0RC2_READINESS.md"),
     ]
     readme = Path("README.md").read_text(encoding="utf-8")
@@ -82,8 +84,8 @@ def test_cli_help_smoke_for_release_commands():
         assert "offline" in result.output.lower()
 
 
-def test_release_version_is_rc_candidate():
-    assert __version__ == "1.0.0rc2"
+def test_release_version_is_final_candidate():
+    assert __version__ == "1.0.0"
 
 
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):
@@ -111,10 +113,12 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         for path in [
             Path("README.md"),
             Path("RELEASE_NOTES.md"),
+            Path("RELEASE_NOTES_v1.0.0.md"),
             Path("RELEASE_NOTES_v1.0.0rc2.md"),
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
+            Path("docs/V1_0_0_READINESS.md"),
             Path("docs/V1_0_0RC2_READINESS.md"),
         ]
     )
