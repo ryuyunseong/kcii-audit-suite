@@ -134,9 +134,12 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 - [CHANGELOG.md](CHANGELOG.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
+- [RELEASE_NOTES_v1.0.0rc1.md](RELEASE_NOTES_v1.0.0rc1.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 
 ## Current Release Candidate Status
 
-This workspace is prepared as a release candidate snapshot, not as a fully automated diagnostic product. The next meaningful release gate is clean venv installation, CLI smoke execution, full pytest, and sensitive-content search before initializing or publishing any Git repository.
+This workspace is locally fixed as `v1.0.0rc1` at commit `286a5bd`. It is a release candidate snapshot, not a fully automated diagnostic product.
+
+The next release gate is private GitHub repository publication and a GitHub pre-release draft or pre-release. Do not push tags, create GitHub Releases, or publish to PyPI until that step is explicitly approved.

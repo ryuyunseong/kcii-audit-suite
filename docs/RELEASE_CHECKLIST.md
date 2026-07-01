@@ -52,6 +52,24 @@ tmp\venv-wheel-check\Scripts\kcii-audit classify-file --help
 tmp\venv-wheel-check\Scripts\kcii-audit questionnaire --help
 ```
 
+## Release Asset Checksums
+
+Generate checksums after the final package build and before creating a GitHub Release:
+
+```powershell
+Get-FileHash dist\kcii_audit_suite-1.0.0rc1-py3-none-any.whl -Algorithm SHA256
+Get-FileHash dist\kcii_audit_suite-1.0.0rc1.tar.gz -Algorithm SHA256
+Get-FileHash dist\* -Algorithm SHA256 |
+  Format-Table Algorithm,Hash,Path -AutoSize |
+  Out-File dist\SHA256SUMS.txt -Encoding utf8
+```
+
+Release assets for `v1.0.0rc1` should be limited to:
+
+- `kcii_audit_suite-1.0.0rc1-py3-none-any.whl`
+- `kcii_audit_suite-1.0.0rc1.tar.gz`
+- `SHA256SUMS.txt`
+
 ## Installed Wheel Self-Contained Classification
 
 Run this from a directory outside the repository to confirm runtime resources are packaged in the wheel and not loaded from the source tree:
@@ -166,3 +184,38 @@ Findings must be reviewed manually because some policy words may appear in docum
 - [ ] Keep release scope at offline evidence classification and reporting.
 - [ ] Do not add new production remote collection behavior during release stabilization.
 - [ ] Do not publish tags, releases, or repositories until the user explicitly asks for that step.
+
+## Private GitHub Release Preparation
+
+Use a private GitHub repository for the first remote release candidate unless the publication policy explicitly allows public release.
+
+Do not run these commands until the private repository URL and push approval are confirmed:
+
+```powershell
+git remote add origin https://github.com/<OWNER>/kcii-audit-suite.git
+git branch -M main
+git push -u origin main
+git push origin v1.0.0rc1
+```
+
+Verify the remote branch and tag after push:
+
+```powershell
+git remote -v
+git ls-remote origin main
+git ls-remote --tags origin v1.0.0rc1
+```
+
+Create the GitHub pre-release only after the tag is available on the private remote:
+
+```powershell
+gh release create v1.0.0rc1 `
+  dist/kcii_audit_suite-1.0.0rc1-py3-none-any.whl `
+  dist/kcii_audit_suite-1.0.0rc1.tar.gz `
+  dist/SHA256SUMS.txt `
+  --title "kcii-audit-suite v1.0.0rc1" `
+  --notes-file RELEASE_NOTES_v1.0.0rc1.md `
+  --prerelease
+```
+
+PyPI and TestPyPI publishing are deferred for this release candidate. Revisit them only after package naming, license, public release scope, official-tool disclaimer, and rulepack attribution have been reviewed.

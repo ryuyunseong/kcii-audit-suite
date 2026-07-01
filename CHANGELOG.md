@@ -32,4 +32,4 @@
 
 - `MANUAL_REQUIRED` remains expected for many items.
 - Security Appliance vendor parsers require later FortiGate, PAN-OS, Cisco ASA, and F5 config-specific expansion.
-- This workspace is not currently a Git repository, so release tagging and commit verification are outside this local checkpoint.
+- The local release candidate is tagged as `v1.0.0rc1`, but remote push, GitHub Release creation, and PyPI publishing are deferred.
