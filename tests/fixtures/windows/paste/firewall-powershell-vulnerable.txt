@@ -1,0 +1,5 @@
+Name    Enabled
+----    -------
+Domain  True
+Private False
+Public  True

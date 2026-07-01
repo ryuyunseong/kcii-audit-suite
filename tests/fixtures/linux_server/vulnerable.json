@@ -1,0 +1,27 @@
+{
+  "schema_version": "kcii-linux-paste-v1",
+  "platform": "linux",
+  "target_type": "linux_server",
+  "guide_version": "kcii-2025-12",
+  "collector_version": "0.1.0",
+  "collected_at": "2026-07-01T00:00:00Z",
+  "os_name": "Rocky Linux",
+  "os_version": "9",
+  "evidence": {
+    "ssh_permit_root_login": "yes",
+    "ssh_password_authentication": "yes",
+    "uid0_account_count": 2,
+    "uid0_extra_count": 1,
+    "uid0_raw_usernames": ["root", "adminroot"],
+    "password_min_length": 6,
+    "password_max_days": 99999,
+    "passwd_permission_mode": "666",
+    "passwd_permission_ok": false,
+    "shadow_permission_mode": "644",
+    "shadow_permission_ok": false,
+    "logging_service_detected": false,
+    "hostname": "linux-vulnerable-01",
+    "internal_ip": "192.0.2.20"
+  },
+  "collection_warnings": []
+}

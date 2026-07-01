@@ -1,0 +1,27 @@
+{
+  "schema_version": "kcii-linux-paste-v1",
+  "platform": "linux",
+  "target_type": "linux_server",
+  "guide_version": "kcii-2025-12",
+  "collector_version": "0.1.0",
+  "collected_at": "2026-07-01T00:00:00Z",
+  "os_name": "Ubuntu",
+  "os_version": "22.04",
+  "evidence": {
+    "ssh_permit_root_login": "no",
+    "ssh_password_authentication": "no",
+    "uid0_account_count": 1,
+    "uid0_extra_count": 0,
+    "password_min_length": 12,
+    "password_max_days": 90,
+    "passwd_permission_mode": "644",
+    "passwd_permission_ok": true,
+    "shadow_permission_mode": "640",
+    "shadow_permission_ok": true,
+    "logging_service_detected": true,
+    "hostname": "linux-prod-01",
+    "domain": "example.invalid",
+    "raw_accounts": ["root"]
+  },
+  "collection_warnings": []
+}

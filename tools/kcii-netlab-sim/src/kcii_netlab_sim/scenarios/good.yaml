@@ -1,0 +1,3 @@
+name: good
+vendor: cisco_ios
+description: Sanitized Cisco IOS output where the MVP network checks are expected to pass.

@@ -1,0 +1,97 @@
+KCII-IOS# show running-config
+
+! running
+version 17.9
+service password-encryption
+hostname KCII-IOS-SIM
+enable secret 9 [HASHED_ENABLE_SECRET]
+username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
+banner motd ^C[AUTHORIZED_ACCESS_ONLY]^C
+logging host [LOG_SERVER]
+ntp server [NTP_SERVER]
+ip ssh version 2
+ip access-list standard MGMT-ACL
+ permit [MGMT_NET] [WILDCARD]
+line vty 0 4
+ access-class MGMT-ACL in
+ exec-timeout 10 0
+ login local
+ transport input ssh
+snmp-server community [COMMUNITY_COMPLEX] RO MGMT-ACL
+no ip http server
+no ip bootp server
+no cdp run
+end
+
+KCII-IOS# show startup-config
+
+! startup
+version 17.9
+service password-encryption
+hostname KCII-IOS-SIM
+enable secret 9 [HASHED_ENABLE_SECRET]
+username [USER_ADMIN] privilege 15 secret 9 [HASHED_USER_SECRET]
+banner motd ^C[AUTHORIZED_ACCESS_ONLY]^C
+logging host [LOG_SERVER]
+ntp server [NTP_SERVER]
+ip ssh version 2
+ip access-list standard MGMT-ACL
+ permit [MGMT_NET] [WILDCARD]
+line vty 0 4
+ access-class MGMT-ACL in
+ exec-timeout 10 0
+ login local
+ transport input ssh
+snmp-server community [COMMUNITY_COMPLEX] RO MGMT-ACL
+no ip http server
+no ip bootp server
+no cdp run
+end
+
+KCII-IOS# show version
+
+Cisco IOS Software, KCII Simulator
+Compiled by kcii-netlab-sim
+ROM: Bootstrap program is KCII simulator
+Processor board ID [SERIAL_1]
+
+KCII-IOS# show ip interface brief
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up
+GigabitEthernet0/1     unassigned      YES unset  administratively down down
+
+KCII-IOS# show users
+
+Line       User       Host(s)              Idle       Location
+*  2 vty 0     [USER_ADMIN] idle                 00:00:00   [MGMT_HOST]
+
+KCII-IOS# show line
+
+Tty Line Typ     Tx/Rx     A Modem  Roty AccO AccI  Uses  Noise Overruns Int
+  0    0 CTY              -    -      -    -    -     0      0     0/0       -
+  2    2 VTY              -    -      -    -    -     1      0     0/0       -
+
+KCII-IOS# show logging
+
+Syslog logging: enabled
+    Logging to [LOG_SERVER]
+
+KCII-IOS# show ntp status
+
+Clock is synchronized, stratum 3, reference is [NTP_SERVER]
+
+KCII-IOS# show snmp
+
+SNMP agent enabled
+Community strings are configured with restricted ACLs
+
+KCII-IOS# show ip ssh
+
+SSH Enabled - version 2.0
+Authentication methods: publickey,password
+
+KCII-IOS# show access-lists
+
+Standard IP access list MGMT-ACL
+    10 permit [MGMT_NET] [WILDCARD]

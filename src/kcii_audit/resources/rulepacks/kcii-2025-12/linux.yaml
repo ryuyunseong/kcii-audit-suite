@@ -1,0 +1,210 @@
+guide_version: kcii-2025-12
+domain: linux
+items:
+  - category: ssh-security
+    item_id: L-01
+    title: root SSH 접속 제한
+    severity: high
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - ssh_permit_root_login
+    decision_rules:
+      - status: GOOD
+        when:
+          field: ssh_permit_root_login
+          operator: equals
+          value: "no"
+        reason: root SSH 직접 접속이 제한되어 있습니다.
+      - status: VULNERABLE
+        when:
+          field: ssh_permit_root_login
+          operator: equals
+          value: "yes"
+        reason: root SSH 직접 접속이 허용되어 있습니다.
+    remediation: root 직접 SSH 접속을 제한하고 필요한 경우 일반 계정과 sudo를 사용합니다.
+    report_text: SSH root 직접 접속 설정을 확인합니다.
+
+  - category: account-management
+    item_id: L-02
+    title: UID 0 계정 관리
+    severity: high
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - uid0_extra_count
+    decision_rules:
+      - status: GOOD
+        when:
+          field: uid0_extra_count
+          operator: equals
+          value: 0
+        reason: root 외 추가 UID 0 계정이 확인되지 않았습니다.
+      - status: VULNERABLE
+        when:
+          field: uid0_extra_count
+          operator: gt
+          value: 0
+        reason: root 외 추가 UID 0 계정이 확인되었습니다.
+    remediation: 불필요한 UID 0 계정을 제거하거나 권한을 조정합니다.
+    report_text: UID 0 계정 수를 확인합니다.
+
+  - category: password-policy
+    item_id: L-03
+    title: 패스워드 최소 길이 확인
+    severity: medium
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - password_min_length
+    decision_rules:
+      - status: GOOD
+        when:
+          field: password_min_length
+          operator: gte
+          value: 8
+        reason: 패스워드 최소 길이가 MVP 기준 8자 이상입니다.
+      - status: VULNERABLE
+        when:
+          field: password_min_length
+          operator: lt
+          value: 8
+        reason: 패스워드 최소 길이가 MVP 기준 8자 미만입니다.
+    remediation: 조직 정책에 맞는 패스워드 최소 길이를 적용합니다.
+    report_text: 패스워드 최소 길이 정책을 확인합니다.
+
+  - category: password-policy
+    item_id: L-04
+    title: 패스워드 만료 정책 확인
+    severity: medium
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - password_max_days
+    decision_rules:
+      - status: GOOD
+        when:
+          field: password_max_days
+          operator: lte
+          value: 90
+        reason: 패스워드 최대 사용 기간이 MVP 기준 90일 이하입니다.
+      - status: VULNERABLE
+        when:
+          field: password_max_days
+          operator: gt
+          value: 90
+        reason: 패스워드 최대 사용 기간이 MVP 기준 90일을 초과합니다.
+    remediation: 조직 정책에 맞는 패스워드 만료 기간을 적용합니다.
+    report_text: 패스워드 만료 정책을 확인합니다.
+
+  - category: file-permission
+    item_id: L-05
+    title: /etc/passwd 권한 확인
+    severity: high
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - passwd_permission_ok
+    decision_rules:
+      - status: GOOD
+        when:
+          field: passwd_permission_ok
+          operator: equals
+          value: true
+        reason: /etc/passwd 권한이 MVP 기준을 충족합니다.
+      - status: VULNERABLE
+        when:
+          field: passwd_permission_ok
+          operator: equals
+          value: false
+        reason: /etc/passwd 권한이 과도하게 허용되어 있습니다.
+    remediation: /etc/passwd 권한과 소유자를 조직 기준에 맞게 조정합니다.
+    report_text: /etc/passwd 파일 권한을 확인합니다.
+
+  - category: file-permission
+    item_id: L-06
+    title: /etc/shadow 권한 확인
+    severity: high
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - shadow_permission_ok
+    decision_rules:
+      - status: GOOD
+        when:
+          field: shadow_permission_ok
+          operator: equals
+          value: true
+        reason: /etc/shadow 권한이 MVP 기준을 충족합니다.
+      - status: VULNERABLE
+        when:
+          field: shadow_permission_ok
+          operator: equals
+          value: false
+        reason: /etc/shadow 권한이 과도하게 허용되어 있습니다.
+    remediation: /etc/shadow 권한과 소유자를 조직 기준에 맞게 조정합니다.
+    report_text: /etc/shadow 파일 권한을 확인합니다.
+
+  - category: ssh-security
+    item_id: L-07
+    title: SSH PasswordAuthentication 설정
+    severity: medium
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - ssh_password_authentication
+    decision_rules:
+      - status: GOOD
+        when:
+          field: ssh_password_authentication
+          operator: equals
+          value: "no"
+        reason: SSH 패스워드 인증이 비활성화되어 있습니다.
+      - status: VULNERABLE
+        when:
+          field: ssh_password_authentication
+          operator: equals
+          value: "yes"
+        reason: SSH 패스워드 인증이 활성화되어 있습니다.
+    remediation: 운영 정책에 맞게 SSH 패스워드 인증 사용 여부를 제한합니다.
+    report_text: SSH PasswordAuthentication 설정을 확인합니다.
+
+  - category: logging
+    item_id: L-08
+    title: 로그 설정 확인
+    severity: medium
+    target_platforms:
+      - linux
+    automation_level: partial
+    collector: scripts/targets/linux_server/collect.sh
+    evidence_fields:
+      - logging_service_detected
+    decision_rules:
+      - status: GOOD
+        when:
+          field: logging_service_detected
+          operator: equals
+          value: true
+        reason: 로그 서비스 또는 journald 설정이 확인되었습니다.
+      - status: MANUAL_REQUIRED
+        when:
+          field: logging_service_detected
+          operator: equals
+          value: false
+        reason: 로그 서비스 상태를 자동으로 확인하지 못했습니다.
+    remediation: rsyslog, syslog, journald 등 로그 수집 설정을 확인합니다.
+    report_text: 로그 서비스 또는 journald 설정 확인 가능 여부를 점검합니다.

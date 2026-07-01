@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kcii-netlab-sim"
+version = "0.1.0"
+description = "Command-response simulator for KCII network parser development"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [
+  { name = "KCII Audit Suite Maintainers" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2,<9",
+]
+
+[project.scripts]
+kcii-netlab-sim = "kcii_netlab_sim.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kcii_netlab_sim"]

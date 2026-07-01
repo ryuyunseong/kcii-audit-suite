@@ -1,0 +1,80 @@
+KCII-IOS# show running-config
+
+! running
+version 17.9
+hostname KCII-IOS-SIM
+enable password [REDACTED_DEFAULT_PASSWORD]
+username [USER_ADMIN] privilege 15 password 0 [REDACTED_USER_PASSWORD]
+line vty 0 4
+ exec-timeout 0 0
+ login
+ password 0 [REDACTED_LINE_PASSWORD]
+ transport input telnet
+snmp-server community [COMMUNITY_WEAK] RO
+ip http server
+ip bootp server
+cdp run
+end
+
+KCII-IOS# show startup-config
+
+! startup
+version 17.9
+hostname KCII-IOS-SIM
+enable password [REDACTED_DEFAULT_PASSWORD]
+username [USER_ADMIN] privilege 15 password 0 [REDACTED_USER_PASSWORD]
+line vty 0 4
+ exec-timeout 0 0
+ login
+ password 0 [REDACTED_LINE_PASSWORD]
+ transport input telnet
+snmp-server community [COMMUNITY_WEAK] RO
+ip http server
+ip bootp server
+cdp run
+end
+
+KCII-IOS# show version
+
+Cisco IOS Software, KCII Simulator
+Compiled by kcii-netlab-sim
+ROM: Bootstrap program is KCII simulator
+Processor board ID [SERIAL_1]
+
+KCII-IOS# show ip interface brief
+
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     unassigned      YES unset  up                    up
+GigabitEthernet0/1     unassigned      YES unset  administratively down down
+
+KCII-IOS# show users
+
+Line       User       Host(s)              Idle       Location
+*  2 vty 0     [USER_ADMIN] idle                 00:00:00   [MGMT_HOST]
+
+KCII-IOS# show line
+
+Tty Line Typ     Tx/Rx     A Modem  Roty AccO AccI  Uses  Noise Overruns Int
+  0    0 CTY              -    -      -    -    -     0      0     0/0       -
+  2    2 VTY              -    -      -    -    -     1      0     0/0       -
+
+KCII-IOS# show logging
+
+Syslog logging: disabled
+
+KCII-IOS# show ntp status
+
+Clock is unsynchronized, no reference clock
+
+KCII-IOS# show snmp
+
+SNMP agent enabled
+Weak community placeholder detected
+
+KCII-IOS# show ip ssh
+
+%SSH has not been enabled
+
+KCII-IOS# show access-lists
+
+% No access list named MGMT-ACL

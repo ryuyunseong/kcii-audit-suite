@@ -1,0 +1,58 @@
+{
+  "schema_version": "kcii-linux-paste-v1",
+  "platform": "linux",
+  "target_type": "linux_server",
+  "guide_version": "kcii-2025-12",
+  "collector_version": "0.1.0",
+  "collected_at": "2026-07-01T00:00:00Z",
+  "items": [
+    {
+      "item_id": "L-01",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-02",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-03",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-04",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-05",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-06",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-07",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    },
+    {
+      "item_id": "L-08",
+      "evidence": {
+        "collection_status": "permission_denied"
+      }
+    }
+  ]
+}

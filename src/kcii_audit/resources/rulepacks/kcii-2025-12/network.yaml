@@ -1,0 +1,545 @@
+guide_version: kcii-2025-12
+domain: network
+items:
+  - category: 계정 관리
+    item_id: N-01
+    title: 비밀번호 설정
+    severity: high
+    target_platforms: &network_platforms
+      - network
+    collector: &network_collector scripts/targets/network/cisco_ios/show_commands.txt
+    evidence_fields:
+      - password_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: password_configured
+          operator: equals
+          value: true
+        reason: 관리 접근 비밀번호 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: password_configured
+          operator: equals
+          value: false
+        reason: 관리 접근 비밀번호 설정 증적을 확인하지 못했습니다.
+    remediation: 네트워크 장비 관리 접근 비밀번호를 기관 기준에 따라 설정하고 기본 비밀번호 사용 여부를 별도로 확인합니다.
+    report_text: 네트워크 장비 관리 비밀번호 설정 여부를 점검합니다.
+
+  - category: 계정 관리
+    item_id: N-02
+    title: 비밀번호 복잡성 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: &manual_evidence_fields
+      - manual_required
+    decision_rules: &manual_decision_rules
+      - status: MANUAL_REQUIRED
+        when:
+          field: manual_required
+          operator: equals
+          value: true
+        reason: 공식 네트워크 장비 항목은 등록되어 있으나 Cisco IOS MVP parser에서 자동 판정하지 않습니다.
+    remediation: 공식 가이드와 기관 보안 기준에 따라 추가 증적을 확인하고 수동 판정을 완료합니다.
+    report_text: 비밀번호 복잡성 기준 적용 여부를 수동 확인합니다.
+
+  - category: 계정 관리
+    item_id: N-03
+    title: 암호화된 비밀번호 가용
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - encrypted_passwords_only
+    decision_rules:
+      - status: GOOD
+        when:
+          field: encrypted_passwords_only
+          operator: equals
+          value: true
+        reason: enable secret 사용 및 평문 password 지표 미검출 상태입니다.
+      - status: VULNERABLE
+        when:
+          field: encrypted_passwords_only
+          operator: equals
+          value: false
+        reason: enable secret 미사용 또는 평문 password 지표가 확인되었습니다.
+    remediation: enable secret 등 암호화된 비밀번호 방식을 사용하고 평문 password 설정을 제거합니다.
+    report_text: 네트워크 장비 비밀번호 암호화 적용 여부를 점검합니다.
+
+  - category: 계정 관리
+    item_id: N-04
+    title: 계정 잠금 임계값 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: AAA 또는 인증 정책에서 계정 잠금 임계값이 기관 기준에 맞는지 확인합니다.
+    report_text: 계정 잠금 임계값 설정 여부를 수동 확인합니다.
+
+  - category: 계정 관리
+    item_id: N-05
+    title: 사용자, 명령어별 권한 수준 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 사용자별 권한 수준과 명령어 권한 분리가 운영 정책에 맞는지 확인합니다.
+    report_text: 사용자와 명령어별 권한 수준 설정을 수동 확인합니다.
+
+  - category: 접근 관리
+    item_id: N-06
+    title: VTY 접근(ACL) 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - management_acl_applied
+    decision_rules:
+      - status: GOOD
+        when:
+          field: management_acl_applied
+          operator: equals
+          value: true
+        reason: VTY line에 관리 접근 ACL 적용 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: management_acl_applied
+          operator: equals
+          value: false
+        reason: VTY line 관리 접근 ACL 적용 증적을 확인하지 못했습니다.
+    remediation: VTY line에 승인된 관리망 ACL을 적용하고 접근 허용 대상을 제한합니다.
+    report_text: VTY 관리 접근 ACL 적용 여부를 점검합니다.
+
+  - category: 접근 관리
+    item_id: N-07
+    title: 세션 종료 시간 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - exec_timeout_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: exec_timeout_configured
+          operator: equals
+          value: true
+        reason: exec-timeout 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: exec_timeout_configured
+          operator: equals
+          value: false
+        reason: exec-timeout 미설정 또는 0 0 설정 지표가 확인되었습니다.
+    remediation: 콘솔과 VTY line에 기관 기준에 맞는 exec-timeout 값을 설정합니다.
+    report_text: 관리 세션 자동 종료 시간 설정 여부를 점검합니다.
+
+  - category: 접근 관리
+    item_id: N-08
+    title: VTY 접속 시 안전한 프로토콜 사용
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - safe_vty_protocol
+    decision_rules:
+      - status: GOOD
+        when:
+          field: safe_vty_protocol
+          operator: equals
+          value: true
+        reason: VTY 접근이 SSH 기반으로 제한되고 Telnet 허용 지표가 없습니다.
+      - status: VULNERABLE
+        when:
+          field: safe_vty_protocol
+          operator: equals
+          value: false
+        reason: VTY 접근에서 Telnet 허용 또는 SSH 미사용 지표가 확인되었습니다.
+    remediation: VTY line의 transport input을 SSH로 제한하고 Telnet 접속을 차단합니다.
+    report_text: VTY 접속 프로토콜이 안전한지 점검합니다.
+
+  - category: 접근 관리
+    item_id: N-09
+    title: 불필요한 보조 입출력 포트 사용 금지
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: AUX 등 불필요한 보조 입출력 포트의 사용 필요성과 차단 상태를 확인합니다.
+    report_text: 불필요한 보조 입출력 포트 사용 여부를 수동 확인합니다.
+
+  - category: 접근 관리
+    item_id: N-10
+    title: 로그온 시 경고 메시지 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - banner_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: banner_configured
+          operator: equals
+          value: true
+        reason: 로그인 경고 banner 설정 증적이 확인되었습니다.
+      - status: MANUAL_REQUIRED
+        when:
+          field: banner_configured
+          operator: equals
+          value: false
+        reason: 로그인 경고 banner 설정 증적을 확인하지 못했습니다.
+    remediation: 기관 승인 문구에 맞는 login 또는 motd banner를 설정합니다.
+    report_text: 로그온 시 경고 메시지 설정 여부를 점검합니다.
+
+  - category: 접근 관리
+    item_id: N-11
+    title: 원격 로그서버 사용
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - logging_host_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: logging_host_configured
+          operator: equals
+          value: true
+        reason: 원격 로그서버 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when:
+          field: logging_host_configured
+          operator: equals
+          value: false
+        reason: 원격 로그서버 설정 증적을 확인하지 못했습니다.
+    remediation: 승인된 로그서버로 syslog 전송을 설정하고 로그 수집 상태를 확인합니다.
+    report_text: 원격 로그서버 사용 여부를 점검합니다.
+
+  - category: 패치 관리
+    item_id: N-12
+    title: 주기적 보안 패치 및 벤더 권고사항 적용
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 장비 버전, 벤더 보안 권고, 기관 패치 정책을 대조하여 조치 상태를 확인합니다.
+    report_text: 보안 패치 및 벤더 권고사항 적용 여부를 수동 확인합니다.
+
+  - category: 로그 관리
+    item_id: N-13
+    title: 로깅 버퍼 크기 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 로깅 버퍼 크기가 기관 기준과 장비 운영 상황에 적합한지 확인합니다.
+    report_text: 로깅 버퍼 크기 설정 여부를 수동 확인합니다.
+
+  - category: 로그 관리
+    item_id: N-14
+    title: 정책에 따른 로깅 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 로깅 수준, 대상, 보관 정책이 기관 기준에 맞는지 확인합니다.
+    report_text: 정책에 따른 로깅 설정 여부를 수동 확인합니다.
+
+  - category: 로그 관리
+    item_id: N-15
+    title: NTP 및 시각 동기화 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - ntp_configured
+    decision_rules:
+      - status: GOOD
+        when:
+          field: ntp_configured
+          operator: equals
+          value: true
+        reason: NTP 또는 시각 동기화 설정 증적이 확인되었습니다.
+      - status: MANUAL_REQUIRED
+        when:
+          field: ntp_configured
+          operator: equals
+          value: false
+        reason: NTP 또는 시각 동기화 설정 증적을 확인하지 못했습니다.
+    remediation: 승인된 NTP 서버와 시각 동기화 상태를 설정하고 검증합니다.
+    report_text: NTP 및 시각 동기화 설정 여부를 점검합니다.
+
+  - category: 로그 관리
+    item_id: N-16
+    title: Timestamp 로그 설정
+    severity: low
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 로그 timestamp 설정이 기관 기준에 맞는지 확인합니다.
+    report_text: Timestamp 로그 설정 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-17
+    title: SNMP 서비스 확인
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: SNMP 사용 필요성, 버전, 접근 제어, 모니터링 설계를 함께 확인합니다.
+    report_text: SNMP 서비스 사용 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-18
+    title: SNMP Community String 복잡성 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields:
+      - snmp_community_complex
+    decision_rules:
+      - status: GOOD
+        when:
+          field: snmp_community_complex
+          operator: equals
+          value: true
+        reason: 취약 SNMP community 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when:
+          field: snmp_community_complex
+          operator: equals
+          value: false
+        reason: 취약 SNMP community 지표가 확인되었습니다.
+    remediation: 기본 또는 추측 가능한 SNMP community를 제거하고 기관 기준에 맞게 변경합니다.
+    report_text: SNMP Community String 복잡성 여부를 점검합니다.
+
+  - category: 기능 관리
+    item_id: N-19
+    title: SNMP ACL 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: SNMP 접근 ACL이 승인된 관리망으로 제한되는지 확인합니다.
+    report_text: SNMP ACL 설정 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-20
+    title: SNMP Community 권한 설정
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: SNMP Community 권한이 최소 권한 원칙에 맞는지 확인합니다.
+    report_text: SNMP Community 권한 설정 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-21
+    title: TFTP 서비스 차단
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 불필요한 TFTP 서비스 사용 여부와 차단 설정을 확인합니다.
+    report_text: TFTP 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-22
+    title: Spoofing 방지 필터링 적용
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 인터페이스별 anti-spoofing 필터링과 라우팅 설계를 확인합니다.
+    report_text: Spoofing 방지 필터링 적용 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-23
+    title: DDoS 공격 방어 설정 또는 DDoS 장비 사용
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: DDoS 방어 설정 또는 전용 장비 사용 증적을 확인합니다.
+    report_text: DDoS 공격 방어 설정 또는 장비 사용 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-24
+    title: 사용하지 않는 인터페이스 비활성화
+    severity: high
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 장비 포트 사용 현황과 설정을 대조하여 불필요한 인터페이스를 비활성화합니다.
+    report_text: 사용하지 않는 인터페이스 비활성화 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-25
+    title: TCP Keepalive 서비스 설정
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: TCP Keepalive 관련 설정이 기관 기준에 맞는지 확인합니다.
+    report_text: TCP Keepalive 서비스 설정 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-26
+    title: Finger 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: Finger 서비스 비활성화 상태를 확인합니다.
+    report_text: Finger 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-27
+    title: 웹 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 불필요한 HTTP/HTTPS 관리 서비스가 차단되어 있는지 확인합니다.
+    report_text: 웹 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-28
+    title: TCP/UDP small 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: TCP/UDP small 서비스 비활성화 상태를 확인합니다.
+    report_text: TCP/UDP small 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-29
+    title: Bootp 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: Bootp 서비스 비활성화 상태를 확인합니다.
+    report_text: Bootp 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-30
+    title: CDP 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: CDP 사용 필요성을 검토하고 불필요한 경우 비활성화합니다.
+    report_text: CDP 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-31
+    title: Directed-broadcast 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: Directed-broadcast 차단 설정을 확인합니다.
+    report_text: Directed-broadcast 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-32
+    title: Source 라우팅 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: Source routing 차단 설정을 확인합니다.
+    report_text: Source 라우팅 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-33
+    title: Proxy ARP 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: Proxy ARP 사용 필요성을 검토하고 불필요한 경우 차단합니다.
+    report_text: Proxy ARP 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-34
+    title: ICMP unreachable, Redirect 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: ICMP unreachable 및 Redirect 차단 설정을 확인합니다.
+    report_text: ICMP unreachable, Redirect 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-35
+    title: identd 서비스 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: identd 서비스 비활성화 상태를 확인합니다.
+    report_text: identd 서비스 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-36
+    title: Domain Lookup 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: 불필요한 Domain Lookup 동작 차단 설정을 확인합니다.
+    report_text: Domain Lookup 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-37
+    title: pad 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: pad 관련 서비스 차단 설정을 확인합니다.
+    report_text: pad 차단 여부를 수동 확인합니다.
+
+  - category: 기능 관리
+    item_id: N-38
+    title: mask-reply 차단
+    severity: medium
+    target_platforms: *network_platforms
+    collector: *network_collector
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    remediation: mask-reply 차단 설정을 확인합니다.
+    report_text: mask-reply 차단 여부를 수동 확인합니다.

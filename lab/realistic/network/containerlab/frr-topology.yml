@@ -1,0 +1,12 @@
+name: kcii-frr-lab
+
+topology:
+  nodes:
+    frr1:
+      kind: linux
+      image: quay.io/frrouting/frr:latest
+    frr2:
+      kind: linux
+      image: quay.io/frrouting/frr:latest
+  links:
+    - endpoints: ["frr1:eth1", "frr2:eth1"]

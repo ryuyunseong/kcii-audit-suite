@@ -1,0 +1,24 @@
+# synthetic sanitized security appliance summary
+default_account_changed=true
+password_policy_configured=true
+role_based_admin_privileges_configured=true
+admin_account_review_performed=true
+account_lockout_configured=true
+management_access_restricted=true
+secure_management_protocols_enforced=true
+session_timeout_configured=true
+patch_review_performed=true
+logging_enabled=true
+log_retention_configured=true
+policy_backup_configured=true
+remote_log_server_enabled=true
+time_sync_configured=true
+policy_review_performed=true
+nat_policy_reviewed=true
+dmz_policy_reviewed=true
+minimal_services_exposed=true
+anomaly_monitoring_performed=true
+capacity_usage_reviewed=true
+snmp_service_controlled=true
+snmp_community_complex=true
+harmful_traffic_policy_configured=true

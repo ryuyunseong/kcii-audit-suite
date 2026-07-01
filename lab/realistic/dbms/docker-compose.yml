@@ -1,0 +1,28 @@
+services:
+  postgres:
+    container_name: kcii-postgresql
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${KCII_LAB_POSTGRES_USER:-kcii_lab}
+      POSTGRES_DB: ${KCII_LAB_POSTGRES_DB:-kcii_lab}
+      POSTGRES_PASSWORD: ${KCII_LAB_POSTGRES_PASSWORD:?Set KCII_LAB_POSTGRES_PASSWORD in a local environment or .env file}
+    ports:
+      - "15432:5432"
+
+  mysql:
+    container_name: kcii-mysql
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${KCII_LAB_MYSQL_ROOT_PASSWORD:?Set KCII_LAB_MYSQL_ROOT_PASSWORD in a local environment or .env file}
+      MYSQL_DATABASE: ${KCII_LAB_MYSQL_DATABASE:-kcii_lab}
+    ports:
+      - "13306:3306"
+
+  mariadb:
+    container_name: kcii-mariadb
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${KCII_LAB_MARIADB_ROOT_PASSWORD:?Set KCII_LAB_MARIADB_ROOT_PASSWORD in a local environment or .env file}
+      MARIADB_DATABASE: ${KCII_LAB_MARIADB_DATABASE:-kcii_lab}
+    ports:
+      - "13307:3306"

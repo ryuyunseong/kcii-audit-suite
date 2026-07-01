@@ -1,0 +1,517 @@
+guide_version: kcii-2025-12
+domain: security_appliance
+source:
+  title: ?????????? ??? ??? ????? ?? ?????
+  section: 04. ?? ??
+  extracted_pages:
+  - 354
+  - 355
+  source_note: Official security appliance item code, title, and severity were transcribed
+    from the provided KISA PDF item table. Long guide text is not copied.
+items:
+- item_id: S-01
+  title: 보안 장비 Default 계정 변경
+  severity: high
+  category: 계정 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-02
+  title: 비밀번호 관리정책 설정
+  severity: high
+  category: 계정 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-03
+  title: 보안 장비 계정별 권한 설정
+  severity: high
+  category: 계정 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-04
+  title: 보안 장비 계정 관리
+  severity: high
+  category: 계정 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-05
+  title: 계정 잠금 임계값 설정
+  severity: high
+  category: 계정 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-06
+  title: 보안장비 원격 관리 접근 통제
+  severity: high
+  category: 접근 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-07
+  title: 보안장비 보안 접속
+  severity: high
+  category: 접근 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-08
+  title: 세션 종료 시간 설정
+  severity: high
+  category: 접근 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-09
+  title: 주기적 보안 패치 및 벤더 권고사항 적용
+  severity: high
+  category: 패치 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-10
+  title: 보안장비 로그 설정
+  severity: medium
+  category: 로그 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-11
+  title: 보안장비 로그 보관
+  severity: medium
+  category: 로그 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-12
+  title: 보안장비 정책 백업 설정
+  severity: medium
+  category: 로그 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-13
+  title: 원격 로그 서버 사용
+  severity: medium
+  category: 로그 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-14
+  title: NTP 및 시각 동기화 설정
+  severity: medium
+  category: 로그 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-15
+  title: 정책 관리
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-16
+  title: NAT 설정
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-17
+  title: DMZ 설정
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-18
+  title: 최소한의 서비스만 제공
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-19
+  title: 이상징후 탐지 모니터링 수행
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-20
+  title: 장비 사용량 검토
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-21
+  title: SNMP 서비스 확인
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-22
+  title: SNMP Community String 복잡성 설정
+  severity: high
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.
+- item_id: S-23
+  title: 유해 트래픽 탐지/차단 정책 설정
+  severity: medium
+  category: 기능 관리
+  automation_level: partial
+  supported_appliance_types:
+  - firewall
+  - ips
+  - ids
+  - waf
+  - vpn
+  - anti-ddos
+  - fortigate
+  - paloalto
+  - cisco-asa
+  - f5
+  evidence_source:
+  - questionnaire
+  - interview
+  - config_export_summary
+  source_note: MVP stores only sanitized boolean summary evidence; missing answers
+    remain MANUAL_REQUIRED.

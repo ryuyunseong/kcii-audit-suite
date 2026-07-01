@@ -1,0 +1,11 @@
+User name                    Guest
+Full Name
+Comment                      Built-in account for guest access
+User's comment
+Country/region code          000 (System Default)
+Account active               No
+Account expires              Never
+Password last set            Never
+Password expires             Never
+User may change password     No
+The command completed successfully.

@@ -1,0 +1,5 @@
+Linux host check
+The pasted output does not follow kcii-linux-paste-v1 JSON.
+host=linux-prod-01.example.invalid
+ip=192.0.2.20
+path=/etc/ssh/sshd_config

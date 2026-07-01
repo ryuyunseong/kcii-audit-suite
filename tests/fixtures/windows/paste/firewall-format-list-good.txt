@@ -1,0 +1,11 @@
+Name                  : Domain
+Enabled               : True
+DefaultInboundAction  : Block
+
+Name                  : Private
+Enabled               : True
+DefaultInboundAction  : Block
+
+Name                  : Public
+Enabled               : True
+DefaultInboundAction  : Block

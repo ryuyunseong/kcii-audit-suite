@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kcii-audit-suite"
+version = "1.0.0rc1"
+description = "K-CII infrastructure audit automation scaffold"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+authors = [
+  { name = "KCII Audit Suite Maintainers" }
+]
+dependencies = [
+  "jinja2>=3.1,<4",
+  "openpyxl>=3.1,<4",
+  "pydantic>=2.8,<3",
+  "pyyaml>=6.0,<7",
+  "typer>=0.12,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2,<2",
+  "pytest>=8.2,<9",
+]
+
+[project.scripts]
+kcii-audit = "kcii_audit.cli:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kcii_audit"]

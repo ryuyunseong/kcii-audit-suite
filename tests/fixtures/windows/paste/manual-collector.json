@@ -1,0 +1,12 @@
+{
+  "schema_version": "kcii-windows-paste-v1",
+  "platform": "windows",
+  "items": [
+    {
+      "item_id": "W-03",
+      "evidence": {
+        "collection_status": "manual_required"
+      }
+    }
+  ]
+}

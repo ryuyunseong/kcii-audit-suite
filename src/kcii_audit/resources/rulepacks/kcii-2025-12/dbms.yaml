@@ -1,0 +1,578 @@
+guide_version: kcii-2025-12
+domain: dbms
+items:
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-01
+    title: 기본 계정의 비밀번호, 정책 등을 변경하여 사용
+    severity: high
+    target_platforms: &dbms_platforms [dbms]
+    supported_dbms: &supported_dbms [postgresql, mysql, mariadb]
+    commands_or_queries_by_dbms: &query_paths
+      postgresql: scripts/targets/dbms/postgresql/collect.sql
+      mysql: scripts/targets/dbms/mysql/collect.sql
+      mariadb: scripts/targets/dbms/mariadb/collect.sql
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields:
+      - risky_default_account_present
+    decision_rules:
+      - status: GOOD
+        when: {field: risky_default_account_present, operator: equals, value: false}
+        reason: 위험 기본 계정 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when: {field: risky_default_account_present, operator: equals, value: true}
+        reason: 위험 기본 계정 지표가 확인되었습니다.
+    manual_required_when: 기본 계정 정책 변경 여부를 자동 증적만으로 확정할 수 없는 경우
+    remediation: 기본 계정의 초기 비밀번호와 권한 정책을 변경하거나 잠금 설정합니다.
+    report_text: 기본 계정의 초기 비밀번호 및 권한 정책 변경 여부를 점검합니다.
+    remediation_summary: 기본 계정 정책을 기관 기준에 맞게 변경하고 불필요 시 잠금 처리합니다.
+    advisory_template: 위험 기본 계정 지표가 있으면 기본 계정 정책 변경 여부를 확인하고 조치합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-02
+    title: 데이터베이스의 불필요 계정을 제거하거나, 잠금설정 후 사용
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields:
+      - sample_or_unused_account_count
+    decision_rules:
+      - status: GOOD
+        when: {field: sample_or_unused_account_count, operator: equals, value: 0}
+        reason: 샘플 또는 불필요 계정 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when: {field: sample_or_unused_account_count, operator: gt, value: 0}
+        reason: 샘플 또는 불필요 계정 지표가 확인되었습니다.
+    manual_required_when: 계정의 업무 필요성을 승인 목록과 대조해야 하는 경우
+    remediation: 불필요한 계정을 삭제하거나 잠금 설정합니다.
+    report_text: 불필요 계정 존재 여부를 점검합니다.
+    remediation_summary: 불필요한 DB 계정을 제거하거나 잠금 처리합니다.
+    advisory_template: 불필요 계정 지표가 있으면 계정 소유자와 사용 목적을 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-03
+    title: 비밀번호의 사용기간 및 복잡도를 기관의 정책에 맞도록 설정
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields:
+      - password_policy_configured
+    decision_rules:
+      - status: GOOD
+        when: {field: password_policy_configured, operator: equals, value: true}
+        reason: 비밀번호 정책 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when: {field: password_policy_configured, operator: equals, value: false}
+        reason: 비밀번호 정책 설정 증적이 확인되지 않았습니다.
+    manual_required_when: DBMS별 정책 기능 또는 외부 인증 체계를 추가 확인해야 하는 경우
+    remediation: 비밀번호 사용기간과 복잡도를 기관 정책에 맞게 설정합니다.
+    report_text: 비밀번호 사용기간 및 복잡도 정책 설정 여부를 점검합니다.
+    remediation_summary: DBMS 또는 인증 체계의 비밀번호 정책을 기관 기준에 맞춥니다.
+    advisory_template: 비밀번호 정책 증적이 없으면 DBMS별 인증 정책을 추가 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-04
+    title: 데이터베이스 관리자 권한을 꼭 필요한 계정 및 그룹에 대해서만 허용
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields:
+      - excessive_admin_privileges_present
+    decision_rules:
+      - status: GOOD
+        when: {field: excessive_admin_privileges_present, operator: equals, value: false}
+        reason: 과다 관리자 권한 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when: {field: excessive_admin_privileges_present, operator: equals, value: true}
+        reason: 과다 관리자 권한 지표가 확인되었습니다.
+    manual_required_when: 관리자 권한 필요성을 승인 목록과 대조해야 하는 경우
+    remediation: 관리자 권한을 필요한 계정과 그룹에만 부여합니다.
+    report_text: DB 관리자 권한 부여 범위를 점검합니다.
+    remediation_summary: 관리자 권한을 최소 권한 기준으로 조정합니다.
+    advisory_template: 과다 관리자 권한 지표가 있으면 승인된 관리자 목록과 대조합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-05
+    title: 비밀번호 재사용에 대한 제약 설정
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: &manual_evidence_fields [manual_required]
+    decision_rules: &manual_decision_rules
+      - status: MANUAL_REQUIRED
+        when: {field: manual_required, operator: equals, value: true}
+        reason: 공식 DBMS 항목은 등록되어 있으나 DBMS MVP parser에서 자동 판정하지 않습니다.
+    manual_required_when: DBMS별 password reuse policy 증적이 필요한 경우
+    remediation: 비밀번호 재사용 제한 정책을 기관 기준에 맞게 설정합니다.
+    report_text: 비밀번호 재사용 제한 설정을 수동 확인합니다.
+    remediation_summary: 비밀번호 재사용 제한 정책을 확인하고 보완합니다.
+    advisory_template: 비밀번호 재사용 제한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-06
+    title: DB 사용자 계정을 개별적으로 부여하여 사용
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: 계정 소유자 및 공유 계정 사용 여부 확인이 필요한 경우
+    remediation: DB 사용자 계정을 개별 사용자 또는 업무 단위로 분리합니다.
+    report_text: DB 사용자 계정 개별 부여 여부를 수동 확인합니다.
+    remediation_summary: 공유 계정 사용을 제한하고 계정 소유자를 명확히 합니다.
+    advisory_template: DB 사용자 계정의 개별 부여 여부를 추가 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-07
+    title: root 권한으로 서비스 구동 제한
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: OS 서비스 구동 계정 확인이 필요한 경우
+    remediation: DBMS 서비스를 root 또는 과도한 OS 권한으로 구동하지 않도록 제한합니다.
+    report_text: root 권한 서비스 구동 여부를 수동 확인합니다.
+    remediation_summary: DBMS 서비스 계정을 최소 권한으로 조정합니다.
+    advisory_template: DBMS 서비스 구동 계정 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-08
+    title: 안전한 암호화 알고리즘 사용
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [secure_password_algorithm_configured]
+    decision_rules:
+      - status: GOOD
+        when: {field: secure_password_algorithm_configured, operator: equals, value: true}
+        reason: 안전한 암호화 알고리즘 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when: {field: secure_password_algorithm_configured, operator: equals, value: false}
+        reason: 안전한 암호화 알고리즘 설정 증적을 확인하지 못했습니다.
+    manual_required_when: password hash 본문 조회 없이 알고리즘만 확인할 수 없는 경우
+    remediation: DBMS 인증 및 암호화 알고리즘을 안전한 방식으로 설정합니다.
+    report_text: 안전한 암호화 알고리즘 사용 여부를 점검합니다.
+    remediation_summary: 취약하거나 오래된 암호화 알고리즘 사용을 제한합니다.
+    advisory_template: 암호화 알고리즘 설정 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 계정 관리
+    item_id: D-09
+    title: 일정 횟수의 로그인 실패 시 이에 대한 잠금정책 설정
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [login_failure_lockout_configured]
+    decision_rules:
+      - status: GOOD
+        when: {field: login_failure_lockout_configured, operator: equals, value: true}
+        reason: 로그인 실패 잠금정책 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when: {field: login_failure_lockout_configured, operator: equals, value: false}
+        reason: 로그인 실패 잠금정책 설정 증적을 확인하지 못했습니다.
+    manual_required_when: 외부 인증 체계에서 잠금정책을 관리하는 경우
+    remediation: 로그인 실패 횟수에 따른 계정 잠금정책을 설정합니다.
+    report_text: 로그인 실패 잠금정책 설정 여부를 점검합니다.
+    remediation_summary: 반복 로그인 실패에 대한 계정 잠금정책을 적용합니다.
+    advisory_template: 로그인 실패 잠금정책 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-10
+    title: 원격에서 DB 서버로의 접속 제한
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [remote_access_restricted]
+    decision_rules:
+      - status: GOOD
+        when: {field: remote_access_restricted, operator: equals, value: true}
+        reason: 원격 DB 접속 제한 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when: {field: remote_access_restricted, operator: equals, value: false}
+        reason: 원격 DB 접속 제한 증적을 확인하지 못했습니다.
+    manual_required_when: 방화벽, 보안그룹, pg_hba.cnf 등 외부 접근통제 확인이 필요한 경우
+    remediation: 원격 DB 접속 허용 범위를 승인된 관리망과 애플리케이션으로 제한합니다.
+    report_text: 원격 DB 서버 접속 제한 여부를 점검합니다.
+    remediation_summary: DBMS 접속 허용 범위를 최소화합니다.
+    advisory_template: 원격 접속 허용 범위 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-11
+    title: DBA 이외의 인가되지 않은 사용자가 시스템 테이블에 접근할 수 없도록 설정
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: 시스템 테이블 권한 상세 검토가 필요한 경우
+    remediation: 시스템 테이블 접근 권한을 승인된 DBA 권한으로 제한합니다.
+    report_text: 시스템 테이블 접근 권한을 수동 확인합니다.
+    remediation_summary: 시스템 테이블 접근 권한을 제한합니다.
+    advisory_template: 시스템 테이블 접근 권한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-12
+    title: 안전한 리스너 비밀번호 설정 및 사용
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: Oracle listener 또는 DBMS별 listener 보안 설정 확인이 필요한 경우
+    remediation: 리스너 비밀번호와 접근통제를 안전하게 설정합니다.
+    report_text: 리스너 비밀번호 설정 및 사용 여부를 수동 확인합니다.
+    remediation_summary: 리스너 관리 접근을 보호합니다.
+    advisory_template: 리스너 보안 설정 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-13
+    title: 불필요한 ODBC/OLE-DB 데이터 소스와 드라이브를 제거하여 사용
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: OS/Windows 데이터 소스 설정 확인이 필요한 경우
+    remediation: 불필요한 ODBC/OLE-DB 데이터 소스와 드라이브를 제거합니다.
+    report_text: 불필요한 ODBC/OLE-DB 데이터 소스와 드라이브를 수동 확인합니다.
+    remediation_summary: 불필요한 데이터 소스를 제거합니다.
+    advisory_template: ODBC/OLE-DB 데이터 소스 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-14
+    title: 데이터베이스의 주요 설정파일, 비밀번호 파일 등과 같은 주요 파일들의 접근 권한이 적절하게 설정
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: OS 파일 권한 확인이 필요한 경우
+    remediation: 주요 설정파일과 비밀번호 파일 접근권한을 제한합니다.
+    report_text: 주요 DBMS 파일 접근권한을 수동 확인합니다.
+    remediation_summary: 주요 DBMS 파일의 접근권한을 최소화합니다.
+    advisory_template: 주요 파일 접근권한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-15
+    title: 관리자 이외의 사용자가 오라클 리스너의 접속을 통해 리스너 로그 및 trace 파일에 대한 변경 제한
+    severity: low
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: Oracle listener 환경이거나 적용 제외 근거가 필요한 경우
+    remediation: 리스너 로그와 trace 파일 변경 권한을 제한합니다.
+    report_text: 오라클 리스너 로그 및 trace 파일 변경 제한을 수동 확인합니다.
+    remediation_summary: 리스너 관련 파일 변경 권한을 제한합니다.
+    advisory_template: 리스너 로그 및 trace 변경 권한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 접근 관리
+    item_id: D-16
+    title: Windows 인증 모드 사용
+    severity: low
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: MSSQL 또는 Windows 인증 관련 적용 여부 확인이 필요한 경우
+    remediation: 인증 모드를 기관 기준에 맞게 설정합니다.
+    report_text: Windows 인증 모드 사용 여부를 수동 확인합니다.
+    remediation_summary: 인증 모드 사용 정책을 확인합니다.
+    advisory_template: Windows 인증 모드 관련 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-17
+    title: Audit Table은 데이터베이스 관리자 계정에 접근하도록 제한
+    severity: low
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: Audit table 접근권한 확인이 필요한 경우
+    remediation: Audit Table 접근권한을 DBA 또는 승인된 관리자에게 제한합니다.
+    report_text: Audit Table 접근권한을 수동 확인합니다.
+    remediation_summary: Audit Table 접근권한을 제한합니다.
+    advisory_template: Audit Table 접근권한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-18
+    title: 응용프로그램 또는 DBA 계정의 Role이 Public으로 설정되지 않도록 조정
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [public_role_privilege_risk_present]
+    decision_rules:
+      - status: GOOD
+        when: {field: public_role_privilege_risk_present, operator: equals, value: false}
+        reason: Public role 권한 위험 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when: {field: public_role_privilege_risk_present, operator: equals, value: true}
+        reason: Public role 권한 위험 지표가 확인되었습니다.
+    manual_required_when: Role 상세 권한 검토가 필요한 경우
+    remediation: 응용프로그램 또는 DBA 계정의 Role이 Public으로 설정되지 않도록 조정합니다.
+    report_text: Public role 권한 위험 여부를 점검합니다.
+    remediation_summary: Public role에 과도한 권한이 부여되지 않게 조정합니다.
+    advisory_template: Public role 권한 위험 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-19
+    title: OS_ROLES, REMOTE_OS_AUTHENTICATION, REMOTE_OS_ROLES를 FALSE로 설정
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: Oracle 옵션 적용 여부 확인이 필요한 경우
+    remediation: OS_ROLES, REMOTE_OS_AUTHENTICATION, REMOTE_OS_ROLES 값을 FALSE로 설정합니다.
+    report_text: Oracle OS/remote authentication 옵션을 수동 확인합니다.
+    remediation_summary: Oracle 원격 OS 인증 관련 옵션을 제한합니다.
+    advisory_template: Oracle OS/remote authentication 옵션 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-20
+    title: 인가되지 않은 Object owner의 제한
+    severity: low
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: Object owner 승인 목록 대조가 필요한 경우
+    remediation: 인가되지 않은 Object owner를 제한합니다.
+    report_text: Object owner 적정성을 수동 확인합니다.
+    remediation_summary: Object owner를 승인된 계정으로 제한합니다.
+    advisory_template: Object owner 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-21
+    title: 인가되지 않은 GRANT OPTION 사용 제한
+    severity: medium
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [grant_option_risk_count]
+    decision_rules:
+      - status: GOOD
+        when: {field: grant_option_risk_count, operator: equals, value: 0}
+        reason: GRANT OPTION 위험 지표가 확인되지 않았습니다.
+      - status: VULNERABLE
+        when: {field: grant_option_risk_count, operator: gt, value: 0}
+        reason: GRANT OPTION 위험 지표가 확인되었습니다.
+    manual_required_when: 권한 상세 원문 검토 없이 승인 여부를 확정할 수 없는 경우
+    remediation: 인가되지 않은 GRANT OPTION 사용을 제한합니다.
+    report_text: GRANT OPTION 위험 지표를 점검합니다.
+    remediation_summary: GRANT OPTION 부여 범위를 승인된 관리자에게 제한합니다.
+    advisory_template: GRANT OPTION 위험 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-22
+    title: 데이터베이스의 자원 제한 기능을 TRUE로 설정
+    severity: low
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [resource_limits_enabled]
+    decision_rules:
+      - status: GOOD
+        when: {field: resource_limits_enabled, operator: equals, value: true}
+        reason: 자원 제한 기능 설정 증적이 확인되었습니다.
+      - status: MANUAL_REQUIRED
+        when: {field: resource_limits_enabled, operator: equals, value: false}
+        reason: 자원 제한 기능 설정 증적을 확인하지 못했습니다.
+    manual_required_when: DBMS별 자원 제한 기능 적용 방식 확인이 필요한 경우
+    remediation: 데이터베이스 자원 제한 기능을 기관 기준에 맞게 설정합니다.
+    report_text: 데이터베이스 자원 제한 기능 설정 여부를 점검합니다.
+    remediation_summary: 자원 제한 기능 적용 여부를 확인합니다.
+    advisory_template: 자원 제한 기능 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-23
+    title: xp_cmdshell 사용 제한
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: MSSQL 적용 여부 또는 대체 기능 확인이 필요한 경우
+    remediation: xp_cmdshell 사용을 제한합니다.
+    report_text: xp_cmdshell 사용 제한 여부를 수동 확인합니다.
+    remediation_summary: 운영에 불필요한 OS 명령 실행 기능을 제한합니다.
+    advisory_template: xp_cmdshell 또는 유사 기능 사용 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 옵션 관리
+    item_id: D-24
+    title: Registry Procedure 권한 제한
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: manual
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: *manual_evidence_fields
+    decision_rules: *manual_decision_rules
+    manual_required_when: MSSQL Registry Procedure 적용 여부 확인이 필요한 경우
+    remediation: Registry Procedure 권한을 제한합니다.
+    report_text: Registry Procedure 권한 제한 여부를 수동 확인합니다.
+    remediation_summary: Registry Procedure 사용 권한을 제한합니다.
+    advisory_template: Registry Procedure 권한 증적을 추가 확인합니다.
+
+  - domain: dbms
+    category: 패치 관리
+    item_id: D-25
+    title: 주기적 보안 패치 및 벤더 권고 사항 적용
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: manual
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [version_patch_status_known]
+    decision_rules:
+      - status: MANUAL_REQUIRED
+        when: {field: version_patch_status_known, operator: equals, value: true}
+        reason: DBMS 버전 증적은 있으나 최신 패치 적용 여부는 벤더 권고와 수동 대조해야 합니다.
+      - status: MANUAL_REQUIRED
+        when: {field: version_patch_status_known, operator: equals, value: false}
+        reason: DBMS 버전 또는 패치 상태 증적을 확인하지 못했습니다.
+    manual_required_when: 벤더 최신 권고와 운영 승인 기준 대조가 필요한 경우
+    remediation: DBMS 버전과 보안 권고 적용 상태를 정기적으로 확인합니다.
+    report_text: 주기적 보안 패치 및 벤더 권고 사항 적용 여부를 확인합니다.
+    remediation_summary: DBMS 버전을 벤더 보안 권고와 대조합니다.
+    advisory_template: DBMS 패치 상태를 최신 벤더 권고와 비교합니다.
+
+  - domain: dbms
+    category: 패치 관리
+    item_id: D-26
+    title: 데이터베이스의 접근, 변경, 삭제 등의 감사 기록이 기관의 감사 기록 정책에 적합하도록 설정
+    severity: high
+    target_platforms: *dbms_platforms
+    supported_dbms: *supported_dbms
+    commands_or_queries_by_dbms: *query_paths
+    automation_level: partial
+    decision_mode: deterministic
+    collector: scripts/targets/dbms/postgresql/collect.sql
+    evidence_fields: [audit_logging_enabled]
+    decision_rules:
+      - status: GOOD
+        when: {field: audit_logging_enabled, operator: equals, value: true}
+        reason: 감사/로그 설정 증적이 확인되었습니다.
+      - status: VULNERABLE
+        when: {field: audit_logging_enabled, operator: equals, value: false}
+        reason: 감사/로그 설정 증적을 확인하지 못했습니다.
+    manual_required_when: 기관 감사 기록 정책과 세부 로그 항목 대조가 필요한 경우
+    remediation: DB 접근, 변경, 삭제 등 주요 행위 감사 기록을 기관 정책에 맞게 설정합니다.
+    report_text: DBMS 감사 기록 정책 적합 여부를 점검합니다.
+    remediation_summary: DBMS 감사/로그 설정을 기관 정책에 맞게 조정합니다.
+    advisory_template: 감사/로그 설정 증적이 없으면 DBMS 감사 정책을 추가 확인합니다.

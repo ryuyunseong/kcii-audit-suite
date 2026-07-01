@@ -1,0 +1,2 @@
+guest_account_enabled=false
+firewall_enabled=true

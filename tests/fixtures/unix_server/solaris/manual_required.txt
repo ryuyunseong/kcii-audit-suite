@@ -1,0 +1,8 @@
+unix_flavor=solaris
+collection_status=unsupported_output
+raw_account_names=root,daemon,customer_admin
+hostname=unix-prod-01.example.invalid
+domain=example.invalid
+internal_ip=192.0.2.40
+raw_path=/home/customer_admin/.ssh/id_rsa
+password_hash=$6$not-a-real-unix-hash

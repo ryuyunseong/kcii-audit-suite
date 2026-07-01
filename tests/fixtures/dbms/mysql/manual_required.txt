@@ -1,0 +1,5 @@
+dbms=mysql
+collection_status=unsupported_output
+unstructured_output=true
+raw_account_names=[DB_ACCOUNT_ADMIN]
+database_names=customerdb

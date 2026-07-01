@@ -1,0 +1,27 @@
+{
+  "schema_version": "kcii-windows-paste-v1",
+  "platform": "windows",
+  "items": [
+    {
+      "item_id": "W-01",
+      "evidence": {
+        "collection_status": "collected",
+        "guest_account_enabled": false
+      }
+    },
+    {
+      "item_id": "W-02",
+      "evidence": {
+        "collection_status": "collected",
+        "firewall_enabled": true
+      }
+    },
+    {
+      "item_id": "W-03",
+      "evidence": {
+        "collection_status": "collected",
+        "minimum_password_length": 14
+      }
+    }
+  ]
+}

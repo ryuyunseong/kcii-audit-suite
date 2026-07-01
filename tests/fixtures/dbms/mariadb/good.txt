@@ -1,0 +1,13 @@
+dbms=mariadb
+risky_default_account_present=false
+sample_or_unused_account_count=0
+password_policy_configured=true
+excessive_admin_privileges_present=false
+secure_password_algorithm_configured=true
+login_failure_lockout_configured=true
+remote_access_restricted=true
+public_role_privilege_risk_present=false
+grant_option_risk_count=0
+resource_limits_enabled=true
+version_patch_status_known=true
+audit_logging_enabled=true

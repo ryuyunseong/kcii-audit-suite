@@ -1,0 +1,3 @@
+guest_account_enabled=true
+firewall_enabled=false
+minimum_password_length=0
