@@ -1,4 +1,4 @@
-# kcii-audit-suite
+﻿# kcii-audit-suite
 
 `kcii-audit-suite` is an offline helper for Korean critical information infrastructure vulnerability assessment evidence review. It is not an official KISA tool and does not replace assessor judgment, customer policy, or compensating-control review.
 
@@ -15,7 +15,7 @@ Operational flow:
 3. `kcii-audit classify-file` or `kcii-audit classify-paste` parses the offline evidence.
 4. The deterministic rulepack creates results, Excel workbooks, a Markdown report, and security advisory files.
 
-Docker, Containerlab, GNS3, EVE-NG, and simulator assets are development and verification lab tools only. They are not production collection flows.
+Docker, Containerlab, GNS3, EVE-NG, DBMS Docker Compose, and simulator assets are development and verification lab tools only. They are not production collection flows.
 
 DBMS Docker Compose lab은 운영 고객사 DBMS 자동 수집용이 아닙니다.
 
@@ -140,6 +140,6 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 ## Current Release Candidate Status
 
-This workspace is locally fixed as `v1.0.0rc1` at commit `286a5bd`. It is a release candidate snapshot, not a fully automated diagnostic product.
+`v1.0.0rc1` is fixed at commit `e93d18b`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc1` tag.
 
-The next release gate is private GitHub repository publication and a GitHub pre-release draft or pre-release. Do not push tags, create GitHub Releases, or publish to PyPI until that step is explicitly approved.
+Ongoing development should happen on `dev/v1.0.0rc2`. The rc2 target is to keep full item registration intact, expand deterministic checks where evidence is reliable, and leave unsupported or ambiguous items as `MANUAL_REQUIRED`.

@@ -37,7 +37,8 @@ Release candidate validation must include:
 - Many official items intentionally return `MANUAL_REQUIRED`.
 - Vendor-specific security appliance config parsers are MVP wrappers around sanitized summaries.
 - Windows, Network, DBMS, and Unix automatic judgment coverage is intentionally conservative.
-- The local release candidate is fixed at commit `286a5bd` with annotated tag `v1.0.0rc1`, but it has not been pushed to a remote repository.
+- The private GitHub pre-release is fixed at commit `e93d18b` with annotated tag `v1.0.0rc1`.
+- Further work should continue on `dev/v1.0.0rc2`; do not move the `v1.0.0rc1` tag.
 - PyPI publishing is intentionally deferred.
 
 ### Security Notes
