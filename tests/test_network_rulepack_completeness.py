@@ -38,6 +38,9 @@ def test_network_rulepack_loads_and_matches_manifest_items():
     assert rulepack_ids == manifest_ids
     assert all(item.remediation for item in rulepack.items)
     assert all(item.report_text for item in rulepack.items)
+    assert all("junos" in item["supported_vendors"] for item in manifest["items"])
+    assert all(item.config_hints_by_vendor for item in rulepack.items)
+    assert all(item.config_hints_by_vendor["junos"] == "show configuration | display set" for item in rulepack.items)
 
 
 def test_network_manifest_automation_levels_are_explicit():

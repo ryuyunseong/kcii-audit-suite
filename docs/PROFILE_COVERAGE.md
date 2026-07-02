@@ -10,7 +10,7 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 | Linux Server | 8 | 0 | 8 | 0 | MVP-only rulepack, not full official Linux coverage |
 | Unix Server | 67 | 0 | 28 | 39 | AIX, Solaris, HP-UX, Linux fixture-based parser |
 | DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser with JSON and key/value fixture coverage |
-| Network | 38 | 27 | 0 | 11 | Cisco IOS simulator/parser with expanded command-response checks |
+| Network | 38 | 27 | 0 | 11 | Cisco IOS simulator/parser with expanded command-response checks; Junos display-set parser MVP |
 | Security Appliance | 23 | 0 | 23 | 0 | Questionnaire-centered evidence flow |
 
 ## Windows Server
@@ -68,16 +68,18 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 ## Network
 
 - Scope: `N-01` to `N-38`
-- Supported MVP vendor: Cisco IOS
-- Status: simulator/parser MVP
+- Supported MVP vendors: Cisco IOS, Juniper Junos
+- Status: Cisco IOS simulator/parser MVP; Junos display-set parser MVP
 - Known limits:
   - Cisco IOS parser coverage is limited to deterministic command-response evidence.
-  - Juniper, FortiGate, and other network OS support remains future work.
+  - Junos parser coverage is limited to `show configuration | display set` output.
+  - Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are not supported in the MVP.
+  - FortiGate and other network OS support remains future work.
   - Configuration context often requires manual review.
 - Next automation candidates:
   - AAA and management access policy
   - Real Cisco IOS, GNS3, CML, and lab output normalization
-  - Additional vendor fixture sets
+  - Junos display-set fixture expansion
 
 ## v1.1.0 Development Scope
 
@@ -96,18 +98,19 @@ Included in this slice:
 
 ## v1.2.0 Development Scope
 
-The `dev/v1.2.0` branch starts from the fixed private `v1.1.0` release. The selected feature candidate for this branch is Juniper Junos parser MVP.
+The `dev/v1.2.0` branch starts from the fixed private `v1.1.0` release. The selected feature for this branch is Juniper Junos parser MVP.
 
 `v1.2.0` is not tagged or released yet.
 
-Included in this candidate scope:
+Included in this MVP scope:
 
 - Preserve the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
 - Add Juniper Junos as the next Network vendor target without changing Cisco IOS `N-01` to `N-38` behavior.
-- Use sanitized offline command-output fixtures only, with candidate evidence such as Junos set-style configuration output.
+- Use sanitized offline `show configuration | display set` fixtures only.
 - Keep unknown, policy-dependent, or unsupported Junos evidence as `MANUAL_REQUIRED`.
+- Treat brace-style Junos configuration as `needs_display_set` rather than attempting full parsing.
 
-Excluded from this candidate scope unless separately approved:
+Excluded from this MVP scope unless separately approved:
 
 - FRRouting parser and Containerlab fixture work.
 - Security Appliance questionnaire enhancements.

@@ -14,6 +14,7 @@ from kcii_audit.parsers.dbms_mariadb import records_from_mariadb_paste
 from kcii_audit.parsers.dbms_mysql import records_from_mysql_paste
 from kcii_audit.parsers.dbms_postgresql import records_from_postgresql_paste
 from kcii_audit.parsers.network_cisco_ios import records_from_cisco_ios_paste
+from kcii_audit.parsers.network_junos import records_from_junos_paste
 from kcii_audit.parsers.security_appliance_common import records_from_security_appliance_paste
 from kcii_audit.parsers.security_appliance_questionnaire import records_from_security_appliance_questionnaire
 from kcii_audit.parsers.unix_server import records_from_unix_paste
@@ -210,7 +211,7 @@ def classify_paste(
         help="Target server/device result file. Omit to read pasted evidence from standard input.",
     ),
     profile: str = typer.Option("windows", "--profile", help="Offline evidence profile. Supports windows, linux, unix, network, dbms, and security-appliance."),
-    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios."),
+    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios and junos."),
     dbms: str | None = typer.Option(None, "--dbms", help="DBMS parser. Required for --profile dbms; supports postgresql, mysql, mariadb."),
     unix: str | None = typer.Option(None, "--unix", help="Unix parser. Required for --profile unix; supports aix, solaris, hpux, linux."),
     appliance_type: str | None = typer.Option(None, "--appliance-type", help="Security appliance type. Supports firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
@@ -232,7 +233,7 @@ def classify_file(
         help="Target server/device result file copied to the Windows work PC.",
     ),
     profile: str = typer.Option("windows", "--profile", help="Offline evidence profile. Supports windows, linux, unix, network, dbms, and security-appliance."),
-    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios."),
+    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios and junos."),
     dbms: str | None = typer.Option(None, "--dbms", help="DBMS parser. Required for --profile dbms; supports postgresql, mysql, mariadb."),
     unix: str | None = typer.Option(None, "--unix", help="Unix parser. Required for --profile unix; supports aix, solaris, hpux, linux."),
     appliance_type: str | None = typer.Option(None, "--appliance-type", help="Security appliance type. Supports firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
@@ -303,13 +304,20 @@ def _classify_text(
             asset_id=asset_id if asset_id != "windows-paste" else f"unix-{normalized_unix}-paste",
         )
     elif normalized_profile == "network":
-        if vendor != "cisco_ios":
-            typer.echo("Only --vendor cisco_ios is supported for --profile network.", err=True)
+        normalized_vendor = (vendor or "").strip().lower().replace("-", "_")
+        if normalized_vendor == "cisco_ios":
+            records = records_from_cisco_ios_paste(
+                text,
+                asset_id=asset_id if asset_id != "windows-paste" else "network-paste",
+            )
+        elif normalized_vendor in {"junos", "juniper_junos"}:
+            records = records_from_junos_paste(
+                text,
+                asset_id=asset_id if asset_id != "windows-paste" else "network-junos-paste",
+            )
+        else:
+            typer.echo("Only --vendor cisco_ios and --vendor junos are supported for --profile network.", err=True)
             raise typer.Exit(code=2)
-        records = records_from_cisco_ios_paste(
-            text,
-            asset_id=asset_id if asset_id != "windows-paste" else "network-paste",
-        )
     elif normalized_profile == "dbms":
         normalized_dbms = (dbms or "").strip().lower()
         if normalized_dbms == "postgresql":

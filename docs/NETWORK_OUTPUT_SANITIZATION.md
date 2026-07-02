@@ -1,6 +1,6 @@
 # Network Output Sanitization
 
-This document defines how Cisco IOS, GNS3, CML, and approved lab command output can be converted into repository-safe fixtures for the Network profile. The repository must never store real customer configuration exports, commercial device images, CML or IOS images, license files, raw credentials, or unredacted live output.
+This document defines how Cisco IOS, Junos, GNS3, CML, and approved lab command output can be converted into repository-safe fixtures for the Network profile. The repository must never store real customer configuration exports, commercial device images, CML or IOS images, license files, raw credentials, or unredacted live output.
 
 ## Scope
 
@@ -52,6 +52,12 @@ Realistic Cisco IOS fixtures should focus on the same offline command set used b
 - `show access-lists`
 - `show ip interface brief`
 
+Junos MVP fixtures must use display-set output only:
+
+- `show configuration | display set`
+
+The Junos MVP does not parse brace-style configuration, XML, JSON, or inheritance-expanded configuration. If brace-style Junos configuration is supplied, the parser should return `MANUAL_REQUIRED` evidence with a `needs_display_set` collection status instead of treating missing settings as safe.
+
 Unknown command output, separators, prompts, blank lines, and vendor-specific noise should not make parsing fail. Unsupported evidence should be ignored or should leave the item as `MANUAL_REQUIRED`.
 
 ## Parser Output Rules
@@ -71,7 +77,7 @@ The parser must keep only normalized evidence such as booleans, enums, counts, w
 Before committing a realistic fixture:
 
 1. Search for raw IP addresses, hostnames, usernames, communities, serials, domains, paths, passwords, keys, tokens, and hashes.
-2. Run `kcii-audit classify-file --profile network --vendor cisco_ios` against the fixture.
+2. Run `kcii-audit classify-file --profile network --vendor cisco_ios` or `kcii-audit classify-file --profile network --vendor junos` against the fixture.
 3. Confirm `N-01` to `N-38` all appear in `results.json`.
 4. Confirm the seven-file output bundle is created.
 5. Search text and workbook outputs for fixture placeholders.

@@ -148,4 +148,4 @@ def test_network_profile_requires_supported_vendor(tmp_path):
     )
 
     assert result.exit_code == 2
-    assert "Only --vendor cisco_ios" in result.output
+    assert "Only --vendor cisco_ios and --vendor junos" in result.output

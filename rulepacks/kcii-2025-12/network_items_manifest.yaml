@@ -14,264 +14,264 @@ items:
     category: 계정 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks whether management password evidence exists; default-password judgment may still require manual confirmation."
   - item_id: N-02
     title: 비밀번호 복잡성 설정
     category: 계정 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Password complexity cannot be proven from sanitized show output alone."
   - item_id: N-03
     title: 암호화된 비밀번호 가용
     category: 계정 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks enable secret and plaintext password indicators."
   - item_id: N-04
     title: 계정 잠금 임계값 설정
     category: 계정 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "AAA policy context requires additional evidence."
   - item_id: N-05
     title: 사용자, 명령어별 권한 수준 설정
     category: 계정 관리
     severity: medium
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Privilege design requires account and operational policy review."
   - item_id: N-06
     title: VTY 접근(ACL) 설정
     category: 접근 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks line vty access-class evidence."
   - item_id: N-07
     title: 세션 종료 시간 설정
     category: 접근 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks exec-timeout evidence."
   - item_id: N-08
     title: VTY 접속 시 안전한 프로토콜 사용
     category: 접근 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks SSH and Telnet indicators."
   - item_id: N-09
     title: 불필요한 보조 입출력 포트 사용 금지
     category: 접근 관리
     severity: medium
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "AUX port state requires additional line and device context review."
   - item_id: N-10
     title: 로그온 시 경고 메시지 설정
     category: 접근 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks banner login or motd evidence."
   - item_id: N-11
     title: 원격 로그서버 사용
     category: 접근 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks logging host evidence."
   - item_id: N-12
     title: 주기적 보안 패치 및 벤더 권고사항 적용
     category: 패치 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Patch status requires vendor advisory and approved baseline review."
   - item_id: N-13
     title: 로깅 버퍼 크기 설정
     category: 로그 관리
     severity: medium
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Logging buffer policy threshold is not automated in the MVP parser."
   - item_id: N-14
     title: 정책에 따른 로깅 설정
     category: 로그 관리
     severity: medium
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Logging policy completeness requires organization baseline review."
   - item_id: N-15
     title: NTP 및 시각 동기화 설정
     category: 로그 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks NTP server or synchronized status evidence."
   - item_id: N-16
     title: Timestamp 로그 설정
     category: 로그 관리
     severity: low
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks service timestamps log evidence."
   - item_id: N-17
     title: SNMP 서비스 확인
     category: 기능 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Service necessity and approved monitoring design require manual confirmation."
   - item_id: N-18
     title: SNMP Community String 복잡성 설정
     category: 기능 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS MVP checks weak community indicators without storing the community value."
   - item_id: N-19
     title: SNMP ACL 설정
     category: 기능 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ACL binding on SNMP community lines without storing the community value."
   - item_id: N-20
     title: SNMP Community 권한 설정
     category: 기능 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks read-only versus read-write SNMP community authorization indicators."
   - item_id: N-21
     title: TFTP 서비스 차단
     category: 기능 관리
     severity: high
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks tftp-server configuration indicators."
   - item_id: N-22
     title: Spoofing 방지 필터링 적용
     category: 기능 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Anti-spoofing filtering requires interface and routing design review."
   - item_id: N-23
     title: DDoS 공격 방어 설정 또는 DDoS 장비 사용
     category: 기능 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "DDoS defense evidence is outside Cisco IOS show-output MVP automation."
   - item_id: N-24
     title: 사용하지 않는 인터페이스 비활성화
     category: 기능 관리
     severity: high
     automation_level: manual
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Unused interface judgment requires inventory or network design context."
   - item_id: N-25
     title: TCP Keepalive 서비스 설정
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks service tcp-keepalives-in/out evidence."
   - item_id: N-26
     title: Finger 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks explicit service finger enable or disable indicators."
   - item_id: N-27
     title: 웹 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks HTTP and HTTPS management service indicators."
   - item_id: N-28
     title: TCP/UDP small 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks tcp-small-servers and udp-small-servers indicators."
   - item_id: N-29
     title: Bootp 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip bootp server indicators."
   - item_id: N-30
     title: CDP 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks cdp run indicators."
   - item_id: N-31
     title: Directed-broadcast 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip directed-broadcast indicators."
   - item_id: N-32
     title: Source 라우팅 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip source-route indicators."
   - item_id: N-33
     title: Proxy ARP 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip proxy-arp indicators."
   - item_id: N-34
     title: ICMP unreachable, Redirect 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip redirects and ip unreachables indicators."
   - item_id: N-35
     title: identd 서비스 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip identd indicators."
   - item_id: N-36
     title: Domain Lookup 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip domain-lookup indicators."
   - item_id: N-37
     title: pad 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks service pad indicators."
   - item_id: N-38
     title: mask-reply 차단
     category: 기능 관리
     severity: medium
     automation_level: auto
-    supported_vendors: [cisco_ios]
+    supported_vendors: [cisco_ios, junos]
     source_note: "Cisco IOS parser checks ip mask-reply indicators."

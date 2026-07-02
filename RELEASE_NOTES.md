@@ -8,7 +8,7 @@
 
 - Baseline final release `v1.1.0` remains fixed at `31f624e`.
 - The single selected feature candidate is Juniper Junos parser MVP.
-- Parser work must use sanitized offline command-output fixtures only.
+- Parser work must use sanitized offline `show configuration | display set` fixtures only.
 - Cisco IOS `N-01` to `N-38` behavior from `v1.1.0` must remain stable.
 - Public repository conversion and PyPI/TestPyPI publishing remain out of scope.
 
@@ -26,7 +26,8 @@ Before any `v1.2.0` tag or private GitHub Release is created, run:
 ### Known Limits
 
 - `v1.2.0` is not tagged or released yet.
-- Juniper Junos parser MVP is a candidate scope, not implemented in this branch setup commit.
+- Juniper Junos parser MVP is implemented for display-set configuration output.
+- Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are out of scope for the MVP.
 - FRRouting, Security Appliance enhancements, raw vault, and Unix fixture expansion are separate future scopes unless separately approved.
 
 ## v1.1.0 Final Release

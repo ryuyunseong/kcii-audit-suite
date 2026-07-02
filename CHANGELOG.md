@@ -5,7 +5,8 @@
 ### Added
 
 - Documented `dev/v1.2.0` as the post-v1.1.0 feature branch.
-- Selected Juniper Junos parser MVP as the only v1.2.0 feature candidate.
+- Added Juniper Junos parser MVP for sanitized `show configuration | display set` output.
+- Added synthetic Junos display-set and unsupported brace-style fixtures.
 
 ### Security
 

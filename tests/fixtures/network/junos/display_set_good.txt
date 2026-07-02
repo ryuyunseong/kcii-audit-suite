@@ -1,0 +1,17 @@
+[USER_1]@[HOST_1]> show configuration | display set
+set system services ssh root-login deny
+set system root-authentication encrypted-password "[SECRET_1]"
+set system login idle-timeout 10
+set system login message "[BANNER_1]"
+set system syslog host [IP_1] any info
+set system syslog time-format year
+set system ntp server [IP_2]
+set snmp community [COMMUNITY_1] authorization read-only
+set snmp community [COMMUNITY_1] clients [IP_3]/32
+set firewall family inet filter MGMT term allow-ssh from source-prefix-list MGMT-SOURCES
+set firewall family inet filter MGMT term allow-ssh then accept
+set interfaces fxp0 unit 0 family inet filter input MGMT
+set system internet-options no-source-route
+set system no-redirects
+inactive: set system services telnet
+inactive: set system services web-management http

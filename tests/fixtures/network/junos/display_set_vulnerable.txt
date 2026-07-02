@@ -1,0 +1,11 @@
+show configuration | display set
+set system services telnet
+set system services ssh root-login allow
+set system root-authentication plain-text-password
+set system login idle-timeout 0
+set snmp community public authorization read-write
+set system services web-management http
+set system services tftp
+set system services finger
+set forwarding-options directed-broadcast
+set interfaces ge-0/0/0 unit 0 proxy-arp
