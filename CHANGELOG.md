@@ -13,6 +13,7 @@
 
 - Cisco IOS Network automatic judgment coverage is documented as 27 items while preserving `N-01` to `N-38` full result emission.
 - Release notes now distinguish the fixed `v1.0.0` release from the unreleased `dev/v1.1.0` development branch.
+- Package version metadata is prepared as `1.1.0` for release smoke, build, checksum, and installed-wheel validation.
 
 ### Security
 
@@ -21,7 +22,7 @@
 ### Known Limitations
 
 - `v1.1.0` has not been tagged or released.
-- Package version remains `1.0.0` until a release candidate version update is explicitly approved.
+- Package version metadata is `1.1.0`, but tag creation and private GitHub Release publication still require separate approval.
 - Policy-dependent Network items remain `MANUAL_REQUIRED`.
 
 ## [1.0.0] - 2026-07-02

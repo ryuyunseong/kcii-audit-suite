@@ -7,6 +7,7 @@ This document is the draft readiness checklist for the `dev/v1.1.0` branch. It i
 ## Branch And Tag State
 
 - Development branch: `dev/v1.1.0`
+- Package version metadata: `1.1.0`
 - Baseline final release: `v1.0.0`
 - `v1.0.0` tag remains fixed at `31983bd`
 - `v1.0.0rc2` tag remains fixed at `59d3d38`
@@ -82,7 +83,7 @@ Expected result: no matches in generated outputs or staged diffs.
 
 ## Build And Checksums
 
-Run this only after the package version is updated to `1.1.0` and the release candidate is approved.
+Run this after the package version is updated to `1.1.0` and before creating any tag or GitHub Release.
 
 ```powershell
 Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue

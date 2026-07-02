@@ -78,11 +78,11 @@ Before any `v1.1.0` tag or private GitHub Release is created, rerun the readines
 
 No migration is expected for existing offline evidence flows. The CLI commands and output bundle remain compatible with `v1.0.0`.
 
-When preparing a release candidate, update the package version to `1.1.0`, rebuild wheel and source distributions, regenerate checksums, and validate installed-wheel behavior before creating an annotated tag.
+Package version metadata is prepared as `1.1.0` for release smoke, build, checksum, and installed-wheel validation. Rebuild wheel and source distributions, regenerate checksums, and validate installed-wheel behavior before creating an annotated tag.
 
 ## Next Steps
 
-- Prepare a `v1.1.0` readiness pass.
-- Update package version only after release approval.
+- Complete the `v1.1.0` readiness pass.
+- Commit and push the `1.1.0` version metadata update only after validation succeeds.
 - Create an annotated `v1.1.0` tag only after explicit approval.
 - Create a private GitHub Release only after the tag and release assets are verified.

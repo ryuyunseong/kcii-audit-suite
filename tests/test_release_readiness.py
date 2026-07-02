@@ -88,7 +88,7 @@ def test_cli_help_smoke_for_release_commands():
 
 
 def test_release_version_is_final_candidate():
-    assert __version__ == "1.0.0"
+    assert __version__ == "1.1.0"
 
 
 def test_v1_1_0_docs_state_unreleased_development_status():
@@ -102,7 +102,7 @@ def test_v1_1_0_docs_state_unreleased_development_status():
 
     assert "dev/v1.1.0" in release_notes
     assert "No `v1.1.0` tag or GitHub Release has been created yet." in release_notes
-    assert "Package version remains `1.0.0`" in changelog
+    assert "Package version metadata is `1.1.0`" in changelog
 
 
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):
