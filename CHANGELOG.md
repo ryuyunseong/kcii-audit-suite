@@ -1,6 +1,17 @@
 # Changelog
 
-## [1.3.0] - Unreleased
+## [1.4.0] - Unreleased
+
+### Added
+
+- Started `dev/v1.4.0` for Junos display inheritance design and fixture planning.
+
+### Security
+
+- v1.4.0 planning keeps the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
+- Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+## [1.3.0] - 2026-07-02
 
 ### Added
 
@@ -19,6 +30,10 @@
 
 - v1.3.0 planning keeps the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
 - Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+### Release
+
+- `v1.3.0` is published as a final private GitHub Release fixed at `30490b4`.
 
 ## [1.2.0] - 2026-07-02
 

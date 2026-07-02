@@ -1,8 +1,8 @@
-# v1.3.0 Readiness Draft
+# v1.3.0 Readiness Record
 
-This document is the draft readiness checklist for the `dev/v1.3.0` branch. It is not a release record. Do not create a `v1.3.0` tag or GitHub Release until explicit approval is given.
+This document records the readiness checklist used for the `dev/v1.3.0` branch before the final private `v1.3.0` GitHub Release was created. Do not move the published `v1.3.0` tag or replace its release assets.
 
-`v1.3.0` is not tagged or released. Package version metadata is prepared as `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
+`v1.3.0` is tagged, pushed, and published as a final private GitHub Release fixed at `30490b4`.
 
 ## Branch And Tag State
 
@@ -15,7 +15,8 @@ This document is the draft readiness checklist for the `dev/v1.3.0` branch. It i
 - `v1.0.0` tag remains fixed at `31983bd`
 - `v1.0.0rc2` tag remains fixed at `59d3d38`
 - `v1.0.0rc1` tag remains fixed at `e93d18b`
-- `v1.3.0` tag: not created
+- `v1.3.0` tag remains fixed at `30490b4`
+- GitHub Release for `v1.3.0`: final private release
 - PyPI/TestPyPI publishing: deferred
 - Public repository conversion: out of scope
 

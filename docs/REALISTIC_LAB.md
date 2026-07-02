@@ -215,6 +215,31 @@ Keep brace-style, XML, JSON, group, `apply-groups`, and inheritance-expanded con
 
 Do not store customer configuration exports, raw live output, Junos images, CML images, VM disks, or license files in the repository.
 
+#### Junos display inheritance planning
+
+`dev/v1.4.0` plans Junos display-inheritance support as an offline evidence merge problem, not as live device collection.
+
+Approved lab or device-derived evidence must be sanitized before it is saved. The intended fixture shape is a pair of files or one clearly separated bundle:
+
+```text
+show configuration | display set
+show configuration | display inheritance
+```
+
+The display-set evidence remains the primary active configuration source. Display-inheritance evidence is supplemental and may only reduce manual review when the inherited effective value is explicit, sanitized, and not contradicted by local active configuration.
+
+Additional sanitization rules for inheritance fixtures:
+
+- source group name -> `[GROUP_1]`
+- inherited statement path -> preserve the structural path, replace values with placeholders
+- inherited value source marker -> keep only a sanitized group reference such as `[GROUP_1]`
+- conflicting inherited values -> keep the conflict shape but replace all values with placeholders
+- inactive inherited statements -> keep only when the test intentionally verifies that inactive evidence is ignored
+
+Do not classify inherited evidence as `GOOD` or `VULNERABLE` when group expansion is incomplete, source group data is missing, `apply-groups-except` changes applicability, or the effective value depends on local policy context. Those cases must remain `MANUAL_REQUIRED`.
+
+The fixture directory for this planning work is `tests/fixtures/network/junos/inheritance/`.
+
 ### Security Appliance
 
 Security appliance MVP flow:

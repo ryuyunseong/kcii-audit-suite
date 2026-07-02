@@ -148,6 +148,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
+- [docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md](docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md)
 - [docs/V1_3_0_READINESS.md](docs/V1_3_0_READINESS.md)
 - [docs/V1_2_0_READINESS.md](docs/V1_2_0_READINESS.md)
 - [docs/V1_1_0_READINESS.md](docs/V1_1_0_READINESS.md)
@@ -166,4 +167,6 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 `v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
 
-`dev/v1.3.0` is the current post-v1.2.0 feature branch. Its first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening. Package version metadata is prepared as `1.3.0`. Draft release notes are in `RELEASE_NOTES_v1.3.0.md`, and the readiness checklist is in `docs/V1_3_0_READINESS.md`. No `v1.3.0` tag or GitHub Release has been created. Patch-only fixes should be separated to `dev/v1.2.1`.
+`v1.3.0` is fixed at commit `30490b4`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
+
+`dev/v1.4.0` is the current post-v1.3.0 feature branch. Its first scope is Junos display inheritance design and fixture planning. Patch-only fixes should be separated to `dev/v1.3.1`.

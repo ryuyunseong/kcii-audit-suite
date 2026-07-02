@@ -1,8 +1,26 @@
 # Release Notes
 
+## v1.4.0 Development Draft
+
+`dev/v1.4.0` starts after the fixed private `v1.3.0` release. No `v1.4.0` tag or GitHub Release has been created.
+
+### Scope
+
+- Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
+- Design Junos `display inheritance` handling before parser implementation.
+- Document sanitized fixture requirements for display-set plus display-inheritance evidence pairs.
+- Separate automatically usable inherited evidence from cases that must remain `MANUAL_REQUIRED`.
+- Keep direct device collection, raw live output, device images, license files, public repository conversion, and PyPI/TestPyPI publishing out of scope.
+
+## v1.3.0 Final Release
+
+`v1.3.0` is fixed at commit `30490b4`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is not a pre-release.
+
+The detailed v1.3.0 notes are maintained in `RELEASE_NOTES_v1.3.0.md`, and the release-readiness checklist is maintained in `docs/V1_3_0_READINESS.md`.
+
 ## v1.2.0 Final Release
 
-`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is not a pre-release.
+`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as a final GitHub Release. It is not a pre-release.
 
 The detailed v1.2.0 notes are maintained in `RELEASE_NOTES_v1.2.0.md`, and the release-readiness checklist is maintained in `docs/V1_2_0_READINESS.md`.
 
@@ -33,11 +51,9 @@ Release validation completed before creating the `v1.2.0` tag and private GitHub
 - Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are out of scope for the MVP.
 - FRRouting, Security Appliance enhancements, raw vault, and Unix fixture expansion are separate future scopes unless separately approved.
 
-## v1.3.0 Development Draft
+## v1.3.0 Development History
 
-`dev/v1.3.0` starts after the fixed private `v1.2.0` release. No `v1.3.0` tag or GitHub Release has been created.
-
-The detailed v1.3.0 draft notes are maintained in `RELEASE_NOTES_v1.3.0.md`, and the release-readiness draft checklist is maintained in `docs/V1_3_0_READINESS.md`.
+`dev/v1.3.0` started after the fixed private `v1.2.0` release.
 
 ### Scope
 

@@ -23,6 +23,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
         Path("docs/V1_3_0_READINESS.md"),
         Path("docs/V1_2_0_READINESS.md"),
         Path("docs/V1_1_0_READINESS.md"),
@@ -116,12 +117,11 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
 
     assert "latest final GitHub Release" in readme
     assert "is the final private GitHub Release" in release_notes
-    assert "dev/v1.3.0" in readme
+    assert "dev/v1.4.0" in readme
     assert "`v1.2.0` is fixed at commit `9296245`" in release_index
-    assert "No `v1.3.0` tag or GitHub Release has been created." in release_index
-    assert "`kcii-audit-suite v1.3.0` is a draft release note" in release_notes_v1_3_0
-    assert "`v1.3.0` is not tagged or released." in readiness_v1_3_0
-    assert "Package version metadata is prepared as `1.3.0`" in readme
+    assert "`v1.3.0` is fixed at commit `30490b4`" in release_index
+    assert "`kcii-audit-suite v1.3.0` is the final private GitHub Release" in release_notes_v1_3_0
+    assert "`v1.3.0` is tagged, pushed, and published as a final private GitHub Release" in readiness_v1_3_0
     assert "Package version metadata: `1.3.0`" in readiness_v1_3_0
     assert "Latest Junos realistic normalization commit: `7077334`" in readiness_v1_3_0
     assert "display_set_realistic_sanitized.txt" in release_notes_v1_3_0
@@ -131,7 +131,8 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "private GitHub Release" in release_notes_v1_2_0
     assert "`v1.2.0` tag: not created" not in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
-    assert "v1.3.0 Development Scope" in coverage
+    assert "v1.4.0 Development Scope" in coverage
+    assert "display inheritance" in coverage
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
@@ -170,6 +171,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
+            Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
             Path("docs/V1_3_0_READINESS.md"),
             Path("docs/V1_2_0_READINESS.md"),
             Path("docs/V1_1_0_READINESS.md"),

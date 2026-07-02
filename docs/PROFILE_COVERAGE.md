@@ -123,7 +123,7 @@ Excluded from this MVP scope unless separately approved:
 
 The `dev/v1.3.0` branch starts from the fixed private `v1.2.0` release. The selected first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening.
 
-`v1.3.0` is not tagged or released yet.
+`v1.3.0` is fixed at `30490b4` and published as the latest final private GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
 
 Included in the initial v1.3.0 scope:
 
@@ -139,6 +139,40 @@ Excluded from the initial v1.3.0 scope unless separately approved:
 - Moving or replacing any published release tag or asset.
 - Direct device collection, NETCONF collection, or active scanning.
 - Storing raw customer configs, live output, device images, license files, keys, tokens, passwords, or password hashes.
+- Public repository conversion or PyPI/TestPyPI publishing.
+
+## v1.4.0 Development Scope
+
+The `dev/v1.4.0` branch starts from the fixed private `v1.3.0` release. The selected first scope is Junos `display inheritance` design and fixture planning.
+
+`v1.4.0` is not tagged or released yet.
+
+Included in the initial v1.4.0 scope:
+
+- Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
+- Document how sanitized `show configuration | display set` evidence can be paired with sanitized `display inheritance` evidence.
+- Define merge rules for active display-set lines, inherited source-group evidence, inactive statements, and conflicting inherited values.
+- Separate deterministic inherited evidence candidates from items that must remain `MANUAL_REQUIRED`.
+- Keep direct device collection, NETCONF collection, active scanning, and raw live output out of scope.
+
+Initial automation candidates:
+
+- Management protocol evidence when an inherited active statement clearly enables or disables SSH, Telnet, or web management.
+- Syslog, NTP, and SNMP evidence when inherited values are explicit and not contradicted by local configuration.
+- Management ACL evidence when inherited firewall filter or prefix-list references can be matched to sanitized active evidence.
+
+Manual-review cases:
+
+- Multiple matching groups define conflicting values.
+- `apply-groups-except` or partial inheritance changes the effective value.
+- Inherited evidence depends on platform defaults, policy context, inactive statements, or omitted group source data.
+- The fixture has display-set evidence without the corresponding sanitized inheritance context.
+
+Excluded from the initial v1.4.0 scope unless separately approved:
+
+- Full Junos configuration interpreter behavior.
+- Brace-style, XML, or JSON parser implementation.
+- Replacing the conservative `MANUAL_REQUIRED` boundary for ambiguous inherited settings.
 - Public repository conversion or PyPI/TestPyPI publishing.
 
 ## Security Appliance

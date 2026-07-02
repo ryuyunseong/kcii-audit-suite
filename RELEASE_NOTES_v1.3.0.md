@@ -1,12 +1,12 @@
-# kcii-audit-suite v1.3.0 Draft
+# kcii-audit-suite v1.3.0
 
-`kcii-audit-suite v1.3.0` is a draft release note for the `dev/v1.3.0` branch. It is not tagged or released yet. Do not create or move a `v1.3.0` tag until the release smoke, build, checksum, and installed-wheel checks are complete and separately approved.
+`kcii-audit-suite v1.3.0` is the final private GitHub Release for the `dev/v1.3.0` branch. The release tag is `v1.3.0` and points to commit `30490b4`.
 
 The latest fixed final release remains `v1.2.0`, fixed at commit `9296245`. The `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags also remain fixed and must not be moved.
 
 ## Summary
 
-This draft documents the Junos realistic display-set compatibility work completed after `v1.2.0`:
+This release documents the Junos realistic display-set compatibility work completed after `v1.2.0`:
 
 - Junos display-set support continues to build on the `v1.2.0` parser MVP.
 - A sanitized realistic Junos display-set fixture was added.
@@ -51,7 +51,7 @@ The Network profile continues to emit all `N-01` to `N-38` items. The Junos real
 - `MANUAL_REQUIRED`: 24
 - `VULNERABLE`: 0
 
-This distribution is expected for the v1.3.0 draft because default-dependent, policy-dependent, unsupported, and inheritance-dependent evidence is not treated as safe by default.
+This distribution is expected for `v1.3.0` because default-dependent, policy-dependent, unsupported, and inheritance-dependent evidence is not treated as safe by default.
 
 ## Output Files
 
@@ -69,7 +69,7 @@ Default classification still creates:
 
 ## Validation
 
-Validation completed before this draft was written:
+Validation completed before this release was created:
 
 - targeted Network tests: `11 passed`
 - release readiness tests: `9 passed`
@@ -85,7 +85,7 @@ Validation completed before this draft was written:
 - installed-wheel smoke from a clean non-repository working directory: OK
 - `v1.2.0` tag remained fixed at `9296245`
 
-The `docs/V1_3_0_READINESS.md` checklist records the validation gate to run before any `v1.3.0` tag or private GitHub Release is created.
+The `docs/V1_3_0_READINESS.md` checklist records the validation gate used before the `v1.3.0` tag and private GitHub Release were created.
 
 ## Security Notes
 
@@ -110,6 +110,5 @@ No migration is expected for existing offline evidence flows. Existing Cisco IOS
 
 ## Next Steps
 
-- Do not create a `v1.3.0` tag or GitHub Release until release smoke, build, checksum, and installed-wheel validation are complete.
-- Keep package version metadata at `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
+- Do not move the `v1.3.0` tag or replace release assets.
 - Treat `display inheritance`, brace-style parsing, XML/JSON parsing, and broader Junos semantics as later scoped work.
