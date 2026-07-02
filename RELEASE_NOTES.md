@@ -1,5 +1,34 @@
 # Release Notes
 
+## v1.1.0 Draft
+
+`v1.1.0` is currently documented as a development-branch draft on `dev/v1.1.0`. No `v1.1.0` tag or GitHub Release has been created yet.
+
+### Scope
+
+- Baseline final release `v1.0.0` remains fixed at `31983bd`.
+- Cisco IOS Network automatic judgment coverage expands from 9 items to 27 items.
+- Network `N-01` to `N-38` full result emission is preserved.
+- Realistic sanitized Cisco IOS command output compatibility is improved.
+- `kcii-netlab-sim` remains a command-response simulator, not a packet or routing emulator.
+
+### Validation Gate
+
+Before creating a `v1.1.0` tag or private GitHub Release, run:
+
+- full `python -m pytest`
+- Network and realistic fixture smoke commands from `docs/V1_1_0_READINESS.md`
+- sensitive placeholder search over generated text and Excel outputs
+- wheel/sdist build and checksum generation after package version update
+- installed-wheel smoke from a clean environment
+
+### Known Limits
+
+- `v1.1.0` is not tagged or released yet.
+- `MANUAL_REQUIRED` remains expected for policy-dependent Network items.
+- Real customer configs, live output, device images, and license files remain out of scope.
+- PyPI and TestPyPI publishing remain deferred.
+
 ## v1.0.0 Final Candidate
 
 This final-candidate branch is prepared from `v1.0.0rc2` and stops feature work. The goal is release stabilization only: documentation, smoke checks, package build, checksum generation, and private GitHub Release preparation.

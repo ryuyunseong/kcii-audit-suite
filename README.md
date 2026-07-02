@@ -138,12 +138,14 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 - [CHANGELOG.md](CHANGELOG.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
+- [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md)
 - [RELEASE_NOTES_v1.0.0.md](RELEASE_NOTES_v1.0.0.md)
 - [RELEASE_NOTES_v1.0.0rc1.md](RELEASE_NOTES_v1.0.0rc1.md)
 - [RELEASE_NOTES_v1.0.0rc2.md](RELEASE_NOTES_v1.0.0rc2.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
+- [docs/V1_1_0_READINESS.md](docs/V1_1_0_READINESS.md)
 - [docs/V1_0_0_READINESS.md](docs/V1_0_0_READINESS.md)
 - [docs/V1_0_0RC2_READINESS.md](docs/V1_0_0RC2_READINESS.md)
 
@@ -154,3 +156,5 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 `v1.0.0rc2` is fixed at commit `59d3d38`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc2` tag.
 
 Final release stabilization should happen on `release/v1.0.0`. The v1.0.0 target is to add no new features, keep full item registration intact, document known limitations clearly, and leave unsupported or ambiguous items as `MANUAL_REQUIRED`.
+
+`dev/v1.1.0` is the current post-v1.0.0 development branch for Cisco IOS Network parser improvements. `v1.1.0` has not been tagged or released.

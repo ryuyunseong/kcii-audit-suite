@@ -83,6 +83,8 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 
 The `dev/v1.1.0` branch starts after the private `v1.0.0` release. The first development slice expands Cisco IOS automatic judgment only where sanitized command output can be interpreted deterministically.
 
+`v1.1.0` is not tagged or released yet; see `RELEASE_NOTES_v1.1.0.md` and `docs/V1_1_0_READINESS.md` for the current draft release notes and readiness checklist.
+
 Included in this slice:
 
 - Preserve the published `v1.0.0`, `v1.0.0rc1`, and `v1.0.0rc2` tags.

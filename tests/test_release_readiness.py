@@ -15,11 +15,14 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("RELEASE_NOTES_v1.1.0.md"),
         Path("RELEASE_NOTES_v1.0.0.md"),
         Path("RELEASE_NOTES_v1.0.0rc2.md"),
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/V1_1_0_READINESS.md"),
+        Path("docs/NETWORK_OUTPUT_SANITIZATION.md"),
         Path("docs/V1_0_0_READINESS.md"),
         Path("docs/V1_0_0RC2_READINESS.md"),
     ]
@@ -88,6 +91,20 @@ def test_release_version_is_final_candidate():
     assert __version__ == "1.0.0"
 
 
+def test_v1_1_0_docs_state_unreleased_development_status():
+    release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
+    readiness = Path("docs/V1_1_0_READINESS.md").read_text(encoding="utf-8")
+    changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
+
+    for text in [release_notes, readiness, changelog]:
+        assert "v1.1.0" in text
+        assert "not tagged" in text or "not been tagged" in text
+
+    assert "dev/v1.1.0" in release_notes
+    assert "No `v1.1.0` tag or GitHub Release has been created yet." in release_notes
+    assert "Package version remains `1.0.0`" in changelog
+
+
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
@@ -113,11 +130,13 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         for path in [
             Path("README.md"),
             Path("RELEASE_NOTES.md"),
+            Path("RELEASE_NOTES_v1.1.0.md"),
             Path("RELEASE_NOTES_v1.0.0.md"),
             Path("RELEASE_NOTES_v1.0.0rc2.md"),
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
+            Path("docs/V1_1_0_READINESS.md"),
             Path("docs/V1_0_0_READINESS.md"),
             Path("docs/V1_0_0RC2_READINESS.md"),
         ]

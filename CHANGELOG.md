@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.1.0] - Unreleased
+
+### Added
+
+- Draft `RELEASE_NOTES_v1.1.0.md` for the `dev/v1.1.0` development branch.
+- Draft `docs/V1_1_0_READINESS.md` checklist for v1.1.0 validation before tag or release creation.
+- Network output sanitization guidance for Cisco IOS, GNS3, CML, approved lab, and actual device output fixtures.
+- Sanitized realistic Cisco IOS fixture coverage and release-readiness documentation references.
+
+### Changed
+
+- Cisco IOS Network automatic judgment coverage is documented as 27 items while preserving `N-01` to `N-38` full result emission.
+- Release notes now distinguish the fixed `v1.0.0` release from the unreleased `dev/v1.1.0` development branch.
+
+### Security
+
+- v1.1.0 draft documentation keeps real customer configs, live output, IOS/CML images, commercial device images, license files, and PyPI/TestPyPI publishing out of scope.
+
+### Known Limitations
+
+- `v1.1.0` has not been tagged or released.
+- Package version remains `1.0.0` until a release candidate version update is explicitly approved.
+- Policy-dependent Network items remain `MANUAL_REQUIRED`.
+
 ## [1.0.0] - 2026-07-02
 
 ### Added
