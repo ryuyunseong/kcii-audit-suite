@@ -109,6 +109,7 @@ Included in this MVP scope:
 - Use sanitized offline `show configuration | display set` fixtures only.
 - Keep unknown, policy-dependent, or unsupported Junos evidence as `MANUAL_REQUIRED`.
 - Treat brace-style Junos configuration as `needs_display_set` rather than attempting full parsing.
+- Current sanitized Junos good-fixture smoke emits all `N-01` to `N-38` items with `GOOD 14` and `MANUAL_REQUIRED 24`.
 
 Excluded from this MVP scope unless separately approved:
 

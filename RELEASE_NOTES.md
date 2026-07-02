@@ -4,6 +4,8 @@
 
 `v1.2.0` is currently documented as a development-branch draft on `dev/v1.2.0`. No `v1.2.0` tag or GitHub Release has been created yet.
 
+The detailed v1.2.0 draft is maintained in `RELEASE_NOTES_v1.2.0.md`, and the release-readiness checklist is maintained in `docs/V1_2_0_READINESS.md`.
+
 ### Scope
 
 - Baseline final release `v1.1.0` remains fixed at `31f624e`.
@@ -27,6 +29,7 @@ Before any `v1.2.0` tag or private GitHub Release is created, run:
 
 - `v1.2.0` is not tagged or released yet.
 - Juniper Junos parser MVP is implemented for display-set configuration output.
+- Junos smoke currently emits all `N-01` to `N-38` items with `GOOD 14` and `MANUAL_REQUIRED 24` for the sanitized good fixture.
 - Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are out of scope for the MVP.
 - FRRouting, Security Appliance enhancements, raw vault, and Unix fixture expansion are separate future scopes unless separately approved.
 

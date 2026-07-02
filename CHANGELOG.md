@@ -7,6 +7,7 @@
 - Documented `dev/v1.2.0` as the post-v1.1.0 feature branch.
 - Added Juniper Junos parser MVP for sanitized `show configuration | display set` output.
 - Added synthetic Junos display-set and unsupported brace-style fixtures.
+- Added `RELEASE_NOTES_v1.2.0.md` and `docs/V1_2_0_READINESS.md` draft release documents.
 
 ### Security
 

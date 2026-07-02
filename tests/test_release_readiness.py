@@ -15,12 +15,14 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("RELEASE_NOTES_v1.2.0.md"),
         Path("RELEASE_NOTES_v1.1.0.md"),
         Path("RELEASE_NOTES_v1.0.0.md"),
         Path("RELEASE_NOTES_v1.0.0rc2.md"),
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/V1_2_0_READINESS.md"),
         Path("docs/V1_1_0_READINESS.md"),
         Path("docs/NETWORK_OUTPUT_SANITIZATION.md"),
         Path("docs/V1_0_0_READINESS.md"),
@@ -94,11 +96,13 @@ def test_release_version_is_final_candidate():
 def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
+    release_notes_v1_2_0 = Path("RELEASE_NOTES_v1.2.0.md").read_text(encoding="utf-8")
     release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
+    readiness_v1_2_0 = Path("docs/V1_2_0_READINESS.md").read_text(encoding="utf-8")
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
-    for text in [readme, release_index, release_notes, coverage, changelog]:
+    for text in [readme, release_index, release_notes, readiness_v1_2_0, coverage, changelog]:
         assert "v1.1.0" in text
         assert "31f624e" in text
 
@@ -106,7 +110,12 @@ def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status()
     assert "is the final private GitHub Release" in release_notes
     assert "dev/v1.2.0" in readme
     assert "No `v1.2.0` tag or GitHub Release has been created yet." in release_index
+    assert "No `v1.2.0` tag or GitHub Release has been created." in release_notes_v1_2_0
+    assert "`v1.2.0` tag: not created" in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
+    assert "show configuration | display set" in release_notes_v1_2_0
+    assert "GOOD 14" in release_notes_v1_2_0
+    assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
 
 
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):
@@ -134,12 +143,14 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         for path in [
             Path("README.md"),
             Path("RELEASE_NOTES.md"),
+            Path("RELEASE_NOTES_v1.2.0.md"),
             Path("RELEASE_NOTES_v1.1.0.md"),
             Path("RELEASE_NOTES_v1.0.0.md"),
             Path("RELEASE_NOTES_v1.0.0rc2.md"),
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
+            Path("docs/V1_2_0_READINESS.md"),
             Path("docs/V1_1_0_READINESS.md"),
             Path("docs/V1_0_0_READINESS.md"),
             Path("docs/V1_0_0RC2_READINESS.md"),
