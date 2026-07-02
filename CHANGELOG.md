@@ -5,6 +5,7 @@
 ### Added
 
 - Started `dev/v1.3.0` for Junos real display-set output compatibility and Network regression hardening.
+- Added `RELEASE_NOTES_v1.3.0.md` and `docs/V1_3_0_READINESS.md` draft release documents.
 - Added Junos fixture sanitization guidance for future real lab, GNS3, CML, or device-derived display-set samples.
 - Added a sanitized realistic Junos display-set fixture with prompts, blank lines, inactive statements, and `apply-groups` evidence.
 - Added Cisco IOS/Junos common Network regression tests for full `N-01` to `N-38` result emission.

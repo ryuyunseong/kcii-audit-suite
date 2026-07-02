@@ -15,6 +15,7 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("RELEASE_NOTES_v1.3.0.md"),
         Path("RELEASE_NOTES_v1.2.0.md"),
         Path("RELEASE_NOTES_v1.1.0.md"),
         Path("RELEASE_NOTES_v1.0.0.md"),
@@ -22,6 +23,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/V1_3_0_READINESS.md"),
         Path("docs/V1_2_0_READINESS.md"),
         Path("docs/V1_1_0_READINESS.md"),
         Path("docs/NETWORK_OUTPUT_SANITIZATION.md"),
@@ -96,8 +98,10 @@ def test_release_version_is_final_candidate():
 def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
+    release_notes_v1_3_0 = Path("RELEASE_NOTES_v1.3.0.md").read_text(encoding="utf-8")
     release_notes_v1_2_0 = Path("RELEASE_NOTES_v1.2.0.md").read_text(encoding="utf-8")
     release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
+    readiness_v1_3_0 = Path("docs/V1_3_0_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_2_0 = Path("docs/V1_2_0_READINESS.md").read_text(encoding="utf-8")
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
@@ -115,6 +119,13 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "dev/v1.3.0" in readme
     assert "`v1.2.0` is fixed at commit `9296245`" in release_index
     assert "No `v1.3.0` tag or GitHub Release has been created." in release_index
+    assert "`kcii-audit-suite v1.3.0` is a draft release note" in release_notes_v1_3_0
+    assert "`v1.3.0` is not tagged or released." in readiness_v1_3_0
+    assert "Latest Junos realistic normalization commit: `7077334`" in readiness_v1_3_0
+    assert "display_set_realistic_sanitized.txt" in release_notes_v1_3_0
+    assert "GOOD 14" in release_notes_v1_3_0
+    assert "MANUAL_REQUIRED 24" in release_notes_v1_3_0
+    assert "complete `groups`, `apply-groups`, and inheritance expansion" in readiness_v1_3_0
     assert "private GitHub Release" in release_notes_v1_2_0
     assert "`v1.2.0` tag: not created" not in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
@@ -149,6 +160,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         for path in [
             Path("README.md"),
             Path("RELEASE_NOTES.md"),
+            Path("RELEASE_NOTES_v1.3.0.md"),
             Path("RELEASE_NOTES_v1.2.0.md"),
             Path("RELEASE_NOTES_v1.1.0.md"),
             Path("RELEASE_NOTES_v1.0.0.md"),
@@ -156,6 +168,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
+            Path("docs/V1_3_0_READINESS.md"),
             Path("docs/V1_2_0_READINESS.md"),
             Path("docs/V1_1_0_READINESS.md"),
             Path("docs/V1_0_0_READINESS.md"),

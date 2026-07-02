@@ -37,13 +37,29 @@ Release validation completed before creating the `v1.2.0` tag and private GitHub
 
 `dev/v1.3.0` starts after the fixed private `v1.2.0` release. No `v1.3.0` tag or GitHub Release has been created.
 
+The detailed v1.3.0 draft notes are maintained in `RELEASE_NOTES_v1.3.0.md`, and the release-readiness draft checklist is maintained in `docs/V1_3_0_READINESS.md`.
+
 ### Scope
 
 - Preserve the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
 - Strengthen Junos display-set fixture sanitization guidance.
+- Add sanitized realistic Junos display-set fixture coverage for prompt lines, blank lines, spacing variants, inactive statements, and `apply-groups` evidence.
+- Keep `apply-groups` and inheritance-dependent evidence in `MANUAL_REQUIRED` or partial-evidence review until a separate inheritance expansion task is approved.
+- Fail closed for unsupported Junos XML/JSON input.
 - Add Cisco IOS/Junos common Network regression coverage.
 - Keep real device, GNS3, CML, or approved lab outputs out of source control unless sanitized.
 - Keep PyPI/TestPyPI publishing and public repository conversion out of scope.
+
+### Validation Gate
+
+The current v1.3.0 draft validation after the Junos realistic normalization change is:
+
+- targeted Network tests: `11 passed`
+- release readiness tests: `9 passed`
+- full `python -m pytest`: `171 passed`
+- Junos realistic smoke: 38 results and seven output files
+- Junos realistic smoke distribution: `GOOD 14`, `MANUAL_REQUIRED 24`
+- secret and forbidden-path scans: no hits
 
 ## v1.1.0 Final Release
 

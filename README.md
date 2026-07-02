@@ -139,6 +139,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 - [CHANGELOG.md](CHANGELOG.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
+- [RELEASE_NOTES_v1.3.0.md](RELEASE_NOTES_v1.3.0.md)
 - [RELEASE_NOTES_v1.2.0.md](RELEASE_NOTES_v1.2.0.md)
 - [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md)
 - [RELEASE_NOTES_v1.0.0.md](RELEASE_NOTES_v1.0.0.md)
@@ -147,6 +148,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
+- [docs/V1_3_0_READINESS.md](docs/V1_3_0_READINESS.md)
 - [docs/V1_2_0_READINESS.md](docs/V1_2_0_READINESS.md)
 - [docs/V1_1_0_READINESS.md](docs/V1_1_0_READINESS.md)
 - [docs/V1_0_0_READINESS.md](docs/V1_0_0_READINESS.md)
@@ -164,4 +166,4 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 `v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
 
-`dev/v1.3.0` is the current post-v1.2.0 feature branch. Its first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening. Patch-only fixes should be separated to `dev/v1.2.1`.
+`dev/v1.3.0` is the current post-v1.2.0 feature branch. Its first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening. Draft release notes are in `RELEASE_NOTES_v1.3.0.md`, and the readiness checklist is in `docs/V1_3_0_READINESS.md`. No `v1.3.0` tag or GitHub Release has been created. Patch-only fixes should be separated to `dev/v1.2.1`.
