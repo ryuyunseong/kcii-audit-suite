@@ -1,8 +1,37 @@
 # Release Notes
 
-## v1.1.0 Draft
+## v1.2.0 Development Draft
 
-`v1.1.0` is currently documented as a development-branch draft on `dev/v1.1.0`. No `v1.1.0` tag or GitHub Release has been created yet.
+`v1.2.0` is currently documented as a development-branch draft on `dev/v1.2.0`. No `v1.2.0` tag or GitHub Release has been created yet.
+
+### Scope
+
+- Baseline final release `v1.1.0` remains fixed at `31f624e`.
+- The single selected feature candidate is Juniper Junos parser MVP.
+- Parser work must use sanitized offline command-output fixtures only.
+- Cisco IOS `N-01` to `N-38` behavior from `v1.1.0` must remain stable.
+- Public repository conversion and PyPI/TestPyPI publishing remain out of scope.
+
+### Validation Gate
+
+Before any `v1.2.0` tag or private GitHub Release is created, run:
+
+- full `python -m pytest`
+- targeted Network parser tests for Cisco IOS and the new Junos parser
+- profile smoke for any newly added Junos fixture
+- sensitive placeholder search over generated text and Excel outputs
+- wheel/sdist build and checksum generation after package version update
+- installed-wheel smoke from a clean environment
+
+### Known Limits
+
+- `v1.2.0` is not tagged or released yet.
+- Juniper Junos parser MVP is a candidate scope, not implemented in this branch setup commit.
+- FRRouting, Security Appliance enhancements, raw vault, and Unix fixture expansion are separate future scopes unless separately approved.
+
+## v1.1.0 Final Release
+
+`v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is not a pre-release.
 
 ### Scope
 
@@ -14,9 +43,9 @@
 
 ### Validation Gate
 
-Before creating a `v1.1.0` tag or private GitHub Release, run:
+Release validation completed before creating the `v1.1.0` tag and private GitHub Release:
 
-- full `python -m pytest`
+- full `python -m pytest`: `162 passed`
 - Network and realistic fixture smoke commands from `docs/V1_1_0_READINESS.md`
 - sensitive placeholder search over generated text and Excel outputs
 - wheel/sdist build and checksum generation after package version update
@@ -24,7 +53,6 @@ Before creating a `v1.1.0` tag or private GitHub Release, run:
 
 ### Known Limits
 
-- `v1.1.0` is not tagged or released yet.
 - `MANUAL_REQUIRED` remains expected for policy-dependent Network items.
 - Real customer configs, live output, device images, and license files remain out of scope.
 - PyPI and TestPyPI publishing remain deferred.

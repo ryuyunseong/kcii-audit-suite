@@ -91,18 +91,22 @@ def test_release_version_is_final_candidate():
     assert __version__ == "1.1.0"
 
 
-def test_v1_1_0_docs_state_unreleased_development_status():
+def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status():
+    readme = Path("README.md").read_text(encoding="utf-8")
+    release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
     release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
-    readiness = Path("docs/V1_1_0_READINESS.md").read_text(encoding="utf-8")
+    coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
-    for text in [release_notes, readiness, changelog]:
+    for text in [readme, release_index, release_notes, coverage, changelog]:
         assert "v1.1.0" in text
-        assert "not tagged" in text or "not been tagged" in text
+        assert "31f624e" in text
 
-    assert "dev/v1.1.0" in release_notes
-    assert "No `v1.1.0` tag or GitHub Release has been created yet." in release_notes
-    assert "Package version metadata is `1.1.0`" in changelog
+    assert "latest final GitHub Release" in readme
+    assert "is the final private GitHub Release" in release_notes
+    assert "dev/v1.2.0" in readme
+    assert "No `v1.2.0` tag or GitHub Release has been created yet." in release_index
+    assert "Juniper Junos parser MVP" in coverage
 
 
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):

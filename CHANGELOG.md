@@ -1,6 +1,18 @@
 # Changelog
 
-## [1.1.0] - Unreleased
+## [1.2.0] - Unreleased
+
+### Added
+
+- Documented `dev/v1.2.0` as the post-v1.1.0 feature branch.
+- Selected Juniper Junos parser MVP as the only v1.2.0 feature candidate.
+
+### Security
+
+- v1.2.0 planning keeps the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
+- Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+## [1.1.0] - 2026-07-02
 
 ### Added
 
@@ -14,6 +26,7 @@
 - Cisco IOS Network automatic judgment coverage is documented as 27 items while preserving `N-01` to `N-38` full result emission.
 - Release notes now distinguish the fixed `v1.0.0` release from the unreleased `dev/v1.1.0` development branch.
 - Package version metadata is prepared as `1.1.0` for release smoke, build, checksum, and installed-wheel validation.
+- `v1.1.0` is published as a final private GitHub Release fixed at `31f624e`.
 
 ### Security
 
@@ -21,8 +34,6 @@
 
 ### Known Limitations
 
-- `v1.1.0` has not been tagged or released.
-- Package version metadata is `1.1.0`, but tag creation and private GitHub Release publication still require separate approval.
 - Policy-dependent Network items remain `MANUAL_REQUIRED`.
 
 ## [1.0.0] - 2026-07-02

@@ -81,9 +81,9 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 
 ## v1.1.0 Development Scope
 
-The `dev/v1.1.0` branch starts after the private `v1.0.0` release. The first development slice expands Cisco IOS automatic judgment only where sanitized command output can be interpreted deterministically.
+The `dev/v1.1.0` branch started after the private `v1.0.0` release. The first development slice expanded Cisco IOS automatic judgment only where sanitized command output can be interpreted deterministically.
 
-`v1.1.0` is not tagged or released yet; see `RELEASE_NOTES_v1.1.0.md` and `docs/V1_1_0_READINESS.md` for the current draft release notes and readiness checklist.
+`v1.1.0` is fixed at `31f624e` and published as the latest final private GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
 
 Included in this slice:
 
@@ -93,6 +93,27 @@ Included in this slice:
 - Add sanitized realistic Cisco IOS fixture coverage for common `show run`, multi-`line vty`, SNMP, logging, NTP, and service-hardening output variants.
 - Leave policy-dependent items such as password complexity, AAA lockout, user privilege design, auxiliary port review, patch status, logging policy completeness, SNMP necessity, spoofing controls, DDoS controls, and unused interface judgment as `MANUAL_REQUIRED`.
 - Keep fixtures synthetic and sanitized; do not store customer configuration exports or live device output.
+
+## v1.2.0 Development Scope
+
+The `dev/v1.2.0` branch starts from the fixed private `v1.1.0` release. The selected feature candidate for this branch is Juniper Junos parser MVP.
+
+`v1.2.0` is not tagged or released yet.
+
+Included in this candidate scope:
+
+- Preserve the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
+- Add Juniper Junos as the next Network vendor target without changing Cisco IOS `N-01` to `N-38` behavior.
+- Use sanitized offline command-output fixtures only, with candidate evidence such as Junos set-style configuration output.
+- Keep unknown, policy-dependent, or unsupported Junos evidence as `MANUAL_REQUIRED`.
+
+Excluded from this candidate scope unless separately approved:
+
+- FRRouting parser and Containerlab fixture work.
+- Security Appliance questionnaire enhancements.
+- `--save-raw-local` raw vault behavior.
+- Unix AIX/HP-UX/Solaris fixture expansion.
+- Public repository conversion or PyPI/TestPyPI publishing.
 
 ## Security Appliance
 

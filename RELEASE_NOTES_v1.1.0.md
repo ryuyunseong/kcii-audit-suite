@@ -1,12 +1,12 @@
-# kcii-audit-suite v1.1.0 Draft
+# kcii-audit-suite v1.1.0
 
-`kcii-audit-suite v1.1.0` is currently a draft for the `dev/v1.1.0` development branch. No `v1.1.0` tag or GitHub Release has been created yet.
+`kcii-audit-suite v1.1.0` is the final private GitHub Release for the `dev/v1.1.0` branch. The release tag is `v1.1.0` and points to commit `31f624e`.
 
 The baseline final release remains `v1.0.0`, fixed at commit `31983bd`. The `v1.0.0rc1` and `v1.0.0rc2` tags also remain fixed and must not be moved.
 
 ## Summary
 
-This draft documents the v1.1.0 Network profile improvements completed after `v1.0.0`:
+This release contains Network profile improvements completed after `v1.0.0`:
 
 - Cisco IOS automatic judgment coverage expands from 9 items to 27 items.
 - Network `N-01` to `N-38` full result emission is preserved.
@@ -48,15 +48,17 @@ Default classification still creates:
 
 ## Validation
 
-Latest `dev/v1.1.0` validation for this draft:
+Final validation for this release:
 
-- targeted Network tests: `13 passed`
-- full `python -m pytest`: `161 passed`
+- full `python -m pytest`: `162 passed`
+- release readiness tests: `9 passed`
 - realistic Cisco IOS fixture smoke: 38 results and seven output files
 - realistic fixture status distribution: `GOOD 27`, `MANUAL_REQUIRED 11`
 - sensitive placeholder search over text and Excel outputs: no hits
-
-Before any `v1.1.0` tag or private GitHub Release is created, rerun the readiness checks in `docs/V1_1_0_READINESS.md`.
+- build: wheel and source distribution generated successfully
+- release assets: wheel, source distribution, and `SHA256SUMS.txt`
+- downloaded release asset checksum validation: OK
+- GitHub Release `isPrerelease`: `false`
 
 ## Security Notes
 
@@ -68,7 +70,6 @@ Before any `v1.1.0` tag or private GitHub Release is created, rerun the readines
 
 ## Known Limitations
 
-- v1.1.0 is not tagged or released yet.
 - Cisco IOS coverage is still deterministic command-output parsing, not full network emulation.
 - Many official items remain `MANUAL_REQUIRED` by design.
 - Juniper, FortiGate, FRR, and other vendor parsers remain future work.
@@ -78,11 +79,8 @@ Before any `v1.1.0` tag or private GitHub Release is created, rerun the readines
 
 No migration is expected for existing offline evidence flows. The CLI commands and output bundle remain compatible with `v1.0.0`.
 
-Package version metadata is prepared as `1.1.0` for release smoke, build, checksum, and installed-wheel validation. Rebuild wheel and source distributions, regenerate checksums, and validate installed-wheel behavior before creating an annotated tag.
-
 ## Next Steps
 
-- Complete the `v1.1.0` readiness pass.
-- Commit and push the `1.1.0` version metadata update only after validation succeeds.
-- Create an annotated `v1.1.0` tag only after explicit approval.
-- Create a private GitHub Release only after the tag and release assets are verified.
+- Do not move the `v1.1.0` tag or replace release assets.
+- Use `dev/v1.2.0` for feature work.
+- Use `dev/v1.1.1` only for patch-level fixes.

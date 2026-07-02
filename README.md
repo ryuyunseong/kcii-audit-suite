@@ -149,12 +149,14 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [docs/V1_0_0_READINESS.md](docs/V1_0_0_READINESS.md)
 - [docs/V1_0_0RC2_READINESS.md](docs/V1_0_0RC2_READINESS.md)
 
-## Current Release Candidate Status
+## Current Release Status
 
 `v1.0.0rc1` is fixed at commit `e93d18b`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc1` tag.
 
 `v1.0.0rc2` is fixed at commit `59d3d38`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc2` tag.
 
-Final release stabilization should happen on `release/v1.0.0`. The v1.0.0 target is to add no new features, keep full item registration intact, document known limitations clearly, and leave unsupported or ambiguous items as `MANUAL_REQUIRED`.
+`v1.0.0` is fixed at commit `31983bd`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.0.0` tag.
 
-`dev/v1.1.0` is the current post-v1.0.0 development branch for Cisco IOS Network parser improvements. `v1.1.0` has not been tagged or released.
+`v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
+
+`dev/v1.2.0` is the current post-v1.1.0 feature branch. Its single selected feature candidate is Juniper Junos parser MVP. Patch-only fixes should be separated to `dev/v1.1.1`.
