@@ -92,7 +92,7 @@ def test_cli_help_smoke_for_release_commands():
 
 
 def test_release_version_is_final_candidate():
-    assert __version__ == "1.2.0"
+    assert __version__ == "1.3.0"
 
 
 def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
@@ -121,6 +121,8 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "No `v1.3.0` tag or GitHub Release has been created." in release_index
     assert "`kcii-audit-suite v1.3.0` is a draft release note" in release_notes_v1_3_0
     assert "`v1.3.0` is not tagged or released." in readiness_v1_3_0
+    assert "Package version metadata is prepared as `1.3.0`" in readme
+    assert "Package version metadata: `1.3.0`" in readiness_v1_3_0
     assert "Latest Junos realistic normalization commit: `7077334`" in readiness_v1_3_0
     assert "display_set_realistic_sanitized.txt" in release_notes_v1_3_0
     assert "GOOD 14" in release_notes_v1_3_0

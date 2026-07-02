@@ -2,13 +2,13 @@
 
 This document is the draft readiness checklist for the `dev/v1.3.0` branch. It is not a release record. Do not create a `v1.3.0` tag or GitHub Release until explicit approval is given.
 
-`v1.3.0` is not tagged or released. Package version metadata remains `1.2.0` until the later release-smoke stage updates it to `1.3.0`.
+`v1.3.0` is not tagged or released. Package version metadata is prepared as `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
 
 ## Branch And Tag State
 
 - Development branch: `dev/v1.3.0`
 - Latest Junos realistic normalization commit: `7077334`
-- Package version metadata: `1.2.0` until the later release-smoke step
+- Package version metadata: `1.3.0`
 - Baseline final release: `v1.2.0`
 - `v1.2.0` tag remains fixed at `9296245`
 - `v1.1.0` tag remains fixed at `31f624e`
@@ -106,7 +106,7 @@ Expected result: no matches in generated outputs or staged diffs.
 
 ## Build And Checksums
 
-Run this only after the package version is updated to `1.3.0` in a later release-smoke task and before creating any tag or GitHub Release.
+Run this before creating any tag or GitHub Release.
 
 ```powershell
 Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue

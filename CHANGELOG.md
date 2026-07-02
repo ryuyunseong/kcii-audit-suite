@@ -12,6 +12,7 @@
 
 ### Changed
 
+- Package version metadata is prepared as `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
 - Junos parser normalization now marks `apply-groups` and inherited configuration as manual-review evidence and fails closed for XML/JSON config input.
 
 ### Security

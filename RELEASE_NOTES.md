@@ -42,6 +42,7 @@ The detailed v1.3.0 draft notes are maintained in `RELEASE_NOTES_v1.3.0.md`, and
 ### Scope
 
 - Preserve the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
+- Package version metadata is prepared as `1.3.0`.
 - Strengthen Junos display-set fixture sanitization guidance.
 - Add sanitized realistic Junos display-set fixture coverage for prompt lines, blank lines, spacing variants, inactive statements, and `apply-groups` evidence.
 - Keep `apply-groups` and inheritance-dependent evidence in `MANUAL_REQUIRED` or partial-evidence review until a separate inheritance expansion task is approved.
@@ -59,6 +60,8 @@ The current v1.3.0 draft validation after the Junos realistic normalization chan
 - full `python -m pytest`: `171 passed`
 - Junos realistic smoke: 38 results and seven output files
 - Junos realistic smoke distribution: `GOOD 14`, `MANUAL_REQUIRED 24`
+- wheel/sdist build and checksum generation for package version `1.3.0`
+- clean installed-wheel smoke from outside the repository
 - secret and forbidden-path scans: no hits
 
 ## v1.1.0 Final Release

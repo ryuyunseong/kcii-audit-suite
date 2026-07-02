@@ -11,6 +11,7 @@ This draft documents the Junos realistic display-set compatibility work complete
 - Junos display-set support continues to build on the `v1.2.0` parser MVP.
 - A sanitized realistic Junos display-set fixture was added.
 - Parser normalization now handles prompt lines, blank lines, spacing variants, inactive or deactivated statements, `apply-groups` evidence, and unsupported XML/JSON inputs more conservatively.
+- Package version metadata is prepared as `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
 - Cisco IOS and Junos common Network regression coverage continues to verify full `N-01` to `N-38` result emission.
 - `apply-groups` and inheritance-dependent evidence remains `MANUAL_REQUIRED` or partial evidence until a separate inheritance-expansion task is approved.
 
@@ -79,6 +80,9 @@ Validation completed before this draft was written:
 - forbidden staged path scan: no hits
 - generated output placeholder scan for the Junos realistic smoke: no hits
 - `git diff --check`: no whitespace errors after fixture cleanup
+- build: wheel and source distribution generated successfully for `1.3.0`
+- release checksum file: `SHA256SUMS.txt` generated for wheel and source distribution
+- installed-wheel smoke from a clean non-repository working directory: OK
 - `v1.2.0` tag remained fixed at `9296245`
 
 The `docs/V1_3_0_READINESS.md` checklist records the validation gate to run before any `v1.3.0` tag or private GitHub Release is created.
@@ -107,5 +111,5 @@ No migration is expected for existing offline evidence flows. Existing Cisco IOS
 ## Next Steps
 
 - Do not create a `v1.3.0` tag or GitHub Release until release smoke, build, checksum, and installed-wheel validation are complete.
-- Update package version metadata to `1.3.0` only in the later release-smoke stage.
+- Keep package version metadata at `1.3.0` for release smoke, build, checksum, and installed-wheel validation.
 - Treat `display inheritance`, brace-style parsing, XML/JSON parsing, and broader Junos semantics as later scoped work.
