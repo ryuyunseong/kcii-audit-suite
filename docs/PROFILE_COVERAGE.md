@@ -69,11 +69,12 @@ This document summarizes the release-candidate coverage for the `kcii-2025-12` r
 
 - Scope: `N-01` to `N-38`
 - Supported MVP vendors: Cisco IOS, Juniper Junos
-- Status: Cisco IOS simulator/parser MVP; Junos display-set parser MVP
+- Status: Cisco IOS simulator/parser MVP; Junos display-set parser MVP with conservative display-inheritance skeleton
 - Known limits:
   - Cisco IOS parser coverage is limited to deterministic command-response evidence.
-  - Junos parser coverage is limited to `show configuration | display set` output.
-  - Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are not supported in the MVP.
+  - Junos parser coverage is centered on `show configuration | display set` output.
+  - Junos display-inheritance support is limited to sanitized synthetic `effective-statement` evidence and conservative conflict/incomplete detection.
+  - Brace-style, XML, JSON, and full inheritance-expanded Junos configuration interpretation are not supported in the MVP.
   - FortiGate and other network OS support remains future work.
   - Configuration context often requires manual review.
 - Next automation candidates:
@@ -143,7 +144,7 @@ Excluded from the initial v1.3.0 scope unless separately approved:
 
 ## v1.4.0 Development Scope
 
-The `dev/v1.4.0` branch starts from the fixed private `v1.3.0` release. The selected first scope is Junos `display inheritance` design and fixture planning.
+The `dev/v1.4.0` branch starts from the fixed private `v1.3.0` release. The selected first scope is a conservative Junos `display inheritance` parser skeleton and fixture coverage.
 
 `v1.4.0` is not tagged or released yet.
 
@@ -151,6 +152,7 @@ Included in the initial v1.4.0 scope:
 
 - Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
 - Document how sanitized `show configuration | display set` evidence can be paired with sanitized `display inheritance` evidence.
+- Parse sanitized synthetic display-inheritance fixture lines into limited partial evidence.
 - Define merge rules for active display-set lines, inherited source-group evidence, inactive statements, and conflicting inherited values.
 - Separate deterministic inherited evidence candidates from items that must remain `MANUAL_REQUIRED`.
 - Keep direct device collection, NETCONF collection, active scanning, and raw live output out of scope.

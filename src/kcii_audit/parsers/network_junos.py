@@ -8,6 +8,16 @@ from typing import Any
 from kcii_audit.parsers.network_cisco_ios import NETWORK_ITEMS, SIMPLE_BOOLEAN_ITEM_FIELDS
 from kcii_audit.schemas.evidence import EvidenceRecord
 
+INHERITANCE_POSITIVE_OVERRIDES = {
+    "ssh_enabled",
+    "banner_configured",
+    "logging_host_configured",
+    "ntp_configured",
+    "timestamp_log_configured",
+    "snmp_service_present",
+    "snmp_read_only",
+}
+
 
 def records_from_junos_paste(
     text: str,
@@ -41,7 +51,10 @@ def records_from_junos_paste(
 
 def _extract_facts(text: str) -> dict[str, Any]:
     active_lines, inactive_lines = _split_display_set_lines(text)
+    inheritance_facts = _extract_display_inheritance_facts(text)
     if not active_lines:
+        if inheritance_facts["present"]:
+            return _facts_from_display_inheritance(inheritance_facts)
         if _looks_like_brace_config(text):
             return {
                 "recognized": False,
@@ -109,7 +122,7 @@ def _extract_facts(text: str) -> dict[str, Any]:
     weak_snmp = any(_is_weak_snmp_line(line) for line in snmp_lines)
     inheritance_required = _has_apply_groups(active_lines)
 
-    return {
+    facts = {
         "recognized": True,
         "collection_status": "collected",
         "input_format": "junos_display_set",
@@ -153,6 +166,7 @@ def _extract_facts(text: str) -> dict[str, Any]:
         "pad_service_blocked": None,
         "mask_reply_blocked": None,
     }
+    return _merge_inheritance_facts(facts, inheritance_facts)
 
 
 def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
@@ -171,6 +185,22 @@ def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
         base["inactive_lines_ignored"] = True
     if facts.get("inheritance_required"):
         base["inheritance_required"] = True
+    if facts.get("inheritance_available"):
+        base["inheritance_available"] = True
+    if facts.get("inheritance_conflict"):
+        base["inheritance_conflict"] = True
+    if facts.get("inheritance_incomplete"):
+        base["inheritance_incomplete"] = True
+    if "inheritance_source_count" in facts:
+        base["inheritance_source_count"] = facts["inheritance_source_count"]
+    if facts.get("automation_scope"):
+        base["automation_scope"] = facts["automation_scope"]
+
+    if facts.get("inheritance_blocks_automation"):
+        return base | {
+            "manual_required": True,
+            "reason": _manual_reason(facts),
+        }
 
     if item_id == "N-01":
         return base | {"password_configured": facts["password_configured"]}
@@ -235,6 +265,227 @@ def _split_display_set_lines(text: str) -> tuple[list[str], list[str]]:
     return active, inactive
 
 
+def _extract_display_inheritance_facts(text: str) -> dict[str, Any]:
+    lines, inactive_lines = _split_display_inheritance_lines(text)
+    if not lines:
+        return {"present": False}
+
+    source_count = 0
+    effective_lines: list[str] = []
+    conflict_lines: list[str] = []
+    incomplete = False
+
+    for line in lines:
+        lowered = line.lower()
+        if lowered.startswith("inheritance-source"):
+            if re.search(r"(?i)\b(missing|unknown)\b", line):
+                incomplete = True
+                continue
+            source_count += 1
+            continue
+        if lowered.startswith("apply-groups-except"):
+            incomplete = True
+            continue
+        if lowered.startswith("conflict-statement"):
+            conflict_lines.append(_strip_inheritance_source(line.removeprefix("conflict-statement").strip()))
+            continue
+        if lowered.startswith("effective-statement"):
+            if re.search(r"(?i)\bsource-group\s+(missing|unknown)\b", line) or " source-group " not in lowered:
+                incomplete = True
+            effective_lines.append(_strip_inheritance_source(line.removeprefix("effective-statement").strip()))
+
+    conflict = bool(conflict_lines)
+    fields = _inherited_effective_fields(effective_lines) if effective_lines and not conflict and not incomplete else {}
+    return {
+        "present": True,
+        "available": bool(effective_lines),
+        "source_count": source_count,
+        "conflict": conflict,
+        "incomplete": incomplete,
+        "inactive_lines_ignored": bool(inactive_lines),
+        "fields": fields,
+    }
+
+
+def _split_display_inheritance_lines(text: str) -> tuple[list[str], list[str]]:
+    active: list[str] = []
+    inactive: list[str] = []
+    for raw_line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        line = raw_line.replace("\x08", "").replace("--More--", "").strip()
+        line = _strip_prompt_prefix(line)
+        if not line or line.startswith("#") or re.fullmatch(r"[-=]{3,}", line):
+            continue
+        lowered = line.lower()
+        if "show configuration" in lowered and "display inheritance" in lowered:
+            continue
+        if line.endswith(">") or line.endswith("#"):
+            continue
+        if lowered.startswith("inactive:"):
+            inactive_line = line.split(":", 1)[1].strip()
+            if inactive_line:
+                inactive.append(inactive_line)
+            continue
+        if lowered.startswith("deactivate "):
+            inactive.append(line)
+            continue
+        if lowered.startswith(("inheritance-source", "effective-statement", "conflict-statement", "apply-groups-except")):
+            active.append(re.sub(r"\s+", " ", line))
+    return active, inactive
+
+
+def _facts_from_display_inheritance(inheritance_facts: dict[str, Any]) -> dict[str, Any]:
+    facts = _empty_junos_facts("junos_display_inheritance")
+    facts.update(
+        {
+            "inheritance_required": True,
+            "inheritance_available": inheritance_facts["available"],
+            "inheritance_conflict": inheritance_facts["conflict"],
+            "inheritance_incomplete": inheritance_facts["incomplete"],
+            "inheritance_source_count": inheritance_facts["source_count"],
+            "inactive_lines_ignored": inheritance_facts["inactive_lines_ignored"],
+            "automation_scope": "manual_review"
+            if inheritance_facts["conflict"] or inheritance_facts["incomplete"]
+            else "partial",
+            "inheritance_blocks_automation": inheritance_facts["conflict"] or inheritance_facts["incomplete"],
+        }
+    )
+    if not facts["inheritance_blocks_automation"]:
+        facts.update(inheritance_facts["fields"])
+    return facts
+
+
+def _empty_junos_facts(input_format: str) -> dict[str, Any]:
+    return {
+        "recognized": True,
+        "collection_status": "collected",
+        "input_format": input_format,
+        "inactive_lines_ignored": False,
+        "inheritance_required": False,
+        "inheritance_available": False,
+        "inheritance_conflict": False,
+        "inheritance_incomplete": False,
+        "inheritance_source_count": 0,
+        "automation_scope": "manual_review",
+        "inheritance_blocks_automation": False,
+        "password_configured": None,
+        "encrypted_passwords_only": None,
+        "plaintext_password_present": None,
+        "management_acl_applied": None,
+        "exec_timeout_configured": None,
+        "ssh_enabled": None,
+        "telnet_allowed": None,
+        "safe_vty_protocol": None,
+        "banner_configured": None,
+        "logging_host_configured": None,
+        "ntp_configured": None,
+        "timestamp_log_configured": None,
+        "snmp_service_present": None,
+        "snmp_community_complex": None,
+        "snmp_acl_configured": None,
+        "snmp_read_only": None,
+        "tftp_service_blocked": None,
+        "tcp_keepalives_configured": None,
+        "finger_service_blocked": None,
+        "web_service_blocked": None,
+        "small_services_blocked": None,
+        "bootp_service_blocked": None,
+        "cdp_service_blocked": None,
+        "directed_broadcast_blocked": None,
+        "source_route_blocked": None,
+        "proxy_arp_blocked": None,
+        "icmp_control_messages_blocked": None,
+        "identd_service_blocked": None,
+        "domain_lookup_blocked": None,
+        "pad_service_blocked": None,
+        "mask_reply_blocked": None,
+    }
+
+
+def _merge_inheritance_facts(facts: dict[str, Any], inheritance_facts: dict[str, Any]) -> dict[str, Any]:
+    if not inheritance_facts["present"]:
+        facts["inheritance_available"] = False
+        facts["inheritance_conflict"] = False
+        facts["inheritance_incomplete"] = False
+        facts["inheritance_source_count"] = 0
+        facts["automation_scope"] = "display_set"
+        facts["inheritance_blocks_automation"] = False
+        return facts
+
+    facts["input_format"] = "junos_display_set_with_inheritance"
+    facts["inheritance_required"] = True
+    facts["inheritance_available"] = inheritance_facts["available"]
+    facts["inheritance_conflict"] = inheritance_facts["conflict"]
+    facts["inheritance_incomplete"] = inheritance_facts["incomplete"]
+    facts["inheritance_source_count"] = inheritance_facts["source_count"]
+    facts["inactive_lines_ignored"] = facts.get("inactive_lines_ignored", False) or inheritance_facts["inactive_lines_ignored"]
+    facts["automation_scope"] = (
+        "manual_review"
+        if inheritance_facts["conflict"] or inheritance_facts["incomplete"]
+        else "partial"
+    )
+    facts["inheritance_blocks_automation"] = inheritance_facts["conflict"] or inheritance_facts["incomplete"]
+    if facts["inheritance_blocks_automation"]:
+        return facts
+
+    for field, value in inheritance_facts["fields"].items():
+        if value is None:
+            continue
+        if facts.get(field) is None or (field in INHERITANCE_POSITIVE_OVERRIDES and facts.get(field) is False and value is True):
+            facts[field] = value
+    return facts
+
+
+def _strip_inheritance_source(line: str) -> str:
+    return re.sub(r"(?i)\s+source-group\s+\S+\s*$", "", line).strip()
+
+
+def _inherited_effective_fields(lines: list[str]) -> dict[str, Any]:
+    ssh_enabled = _inherited_line_exists(lines, r"system\s+services\s+ssh\b")
+    telnet_absent = _inherited_line_exists(lines, r"system\s+services\s+telnet\s+absent\b")
+    telnet_allowed = True if _inherited_line_exists(lines, r"system\s+services\s+telnet\b") and not telnet_absent else None
+    if telnet_absent:
+        telnet_allowed = False
+    safe_vty_protocol = None
+    if ssh_enabled is not None or telnet_allowed is not None:
+        safe_vty_protocol = bool(ssh_enabled) and telnet_allowed is False
+
+    snmp_service_present = True if _inherited_line_exists(lines, r"snmp\s+community\b") else None
+    snmp_read_only = None
+    if snmp_service_present:
+        if _inherited_line_exists(lines, r"snmp\s+community\s+\S+\s+authorization\s+read-write\b"):
+            snmp_read_only = False
+        elif _inherited_line_exists(lines, r"snmp\s+community\s+\S+\s+authorization\s+read-only\b"):
+            snmp_read_only = True
+
+    idle_timeout = _extract_inherited_positive_int(lines, r"system\s+login\s+idle-timeout\s+(?P<value>\d+)\b")
+    return {
+        "exec_timeout_configured": None if idle_timeout is None else idle_timeout > 0,
+        "ssh_enabled": ssh_enabled,
+        "telnet_allowed": telnet_allowed,
+        "safe_vty_protocol": safe_vty_protocol,
+        "banner_configured": True if _inherited_line_exists(lines, r"system\s+login\s+(message|announcement)\b") else None,
+        "logging_host_configured": True if _inherited_line_exists(lines, r"system\s+syslog\s+host\b") else None,
+        "ntp_configured": True if _inherited_line_exists(lines, r"system\s+ntp\s+(server|peer)\b") else None,
+        "timestamp_log_configured": True if _inherited_line_exists(lines, r"system\s+syslog\s+time-format\b") else None,
+        "snmp_service_present": snmp_service_present,
+        "snmp_read_only": snmp_read_only,
+    }
+
+
+def _inherited_line_exists(lines: list[str], pattern: str) -> bool | None:
+    regex = re.compile(rf"(?i)^{pattern}")
+    return True if any(regex.search(line) for line in lines) else None
+
+
+def _extract_inherited_positive_int(lines: list[str], pattern: str) -> int | None:
+    regex = re.compile(rf"(?i)^{pattern}")
+    for line in lines:
+        match = regex.search(line)
+        if match:
+            return int(match.group("value"))
+    return None
+
+
 def _strip_prompt_prefix(line: str) -> str:
     return re.sub(r"^\S+@\S+[>#]\s+", "", line)
 
@@ -261,6 +512,10 @@ def _has_apply_groups(lines: list[str]) -> bool:
 
 
 def _manual_reason(facts: dict[str, Any]) -> str:
+    if facts.get("inheritance_conflict"):
+        return "Junos inherited configuration contains conflicting statements; assessor review is required"
+    if facts.get("inheritance_incomplete"):
+        return "Junos inherited configuration is incomplete or source context is missing; assessor review is required"
     if facts.get("inheritance_required"):
         return "Junos apply-groups or inherited configuration is present; full inheritance expansion is not automated and assessor review is required"
     return "official network item is registered, but the Junos display-set MVP parser does not automate this item yet"

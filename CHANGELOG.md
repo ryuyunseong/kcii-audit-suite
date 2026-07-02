@@ -4,7 +4,8 @@
 
 ### Added
 
-- Started `dev/v1.4.0` for Junos display inheritance design and fixture planning.
+- Started `dev/v1.4.0` for conservative Junos display inheritance parsing.
+- Added synthetic Junos display inheritance fixtures and parser skeleton coverage for clear, conflicting, and incomplete inherited evidence.
 
 ### Security
 

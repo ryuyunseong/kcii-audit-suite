@@ -171,6 +171,7 @@ def test_junos_display_set_apply_groups_without_inheritance_context_stays_manual
     assert counts[AssessmentStatus.VULNERABLE] == 0
     assert counts[AssessmentStatus.MANUAL_REQUIRED] >= 24
     assert all(record.evidence.get("inheritance_required") is True for record in records)
+    assert all(record.evidence.get("inheritance_available") is not True for record in records)
     assert all(record.evidence.get("input_format") == "junos_display_set" for record in records)
     assert all(
         "inheritance expansion" in record.evidence.get("reason", "")
@@ -179,59 +180,110 @@ def test_junos_display_set_apply_groups_without_inheritance_context_stays_manual
     )
 
 
-def test_junos_inheritance_only_fixtures_fail_closed_until_parser_support_exists():
-    fixture_names = [
-        "inheritance/display_inheritance_effective_good.txt",
-        "inheritance/display_inheritance_conflict.txt",
-        "inheritance/display_inheritance_incomplete.txt",
-    ]
+def test_junos_effective_inheritance_fixture_provides_limited_partial_evidence():
+    records = records_from_junos_paste(
+        _fixture("inheritance/display_inheritance_effective_good.txt"),
+        asset_id="network-junos-inheritance-effective",
+    )
+    results = evaluate_evidence(records)
+    statuses = {result.item_id: result.status for result in results}
+    counts = Counter(result.status for result in results)
+    evidence_payload = json.dumps([record.evidence for record in records], ensure_ascii=False)
 
-    for name in fixture_names:
+    assert len(results) == 38
+    assert [record.item_id for record in records] == [f"N-{index:02d}" for index in range(1, 39)]
+    assert counts[AssessmentStatus.VULNERABLE] == 0
+    assert statuses["N-08"] == AssessmentStatus.GOOD
+    assert statuses["N-11"] == AssessmentStatus.GOOD
+    assert statuses["N-15"] == AssessmentStatus.GOOD
+    assert statuses["N-20"] == AssessmentStatus.GOOD
+    assert statuses["N-06"] == AssessmentStatus.MANUAL_REQUIRED
+    assert statuses["N-18"] == AssessmentStatus.MANUAL_REQUIRED
+    assert all(record.evidence.get("input_format") == "junos_display_inheritance" for record in records)
+    assert all(record.evidence.get("inheritance_available") is True for record in records)
+    assert all(record.evidence.get("inheritance_conflict") is not True for record in records)
+    assert all(record.evidence.get("inheritance_incomplete") is not True for record in records)
+    assert all(record.evidence.get("inheritance_source_count") == 1 for record in records)
+    for placeholder in SENSITIVE_PLACEHOLDERS:
+        assert placeholder not in evidence_payload
+
+
+def test_junos_display_set_and_inheritance_input_merges_clear_partial_evidence():
+    combined = "\n".join(
+        [
+            _fixture("inheritance/display_set_with_apply_groups.txt"),
+            _fixture("inheritance/display_inheritance_effective_good.txt"),
+        ]
+    )
+    records = records_from_junos_paste(combined, asset_id="network-junos-inheritance-merged")
+    statuses = {result.item_id: result.status for result in evaluate_evidence(records)}
+
+    assert statuses["N-08"] == AssessmentStatus.GOOD
+    assert statuses["N-11"] == AssessmentStatus.GOOD
+    assert statuses["N-15"] == AssessmentStatus.GOOD
+    assert statuses["N-20"] == AssessmentStatus.GOOD
+    assert all(record.evidence.get("input_format") == "junos_display_set_with_inheritance" for record in records)
+    assert all(record.evidence.get("automation_scope") == "partial" for record in records)
+
+
+def test_junos_conflict_and_incomplete_inheritance_fixtures_stay_manual_required():
+    fixture_expectations = {
+        "inheritance/display_inheritance_conflict.txt": "inheritance_conflict",
+        "inheritance/display_inheritance_incomplete.txt": "inheritance_incomplete",
+    }
+
+    for name, flag in fixture_expectations.items():
         records = records_from_junos_paste(_fixture(name), asset_id=f"network-junos-{name}")
         results = evaluate_evidence(records)
 
         assert len(results) == 38
         assert [record.item_id for record in records] == [f"N-{index:02d}" for index in range(1, 39)]
         assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
-        assert {record.evidence["collection_status"] for record in records} == {"unsupported_output"}
-        assert all("display-set configuration lines were not found" in record.evidence["reason"] for record in records)
+        assert {record.evidence["collection_status"] for record in records} == {"collected"}
+        assert all(record.evidence.get(flag) is True for record in records)
+        assert all(record.evidence.get("automation_scope") == "manual_review" for record in records)
 
 
 def test_junos_classify_file_creates_outputs_without_sensitive_values(tmp_path):
-    output_dir = tmp_path / "network-junos"
-    result = runner.invoke(
-        app,
-        [
-            "classify-file",
-            "--profile",
-            "network",
-            "--vendor",
-            "junos",
-            "--input",
-            str(FIXTURE_DIR / "display_set_good.txt"),
-            "--output",
-            str(output_dir),
-        ],
-    )
+    cases = [
+        ("display_set_good.txt", tmp_path / "network-junos"),
+        ("inheritance/display_inheritance_effective_good.txt", tmp_path / "network-junos-inheritance"),
+    ]
 
-    assert result.exit_code == 0, result.output
-    for name in [
-        "evidence.jsonl",
-        "results.json",
-        "detail.xlsx",
-        "summary.xlsx",
-        "report.md",
-        "security_advisory.md",
-        "security_advisory.xlsx",
-    ]:
-        assert (output_dir / name).exists()
+    for fixture_name, output_dir in cases:
+        result = runner.invoke(
+            app,
+            [
+                "classify-file",
+                "--profile",
+                "network",
+                "--vendor",
+                "junos",
+                "--input",
+                str(FIXTURE_DIR / fixture_name),
+                "--output",
+                str(output_dir),
+            ],
+        )
 
-    payload = json.loads((output_dir / "results.json").read_text(encoding="utf-8"))
-    assert len(payload["results"]) == 38
+        assert result.exit_code == 0, result.output
+        for name in [
+            "evidence.jsonl",
+            "results.json",
+            "detail.xlsx",
+            "summary.xlsx",
+            "report.md",
+            "security_advisory.md",
+            "security_advisory.xlsx",
+        ]:
+            assert (output_dir / name).exists()
 
-    combined = "\n".join(_output_text_values(output_dir))
-    for placeholder in SENSITIVE_PLACEHOLDERS:
-        assert placeholder not in combined
+        payload = json.loads((output_dir / "results.json").read_text(encoding="utf-8"))
+        assert len(payload["results"]) == 38
+
+        combined = "\n".join(_output_text_values(output_dir))
+        for placeholder in SENSITIVE_PLACEHOLDERS:
+            assert placeholder not in combined
 
 
 def _output_text_values(output_dir: Path) -> Iterable[str]:

@@ -1,6 +1,6 @@
 # Junos Display Inheritance Design
 
-This document records the `dev/v1.4.0` design boundary for Junos `display inheritance` support. It is a planning document, not a parser implementation.
+This document records the `dev/v1.4.0` design boundary for Junos `display inheritance` support and the conservative parser skeleton implemented for sanitized fixtures.
 
 ## Goal
 
@@ -31,12 +31,12 @@ Display-set evidence remains the primary active configuration source. Display-in
 Suggested normalized fields:
 
 - `input_format`: `junos_display_set_with_inheritance`
-- `inheritance_present`: boolean
-- `inheritance_sources`: masked group count or stable placeholder list
-- `inheritance_conflict_detected`: boolean
+- `inheritance_required`: boolean
+- `inheritance_available`: boolean
+- `inheritance_source_count`: integer
+- `inheritance_conflict`: boolean
 - `inheritance_incomplete`: boolean
-- `inherited_paths`: sanitized path summary
-- `manual_required_reason`: enum or short sanitized text
+- `automation_scope`: `display_set`, `partial`, or `manual_review`
 
 The normal output contract must still avoid raw config text. Store booleans, enums, counts, masked identifiers, and `raw_evidence_hash`.
 
@@ -88,10 +88,10 @@ Each fixture must avoid real hostnames, IP addresses, usernames, SNMP communitie
 
 ## Test Plan
 
-Initial tests should verify:
+Initial tests verify:
 
 - display-set only behavior remains unchanged
-- inheritance evidence can be parsed without storing raw lines
+- inheritance evidence can be parsed without storing raw lines or source group names
 - explicit inherited safe evidence can become partial evidence only for selected fields
 - conflicts and incomplete inheritance remain `MANUAL_REQUIRED`
 - all `N-01` to `N-38` items continue to be emitted
@@ -99,4 +99,4 @@ Initial tests should verify:
 
 ## Release Boundary
 
-`v1.4.0` should not claim complete Junos inheritance support unless parser tests prove the supported evidence shapes. The first implementation can remain a design and fixture skeleton if deterministic merge rules are not yet narrow enough.
+`v1.4.0` should not claim complete Junos inheritance support. The current implementation is a parser skeleton for sanitized synthetic `effective-statement` fixtures and keeps ambiguous inheritance as `MANUAL_REQUIRED`.

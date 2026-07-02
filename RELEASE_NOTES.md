@@ -7,7 +7,7 @@
 ### Scope
 
 - Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
-- Design Junos `display inheritance` handling before parser implementation.
+- Add a conservative Junos `display inheritance` parser skeleton.
 - Document sanitized fixture requirements for display-set plus display-inheritance evidence pairs.
 - Separate automatically usable inherited evidence from cases that must remain `MANUAL_REQUIRED`.
 - Keep direct device collection, raw live output, device images, license files, public repository conversion, and PyPI/TestPyPI publishing out of scope.
