@@ -6,7 +6,7 @@ This document records the readiness checklist for the `dev/v1.4.0` branch. It is
 
 - Development branch: `dev/v1.4.0`
 - Latest Junos inheritance parser skeleton commit: `5cb5d7d`
-- Package version metadata: `1.3.0` until the release smoke phase updates it
+- Package version metadata: `1.4.0`
 - Baseline final release: `v1.3.0`
 - `v1.3.0` tag remains fixed at `30490b4`
 - `v1.2.0` tag remains fixed at `9296245`
@@ -69,6 +69,19 @@ Expected result:
 - `git diff --check` reports no whitespace errors; Windows LF to CRLF warnings may appear
 - `git tag -l "v1.4.0"` returns no tag before explicit release approval
 
+Current release-preparation validation result:
+
+- release readiness tests: `9 passed`
+- full `python -m pytest`: `176 passed`
+- full profile smoke: passed
+- Junos inheritance smoke distribution: `GOOD 4`, `MANUAL_REQUIRED 34`
+- build: `kcii_audit_suite-1.4.0-py3-none-any.whl` and `kcii_audit_suite-1.4.0.tar.gz`
+- checksum: `dist/SHA256SUMS.txt`
+- clean installed-wheel smoke: passed
+- high-confidence secret pattern scan: no hits
+- forbidden path scan: no hits
+- `v1.4.0` tag: not created
+
 ## Junos Inheritance Smoke Command
 
 ```powershell
@@ -115,7 +128,7 @@ Expected result: no matches in generated outputs or staged diffs.
 
 ## Release Smoke And Build
 
-Run this only after package version metadata is intentionally updated to `1.4.0`.
+Run this before creating any tag or GitHub Release.
 
 ```powershell
 Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue

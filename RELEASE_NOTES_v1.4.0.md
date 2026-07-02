@@ -14,6 +14,7 @@ This draft records the Junos display-inheritance parser skeleton completed after
 - Clear inherited evidence is mapped only to limited partial evidence fields.
 - Conflicting or incomplete inheritance remains `MANUAL_REQUIRED`.
 - Source group names, hostnames, IP addresses, usernames, communities, serials, keys, tokens, and license text are not stored in normal output evidence.
+- Package version metadata is prepared as `1.4.0`.
 
 ## Changes Since v1.3.0
 
@@ -63,8 +64,12 @@ Validation completed for the current draft implementation:
 - targeted Junos and Network vendor tests: passed
 - release readiness tests: passed
 - full `python -m pytest`: `176 passed`
+- full profile smoke: passed
 - Junos inheritance smoke: seven output files generated
 - Junos inheritance smoke distribution: `GOOD 4`, `MANUAL_REQUIRED 34`
+- build: wheel and source distribution generated successfully for `1.4.0`
+- release checksum file: `SHA256SUMS.txt` generated for wheel and source distribution
+- installed-wheel smoke from a clean non-repository working directory: OK
 - high-confidence secret pattern scan: no hits
 - forbidden path scan: no hits
 - `git diff --check`: no whitespace errors; Windows LF to CRLF warnings may appear
@@ -80,6 +85,4 @@ Validation completed for the current draft implementation:
 
 ## Next Steps
 
-- Update package version metadata to `1.4.0` only after release smoke is approved.
-- Re-run full profile smoke, build, checksum generation, and installed-wheel validation before creating a tag.
 - Create `v1.4.0` annotated tag and private GitHub Release only after separate approval.

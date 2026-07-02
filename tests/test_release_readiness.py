@@ -95,7 +95,7 @@ def test_cli_help_smoke_for_release_commands():
 
 
 def test_release_version_is_final_candidate():
-    assert __version__ == "1.3.0"
+    assert __version__ == "1.4.0"
 
 
 def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
@@ -143,10 +143,14 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "`kcii-audit-suite v1.4.0` is a development release candidate draft" in release_notes_v1_4_0
     assert "`v1.4.0` tag: not created" in release_notes_v1_4_0
     assert "Latest Junos inheritance parser skeleton commit: `5cb5d7d`" in readiness_v1_4_0
-    assert "Package version metadata: `1.3.0` until the release smoke phase updates it" in readiness_v1_4_0
+    assert "Package version metadata: `1.4.0`" in readiness_v1_4_0
     assert "`v1.4.0` tag: not created" in readiness_v1_4_0
     assert "GOOD 4" in release_notes_v1_4_0
     assert "MANUAL_REQUIRED 34" in release_notes_v1_4_0
+    assert "full profile smoke: passed" in release_notes_v1_4_0
+    assert "installed-wheel smoke from a clean non-repository working directory: OK" in release_notes_v1_4_0
+    assert "kcii_audit_suite-1.4.0-py3-none-any.whl" in readiness_v1_4_0
+    assert "clean installed-wheel smoke: passed" in readiness_v1_4_0
     assert "conflicting inherited values keep all items `MANUAL_REQUIRED`" in readiness_v1_4_0
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0

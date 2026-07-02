@@ -7,6 +7,7 @@
 - Started `dev/v1.4.0` for conservative Junos display inheritance parsing.
 - Added synthetic Junos display inheritance fixtures and parser skeleton coverage for clear, conflicting, and incomplete inherited evidence.
 - Added `RELEASE_NOTES_v1.4.0.md` and `docs/V1_4_0_READINESS.md` draft release documents.
+- Prepared package version metadata as `1.4.0` for release smoke, build, checksum, and installed-wheel validation.
 
 ### Security
 
