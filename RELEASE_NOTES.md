@@ -1,10 +1,10 @@
 # Release Notes
 
-## v1.4.0 Development Draft
+## v1.4.0 Final Release
 
-`dev/v1.4.0` starts after the fixed private `v1.3.0` release. No `v1.4.0` tag or GitHub Release has been created.
+`v1.4.0` is fixed at commit `178369b`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is the baseline product completion release for the private offline workflow.
 
-The detailed v1.4.0 draft notes are maintained in `RELEASE_NOTES_v1.4.0.md`, and the draft readiness checklist is maintained in `docs/V1_4_0_READINESS.md`.
+The detailed v1.4.0 notes are maintained in `RELEASE_NOTES_v1.4.0.md`, the release-readiness checklist is maintained in `docs/V1_4_0_READINESS.md`, and the baseline completion boundary is maintained in `docs/PROJECT_COMPLETION.md`.
 
 ### Scope
 
@@ -13,6 +13,7 @@ The detailed v1.4.0 draft notes are maintained in `RELEASE_NOTES_v1.4.0.md`, and
 - Document sanitized fixture requirements for display-set plus display-inheritance evidence pairs.
 - Prepare package version metadata as `1.4.0`.
 - Separate automatically usable inherited evidence from cases that must remain `MANUAL_REQUIRED`.
+- Mark `v1.4.0` as the private baseline product completion release.
 - Keep direct device collection, raw live output, device images, license files, public repository conversion, and PyPI/TestPyPI publishing out of scope.
 
 ## v1.3.0 Final Release

@@ -101,7 +101,7 @@ Included in this slice:
 
 The `dev/v1.2.0` branch started from the fixed private `v1.1.0` release. The selected feature for this branch was Juniper Junos parser MVP.
 
-`v1.2.0` is fixed at `9296245` and published as the latest final private GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
+`v1.2.0` is fixed at `9296245` and published as a final private GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
 
 Included in this MVP scope:
 
@@ -124,7 +124,7 @@ Excluded from this MVP scope unless separately approved:
 
 The `dev/v1.3.0` branch starts from the fixed private `v1.2.0` release. The selected first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening.
 
-`v1.3.0` is fixed at `30490b4` and published as the latest final private GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
+`v1.3.0` is fixed at `30490b4` and published as a final private GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
 
 Included in the initial v1.3.0 scope:
 
@@ -142,11 +142,11 @@ Excluded from the initial v1.3.0 scope unless separately approved:
 - Storing raw customer configs, live output, device images, license files, keys, tokens, passwords, or password hashes.
 - Public repository conversion or PyPI/TestPyPI publishing.
 
-## v1.4.0 Development Scope
+## v1.4.0 Release Scope
 
-The `dev/v1.4.0` branch starts from the fixed private `v1.3.0` release. The selected first scope is a conservative Junos `display inheritance` parser skeleton and fixture coverage.
+The `dev/v1.4.0` branch started from the fixed private `v1.3.0` release. The selected scope was a conservative Junos `display inheritance` parser skeleton and fixture coverage.
 
-`v1.4.0` is not tagged or released yet.
+`v1.4.0` is fixed at `178369b` and published as the latest final private GitHub Release. It is the baseline product completion release for the private offline workflow. Do not move the `v1.4.0` tag or replace its release assets.
 
 Included in the initial v1.4.0 scope:
 

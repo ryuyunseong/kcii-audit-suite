@@ -23,6 +23,8 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("RELEASE_NOTES_v1.0.0rc2.md"),
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
+        Path("docs/PROJECT_COMPLETION.md"),
+        Path("docs/MAINTENANCE_POLICY.md"),
         Path("docs/PROFILE_COVERAGE.md"),
         Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
         Path("docs/V1_4_0_READINESS.md"),
@@ -98,7 +100,7 @@ def test_release_version_is_final_candidate():
     assert __version__ == "1.4.0"
 
 
-def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
+def test_release_documents_state_current_releases_and_v1_4_0_completion():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
     release_notes_v1_4_0 = Path("RELEASE_NOTES_v1.4.0.md").read_text(encoding="utf-8")
@@ -109,6 +111,8 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     readiness_v1_3_0 = Path("docs/V1_3_0_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_2_0 = Path("docs/V1_2_0_READINESS.md").read_text(encoding="utf-8")
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
+    completion = Path("docs/PROJECT_COMPLETION.md").read_text(encoding="utf-8")
+    maintenance = Path("docs/MAINTENANCE_POLICY.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
     for text in [readme, release_index, release_notes, readiness_v1_2_0, coverage, changelog]:
@@ -121,7 +125,8 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
 
     assert "latest final GitHub Release" in readme
     assert "is the final private GitHub Release" in release_notes
-    assert "dev/v1.4.0" in readme
+    assert "dev/v1.4.1" in readme
+    assert "dev/v1.5.0" in readme
     assert "`v1.2.0` is fixed at commit `9296245`" in release_index
     assert "`v1.3.0` is fixed at commit `30490b4`" in release_index
     assert "`kcii-audit-suite v1.3.0` is the final private GitHub Release" in release_notes_v1_3_0
@@ -135,16 +140,20 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "private GitHub Release" in release_notes_v1_2_0
     assert "`v1.2.0` tag: not created" not in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
-    assert "v1.4.0 Development Scope" in coverage
+    assert "v1.4.0 Release Scope" in coverage
     assert "display inheritance" in coverage
     assert "RELEASE_NOTES_v1.4.0.md" in readme
     assert "docs/V1_4_0_READINESS.md" in readme
-    assert "No `v1.4.0` tag or GitHub Release has been created" in release_index
-    assert "`kcii-audit-suite v1.4.0` is a development release candidate draft" in release_notes_v1_4_0
-    assert "`v1.4.0` tag: not created" in release_notes_v1_4_0
+    assert "docs/PROJECT_COMPLETION.md" in readme
+    assert "docs/MAINTENANCE_POLICY.md" in readme
+    assert "`v1.4.0` is fixed at commit `178369b`" in release_index
+    assert "`kcii-audit-suite v1.4.0` is the final private GitHub Release" in release_notes_v1_4_0
+    assert "`v1.4.0` tag fixed at `178369b`" in release_notes_v1_4_0
     assert "Latest Junos inheritance parser skeleton commit: `5cb5d7d`" in readiness_v1_4_0
+    assert "Release metadata commit: `178369b`" in readiness_v1_4_0
     assert "Package version metadata: `1.4.0`" in readiness_v1_4_0
-    assert "`v1.4.0` tag: not created" in readiness_v1_4_0
+    assert "`v1.4.0` tag remains fixed at `178369b`" in readiness_v1_4_0
+    assert "GitHub Release for `v1.4.0`: final private release" in readiness_v1_4_0
     assert "GOOD 4" in release_notes_v1_4_0
     assert "MANUAL_REQUIRED 34" in release_notes_v1_4_0
     assert "full profile smoke: passed" in release_notes_v1_4_0
@@ -152,6 +161,11 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "kcii_audit_suite-1.4.0-py3-none-any.whl" in readiness_v1_4_0
     assert "clean installed-wheel smoke: passed" in readiness_v1_4_0
     assert "conflicting inherited values keep all items `MANUAL_REQUIRED`" in readiness_v1_4_0
+    assert "baseline product completion" in completion
+    assert "`dev/v1.4.1`: documentation fixes and narrow bug fixes only" in completion
+    assert "`dev/v1.5.0`: new compatible features" in completion
+    assert "Published release tags and assets are immutable" in maintenance
+    assert "Public repository conversion requires a separate review" in maintenance
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
@@ -190,6 +204,8 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("RELEASE_NOTES_v1.0.0rc2.md"),
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
+            Path("docs/PROJECT_COMPLETION.md"),
+            Path("docs/MAINTENANCE_POLICY.md"),
             Path("docs/PROFILE_COVERAGE.md"),
             Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
             Path("docs/V1_4_0_READINESS.md"),

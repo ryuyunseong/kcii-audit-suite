@@ -1,12 +1,12 @@
-# kcii-audit-suite v1.4.0 Draft
+# kcii-audit-suite v1.4.0
 
-`kcii-audit-suite v1.4.0` is a development release candidate draft for the `dev/v1.4.0` branch. No `v1.4.0` tag or GitHub Release has been created.
+`kcii-audit-suite v1.4.0` is the final private GitHub Release for the current baseline offline workflow. It is fixed at commit `178369b`.
 
-The latest fixed final release remains `v1.3.0`, fixed at commit `30490b4`. The `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags also remain fixed and must not be moved.
+The `v1.4.0`, `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags are fixed and must not be moved.
 
 ## Summary
 
-This draft records the Junos display-inheritance parser skeleton completed after `v1.3.0`:
+This release records the Junos display-inheritance parser skeleton completed after `v1.3.0` and marks the private baseline product completion point:
 
 - Junos display-set parsing continues to emit all Network `N-01` to `N-38` items.
 - Synthetic display-inheritance fixtures cover clear inherited evidence, conflicting inherited values, and incomplete source context.
@@ -15,6 +15,7 @@ This draft records the Junos display-inheritance parser skeleton completed after
 - Conflicting or incomplete inheritance remains `MANUAL_REQUIRED`.
 - Source group names, hostnames, IP addresses, usernames, communities, serials, keys, tokens, and license text are not stored in normal output evidence.
 - Package version metadata is prepared as `1.4.0`.
+- The private offline workflow is treated as baseline-complete for maintenance planning.
 
 ## Changes Since v1.3.0
 
@@ -24,7 +25,7 @@ This draft records the Junos display-inheritance parser skeleton completed after
 - Added tests for apply-groups without inheritance context, clear inherited evidence, combined evidence, and conflict or incomplete inheritance.
 - Updated Network profile documentation to describe the limited inheritance skeleton.
 
-## Supported v1.4.0 Draft Scope
+## Supported v1.4.0 Scope
 
 Supported input for this draft:
 
@@ -59,7 +60,7 @@ Default classification still creates:
 
 ## Validation
 
-Validation completed for the current draft implementation:
+Validation completed for the release implementation:
 
 - targeted Junos and Network vendor tests: passed
 - release readiness tests: passed
@@ -74,7 +75,8 @@ Validation completed for the current draft implementation:
 - forbidden path scan: no hits
 - `git diff --check`: no whitespace errors; Windows LF to CRLF warnings may appear
 - `v1.3.0` tag remained fixed at `30490b4`
-- `v1.4.0` tag: not created
+- `v1.4.0` tag fixed at `178369b`
+- private GitHub Release created as a final release, not a pre-release
 
 ## Security Notes
 
@@ -83,6 +85,8 @@ Validation completed for the current draft implementation:
 - Do not include hostnames, IP addresses, usernames, SNMP communities, serial numbers, domains, config paths, banner text, keys, tokens, password hashes, or passwords in fixtures.
 - Public repository conversion, PyPI publishing, and TestPyPI publishing remain out of scope.
 
-## Next Steps
+## Maintenance Split
 
-- Create `v1.4.0` annotated tag and private GitHub Release only after separate approval.
+- Patch-only fixes should use `dev/v1.4.1`.
+- New compatible feature work should use `dev/v1.5.0` or later.
+- Public repository conversion requires separate approval and review.

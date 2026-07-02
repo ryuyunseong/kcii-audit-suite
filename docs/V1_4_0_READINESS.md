@@ -1,21 +1,22 @@
-# v1.4.0 Readiness Draft
+# v1.4.0 Readiness
 
-This document records the readiness checklist for the `dev/v1.4.0` branch. It is a draft only. No `v1.4.0` tag or GitHub Release has been created.
+This document records the readiness checklist completed for the private `v1.4.0` final GitHub Release.
 
 ## Branch And Tag State
 
 - Development branch: `dev/v1.4.0`
 - Latest Junos inheritance parser skeleton commit: `5cb5d7d`
+- Release metadata commit: `178369b`
 - Package version metadata: `1.4.0`
-- Baseline final release: `v1.3.0`
+- Baseline final release: `v1.4.0`
+- `v1.4.0` tag remains fixed at `178369b`
 - `v1.3.0` tag remains fixed at `30490b4`
 - `v1.2.0` tag remains fixed at `9296245`
 - `v1.1.0` tag remains fixed at `31f624e`
 - `v1.0.0` tag remains fixed at `31983bd`
 - `v1.0.0rc2` tag remains fixed at `59d3d38`
 - `v1.0.0rc1` tag remains fixed at `e93d18b`
-- `v1.4.0` tag: not created
-- GitHub Release for `v1.4.0`: not created
+- GitHub Release for `v1.4.0`: final private release
 - PyPI/TestPyPI publishing: deferred
 - Public repository conversion: out of scope
 
@@ -58,7 +59,7 @@ Run from the repository root with the project virtual environment active.
 .\.venv\Scripts\python -m pytest tests\test_network_junos.py tests\test_network_vendor_regression.py tests\test_release_readiness.py
 .\.venv\Scripts\python -m pytest
 git diff --check
-git tag -l "v1.4.0"
+git rev-parse "v1.4.0^{}"
 ```
 
 Expected result:
@@ -67,7 +68,7 @@ Expected result:
 - release readiness tests pass
 - full test suite passes
 - `git diff --check` reports no whitespace errors; Windows LF to CRLF warnings may appear
-- `git tag -l "v1.4.0"` returns no tag before explicit release approval
+- `git rev-parse "v1.4.0^{}"` returns `178369b0b49047da1726c9ec46d10aea33d5007c`
 
 Current release-preparation validation result:
 
@@ -80,7 +81,8 @@ Current release-preparation validation result:
 - clean installed-wheel smoke: passed
 - high-confidence secret pattern scan: no hits
 - forbidden path scan: no hits
-- `v1.4.0` tag: not created
+- `v1.4.0` tag: fixed at `178369b`
+- private GitHub Release: final release, not a pre-release
 
 ## Junos Inheritance Smoke Command
 
@@ -147,9 +149,9 @@ Release assets should be limited to:
 - `kcii_audit_suite-1.4.0.tar.gz`
 - `SHA256SUMS.txt`
 
-## Private GitHub Release Pre-Checks
+## Private GitHub Release Checks
 
-Before any `v1.4.0` private GitHub Release is created:
+The `v1.4.0` private GitHub Release was created after these checks:
 
 - confirm `git status --short --branch` is clean
 - confirm package version metadata is `1.4.0`
@@ -186,4 +188,4 @@ Published release tags are immutable for this project. Do not move:
 - `v1.0.0rc1`
 - `v1.0.0rc2`
 
-After `v1.4.0` is created and shared, do not move it either. Create a new tag for any later correction.
+Do not move `v1.4.0`. Create a new tag for any later correction.

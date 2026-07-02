@@ -4,6 +4,8 @@
 
 The project is fixed to the local `kcii-2025-12` rulepack baseline. The rulepacks register the item IDs, titles, and severities transcribed from the provided KISA guide tables, but the guide text is not copied in bulk.
 
+`v1.4.0` is the private baseline product completion release for the current offline workflow. Further patch work should use `dev/v1.4.1`, and compatible feature work should use `dev/v1.5.0` or later. See [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md) and [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md).
+
 ## Operating Model
 
 This tool is not a remote automatic collector.
@@ -27,7 +29,7 @@ DBMS Docker Compose lab은 운영 고객사 DBMS 자동 수집용이 아닙니�
 | Linux Server | `L-01` to `L-08` MVP | MVP deterministic checks |
 | Unix Server | `U-01` to `U-67` | AIX, Solaris, HP-UX, Linux fixture-based offline parser |
 | DBMS | `D-01` to `D-26` | PostgreSQL, MySQL, MariaDB offline parser and Docker live verification |
-| Network | `N-01` to `N-38` | Cisco IOS command-response simulator/parser; Junos display-set parser MVP |
+| Network | `N-01` to `N-38` | Cisco IOS command-response simulator/parser; Junos display-set parser MVP with conservative display-inheritance support |
 | Security Appliance | `S-01` to `S-23` | Questionnaire Excel export/import and sanitized summary parser |
 
 `MANUAL_REQUIRED` is a valid result. It means the item is registered but the available sanitized evidence is insufficient for deterministic judgment. It is not a program failure.
@@ -147,6 +149,8 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [RELEASE_NOTES_v1.0.0rc1.md](RELEASE_NOTES_v1.0.0rc1.md)
 - [RELEASE_NOTES_v1.0.0rc2.md](RELEASE_NOTES_v1.0.0rc2.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
+- [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md)
+- [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
 - [docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md](docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md)
@@ -167,8 +171,10 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 `v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
 
-`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
+`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
 
-`v1.3.0` is fixed at commit `30490b4`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
+`v1.3.0` is fixed at commit `30490b4`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
 
-`dev/v1.4.0` is the current post-v1.3.0 feature branch. Its first scope is a conservative Junos display inheritance parser skeleton with sanitized fixture coverage. Patch-only fixes should be separated to `dev/v1.3.1`.
+`v1.4.0` is fixed at commit `178369b`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is the baseline product completion release for the private offline workflow. Do not move the `v1.4.0` tag or replace its release assets.
+
+Patch-only fixes after `v1.4.0` should be separated to `dev/v1.4.1`. New compatible feature work should be separated to `dev/v1.5.0` or later.

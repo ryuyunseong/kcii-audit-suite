@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.4.0] - Unreleased
+## [1.4.0] - 2026-07-02
 
 ### Added
 
@@ -8,11 +8,16 @@
 - Added synthetic Junos display inheritance fixtures and parser skeleton coverage for clear, conflicting, and incomplete inherited evidence.
 - Added `RELEASE_NOTES_v1.4.0.md` and `docs/V1_4_0_READINESS.md` draft release documents.
 - Prepared package version metadata as `1.4.0` for release smoke, build, checksum, and installed-wheel validation.
+- Added baseline product completion and maintenance policy documents for the fixed private v1.4.0 release.
 
 ### Security
 
 - v1.4.0 planning keeps the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
 - Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+### Release
+
+- `v1.4.0` is published as a final private GitHub Release fixed at `178369b`.
 
 ## [1.3.0] - 2026-07-02
 
