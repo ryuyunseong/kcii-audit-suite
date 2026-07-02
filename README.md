@@ -139,6 +139,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 - [CHANGELOG.md](CHANGELOG.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
+- [RELEASE_NOTES_v1.4.0.md](RELEASE_NOTES_v1.4.0.md)
 - [RELEASE_NOTES_v1.3.0.md](RELEASE_NOTES_v1.3.0.md)
 - [RELEASE_NOTES_v1.2.0.md](RELEASE_NOTES_v1.2.0.md)
 - [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md)
@@ -149,6 +150,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
 - [docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md](docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md)
+- [docs/V1_4_0_READINESS.md](docs/V1_4_0_READINESS.md)
 - [docs/V1_3_0_READINESS.md](docs/V1_3_0_READINESS.md)
 - [docs/V1_2_0_READINESS.md](docs/V1_2_0_READINESS.md)
 - [docs/V1_1_0_READINESS.md](docs/V1_1_0_READINESS.md)

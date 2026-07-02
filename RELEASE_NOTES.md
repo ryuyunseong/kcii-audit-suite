@@ -4,6 +4,8 @@
 
 `dev/v1.4.0` starts after the fixed private `v1.3.0` release. No `v1.4.0` tag or GitHub Release has been created.
 
+The detailed v1.4.0 draft notes are maintained in `RELEASE_NOTES_v1.4.0.md`, and the draft readiness checklist is maintained in `docs/V1_4_0_READINESS.md`.
+
 ### Scope
 
 - Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.

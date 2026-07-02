@@ -15,6 +15,7 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("RELEASE_NOTES_v1.4.0.md"),
         Path("RELEASE_NOTES_v1.3.0.md"),
         Path("RELEASE_NOTES_v1.2.0.md"),
         Path("RELEASE_NOTES_v1.1.0.md"),
@@ -24,6 +25,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("docs/RELEASE_CHECKLIST.md"),
         Path("docs/PROFILE_COVERAGE.md"),
         Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
+        Path("docs/V1_4_0_READINESS.md"),
         Path("docs/V1_3_0_READINESS.md"),
         Path("docs/V1_2_0_READINESS.md"),
         Path("docs/V1_1_0_READINESS.md"),
@@ -99,9 +101,11 @@ def test_release_version_is_final_candidate():
 def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
+    release_notes_v1_4_0 = Path("RELEASE_NOTES_v1.4.0.md").read_text(encoding="utf-8")
     release_notes_v1_3_0 = Path("RELEASE_NOTES_v1.3.0.md").read_text(encoding="utf-8")
     release_notes_v1_2_0 = Path("RELEASE_NOTES_v1.2.0.md").read_text(encoding="utf-8")
     release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
+    readiness_v1_4_0 = Path("docs/V1_4_0_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_3_0 = Path("docs/V1_3_0_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_2_0 = Path("docs/V1_2_0_READINESS.md").read_text(encoding="utf-8")
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
@@ -133,6 +137,17 @@ def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status()
     assert "Juniper Junos parser MVP" in coverage
     assert "v1.4.0 Development Scope" in coverage
     assert "display inheritance" in coverage
+    assert "RELEASE_NOTES_v1.4.0.md" in readme
+    assert "docs/V1_4_0_READINESS.md" in readme
+    assert "No `v1.4.0` tag or GitHub Release has been created" in release_index
+    assert "`kcii-audit-suite v1.4.0` is a development release candidate draft" in release_notes_v1_4_0
+    assert "`v1.4.0` tag: not created" in release_notes_v1_4_0
+    assert "Latest Junos inheritance parser skeleton commit: `5cb5d7d`" in readiness_v1_4_0
+    assert "Package version metadata: `1.3.0` until the release smoke phase updates it" in readiness_v1_4_0
+    assert "`v1.4.0` tag: not created" in readiness_v1_4_0
+    assert "GOOD 4" in release_notes_v1_4_0
+    assert "MANUAL_REQUIRED 34" in release_notes_v1_4_0
+    assert "conflicting inherited values keep all items `MANUAL_REQUIRED`" in readiness_v1_4_0
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
@@ -163,6 +178,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         for path in [
             Path("README.md"),
             Path("RELEASE_NOTES.md"),
+            Path("RELEASE_NOTES_v1.4.0.md"),
             Path("RELEASE_NOTES_v1.3.0.md"),
             Path("RELEASE_NOTES_v1.2.0.md"),
             Path("RELEASE_NOTES_v1.1.0.md"),
@@ -172,6 +188,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("docs/RELEASE_CHECKLIST.md"),
             Path("docs/PROFILE_COVERAGE.md"),
             Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
+            Path("docs/V1_4_0_READINESS.md"),
             Path("docs/V1_3_0_READINESS.md"),
             Path("docs/V1_2_0_READINESS.md"),
             Path("docs/V1_1_0_READINESS.md"),
