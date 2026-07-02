@@ -1,0 +1,149 @@
+[HOST_1]#show run
+Building configuration...
+
+Current configuration : [SIZE_1] bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec localtime show-timezone
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service finger
+no service tcp-small-servers
+no service udp-small-servers
+no service pad
+hostname [HOST_1]
+enable secret 5 [SECRET_1]
+username [USER_1] privilege 15 secret 5 [SECRET_1]
+banner login ^C[BANNER_1]^C
+ip domain name [DOMAIN_1]
+no ip source-route
+no ip domain-lookup
+no ip identd
+no ip mask-reply
+ip ssh version 2
+logging buffered 32768 informational
+logging trap informational
+logging [IP_1]
+ntp peer [IP_1]
+ntp source Loopback0
+ip access-list standard VTY-MGMT
+ permit [IP_1] [WILDCARD_1]
+access-list 10 permit [IP_1] [WILDCARD_1]
+interface GigabitEthernet0/0
+ description [DESC_1]
+ no ip directed-broadcast
+ no ip proxy-arp
+ no ip redirects
+ no ip unreachables
+line vty 0 4
+ access-class VTY-MGMT in vrf-also
+ exec-timeout 10 0
+ login local
+ transport input ssh
+line vty 5 15
+ access-class 10 in
+ exec-timeout 5 30
+ login local
+ transport input none
+snmp-server view [VIEW_1] iso included
+snmp-server community [COMMUNITY_1] view [VIEW_1] RO VTY-MGMT
+no ip http server
+no ip http secure-server
+no ip bootp server
+no cdp run
+end
+
+[HOST_1]#show startup-config
+Using [PATH_1]
+Building configuration...
+
+Current configuration : [SIZE_1] bytes
+!
+version 15.2
+service timestamps log datetime msec localtime show-timezone
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service finger
+no service tcp-small-servers
+no service udp-small-servers
+no service pad
+hostname [HOST_1]
+enable secret 5 [SECRET_1]
+username [USER_1] privilege 15 secret 5 [SECRET_1]
+banner login ^C[BANNER_1]^C
+no ip source-route
+no ip domain-lookup
+no ip identd
+no ip mask-reply
+ip ssh version 2
+logging [IP_1]
+ntp peer [IP_1]
+ip access-list standard VTY-MGMT
+ permit [IP_1] [WILDCARD_1]
+access-list 10 permit [IP_1] [WILDCARD_1]
+interface GigabitEthernet0/0
+ no ip directed-broadcast
+ no ip proxy-arp
+ no ip redirects
+ no ip unreachables
+line vty 0 4
+ access-class VTY-MGMT in vrf-also
+ exec-timeout 10 0
+ login local
+ transport input ssh
+line vty 5 15
+ access-class 10 in
+ exec-timeout 5 30
+ login local
+ transport input none
+snmp-server community [COMMUNITY_1] view [VIEW_1] RO VTY-MGMT
+no ip http server
+no ip http secure-server
+no ip bootp server
+no cdp run
+end
+
+[HOST_1]#show version
+Cisco IOS Software, [PLATFORM_1] Software ([IMAGE_1]), Version 15.2(7)E9, RELEASE SOFTWARE
+ROM: Bootstrap program is [BOOTSTRAP_1]
+Processor board ID [SERIAL_1]
+
+[HOST_1]#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0     [IP_1]          YES manual up                    up
+GigabitEthernet0/1     unassigned      YES unset  administratively down down
+Loopback0              [IP_1]          YES manual up                    up
+
+[HOST_1]#show users
+Line       User       Host(s)              Idle       Location
+*  2 vty 0     [USER_1] idle                 00:00:00   [IP_1]
+
+[HOST_1]#show line
+Tty Line Typ     Tx/Rx     A Modem  Roty AccO AccI  Uses  Noise Overruns Int
+  0    0 CTY              -    -      -    -    -     0      0     0/0       -
+  2    2 VTY              -    -      -    -    -     1      0     0/0       -
+
+[HOST_1]#show logging
+Syslog logging: enabled
+    Console logging: disabled
+    Monitor logging: level debugging, 0 messages logged
+    Buffer logging: level informational, 15 messages logged
+    Logging to [IP_1]
+
+[HOST_1]#show ntp status
+Clock is synchronized, stratum 4, reference is [IP_1]
+
+[HOST_1]#show snmp
+SNMP agent enabled
+Community strings use restricted views and ACLs
+
+[HOST_1]#show ip ssh
+SSH Enabled - version 2.0
+Authentication methods: publickey,password
+
+[HOST_1]#show access-lists
+Standard IP access list VTY-MGMT
+    10 permit [IP_1], wildcard bits [WILDCARD_1]
+Standard IP access list 10
+    10 permit [IP_1], wildcard bits [WILDCARD_1]

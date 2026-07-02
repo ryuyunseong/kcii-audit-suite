@@ -88,6 +88,7 @@ Included in this slice:
 - Preserve the published `v1.0.0`, `v1.0.0rc1`, and `v1.0.0rc2` tags.
 - Keep `kcii-netlab-sim` as a command-response simulator, not a packet or routing emulator.
 - Expand Cisco IOS checks for timestamp logging, SNMP ACL and authorization, TFTP, TCP keepalives, management web service, small services, Bootp, CDP, directed-broadcast, source-route, proxy ARP, ICMP control messages, identd, domain lookup, pad, and mask-reply indicators.
+- Add sanitized realistic Cisco IOS fixture coverage for common `show run`, multi-`line vty`, SNMP, logging, NTP, and service-hardening output variants.
 - Leave policy-dependent items such as password complexity, AAA lockout, user privilege design, auxiliary port review, patch status, logging policy completeness, SNMP necessity, spoofing controls, DDoS controls, and unused interface judgment as `MANUAL_REQUIRED`.
 - Keep fixtures synthetic and sanitized; do not store customer configuration exports or live device output.
 

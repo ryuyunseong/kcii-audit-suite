@@ -26,3 +26,5 @@ python -m kcii_netlab_sim --vendor cisco_ios --scenario vulnerable --commands sc
 - 실제 고객사 config, 장비 이미지, 라이선스 파일을 저장하지 않습니다.
 - hostname, IP, username, SNMP community, serial은 비식별 placeholder만 사용합니다.
 - simulator 출력은 parser 테스트 입력입니다. audit 결과물에는 전체 config 원문을 저장하지 않아야 합니다.
+
+GNS3, CML, 또는 승인된 랩 출력과 대조할 때도 원문을 저장하지 말고 `docs/NETWORK_OUTPUT_SANITIZATION.md` 기준으로 비식별화한 fixture만 사용합니다.

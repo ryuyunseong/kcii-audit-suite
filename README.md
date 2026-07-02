@@ -143,6 +143,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [RELEASE_NOTES_v1.0.0rc2.md](RELEASE_NOTES_v1.0.0rc2.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
+- [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
 - [docs/V1_0_0_READINESS.md](docs/V1_0_0_READINESS.md)
 - [docs/V1_0_0RC2_READINESS.md](docs/V1_0_0RC2_READINESS.md)
 
