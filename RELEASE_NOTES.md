@@ -10,6 +10,7 @@ The detailed v1.2.0 draft is maintained in `RELEASE_NOTES_v1.2.0.md`, and the re
 
 - Baseline final release `v1.1.0` remains fixed at `31f624e`.
 - The single selected feature candidate is Juniper Junos parser MVP.
+- Package version metadata is prepared as `1.2.0` for release smoke, build, checksum, and installed-wheel validation.
 - Parser work must use sanitized offline `show configuration | display set` fixtures only.
 - Cisco IOS `N-01` to `N-38` behavior from `v1.1.0` must remain stable.
 - Public repository conversion and PyPI/TestPyPI publishing remain out of scope.

@@ -9,6 +9,7 @@ The baseline final release remains `v1.1.0`, fixed at commit `31f624e`. The `v1.
 This draft documents the Juniper Junos parser MVP completed after `v1.1.0`:
 
 - Network profile now has a second vendor MVP for Juniper Junos.
+- Package version metadata is prepared as `1.2.0` for release smoke, build, checksum, and installed-wheel validation.
 - The Junos MVP supports sanitized `show configuration | display set` style input only.
 - `--vendor junos` and `--vendor juniper_junos` are accepted.
 - Network `N-01` to `N-38` full result emission is preserved.
@@ -69,10 +70,16 @@ Validation completed before this draft was written:
 
 - full `python -m pytest`: `166 passed`
 - release readiness tests: `9 passed`
+- full profile smoke for Windows, Linux, Unix, DBMS PostgreSQL/MySQL/MariaDB, Network Cisco IOS, Network Junos, and Security Appliance questionnaire export/import
 - Junos fixture smoke: 38 results and seven output files
 - Junos good fixture status distribution: `GOOD 14`, `MANUAL_REQUIRED 24`
+- `--no-advisory` smoke: five output files only
 - root and packaged Network rulepack resources: synchronized
 - high-confidence secret pattern scan: no hits
+- smoke output placeholder and high-confidence secret scan: no hits
+- build: wheel and source distribution generated successfully
+- release checksum file: `SHA256SUMS.txt` generated for wheel and source distribution
+- installed-wheel smoke from a clean non-repository working directory: OK
 
 Run the current validation gate in `docs/V1_2_0_READINESS.md` before any `v1.2.0` tag or private GitHub Release is considered.
 
@@ -99,6 +106,6 @@ No migration is expected for existing offline evidence flows. Existing Cisco IOS
 
 ## Next Steps
 
-- Keep `v1.2.0` untagged until release readiness, package version update, build, checksum, installed-wheel smoke, and explicit release approval are complete.
+- Keep `v1.2.0` untagged until release readiness, build, checksum, installed-wheel smoke, and explicit release approval are complete.
 - Compare sanitized real Junos display-set output from approved labs against the synthetic fixture.
 - Consider inheritance-aware Junos fixture expansion only as a later scoped task.

@@ -90,7 +90,7 @@ def test_cli_help_smoke_for_release_commands():
 
 
 def test_release_version_is_final_candidate():
-    assert __version__ == "1.1.0"
+    assert __version__ == "1.2.0"
 
 
 def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status():

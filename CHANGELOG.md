@@ -9,6 +9,10 @@
 - Added synthetic Junos display-set and unsupported brace-style fixtures.
 - Added `RELEASE_NOTES_v1.2.0.md` and `docs/V1_2_0_READINESS.md` draft release documents.
 
+### Changed
+
+- Package version metadata is prepared as `1.2.0` for release smoke, build, checksum, and installed-wheel validation.
+
 ### Security
 
 - v1.2.0 planning keeps the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
