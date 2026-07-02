@@ -27,6 +27,9 @@ SENSITIVE_PLACEHOLDERS = [
     "[PATH_1]",
     "[BANNER_1]",
     "[SECRET_1]",
+    "[GROUP_1]",
+    "[FILTER_1]",
+    "[PREFIX_LIST_1]",
 ]
 
 
@@ -45,6 +48,15 @@ def test_network_vendor_regression_matrix_preserves_full_manifest():
             "name": "junos-display-set",
             "parser": records_from_junos_paste,
             "fixture": Path("tests/fixtures/network/junos/display_set_good.txt"),
+            "expected_counts": {
+                AssessmentStatus.GOOD: 14,
+                AssessmentStatus.MANUAL_REQUIRED: 24,
+            },
+        },
+        {
+            "name": "junos-realistic-display-set",
+            "parser": records_from_junos_paste,
+            "fixture": Path("tests/fixtures/network/junos/realistic/display_set_realistic_sanitized.txt"),
             "expected_counts": {
                 AssessmentStatus.GOOD: 14,
                 AssessmentStatus.MANUAL_REQUIRED: 24,
@@ -75,6 +87,11 @@ def test_network_vendor_regression_classify_file_outputs_are_sanitized(tmp_path)
             "vendor": "junos",
             "fixture": "tests/fixtures/network/junos/display_set_good.txt",
             "output": "network-junos",
+        },
+        {
+            "vendor": "juniper_junos",
+            "fixture": "tests/fixtures/network/junos/realistic/display_set_realistic_sanitized.txt",
+            "output": "network-junos-realistic",
         },
     ]
 

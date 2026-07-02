@@ -1,0 +1,30 @@
+[USER_1]@[HOST_1]> show configuration | display set | no-more
+
+## Last changed: sanitized lab output
+## Prompt, blank lines, inactive statements, and apply-groups are intentionally present.
+
+  set    system   host-name   [HOST_1]
+set system apply-groups [GROUP_1]
+set groups [GROUP_1] system services ssh root-login deny
+set system services ssh protocol-version v2
+inactive: set system services telnet
+set system login user [USER_1] class read-only
+set system login user [USER_1] authentication encrypted-password "[SECRET_1]"
+set system root-authentication encrypted-password "[SECRET_1]"
+set system login idle-timeout 10
+set system login message "[BANNER_1]"
+set system syslog host [IP_1] any notice
+set system syslog time-format year
+set system ntp server [IP_2]
+set system internet-options no-source-route
+set system no-redirects
+
+set snmp community [COMMUNITY_1] authorization read-only
+set snmp community [COMMUNITY_1] clients [IP_3]/32
+
+set firewall family inet filter [FILTER_1] term allow-mgmt from source-prefix-list [PREFIX_LIST_1]
+set firewall family inet filter [FILTER_1] term allow-mgmt then accept
+set interfaces ge-0/0/0 unit 0 family inet filter input [FILTER_1]
+
+deactivate system services web-management http
+[USER_1]@[HOST_1]>

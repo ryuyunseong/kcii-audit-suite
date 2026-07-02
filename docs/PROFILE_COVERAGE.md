@@ -129,6 +129,7 @@ Included in the initial v1.3.0 scope:
 
 - Preserve the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
 - Add fixture sanitization guidance for Junos display-set output.
+- Add sanitized realistic Junos display-set fixture coverage for prompt lines, blank lines, inactive statements, and `apply-groups` evidence.
 - Keep real device, GNS3, CML, or approved lab outputs out of source control unless they are sanitized fixtures.
 - Strengthen common Cisco IOS and Junos regression tests so both vendors continue to emit all `N-01` to `N-38` items.
 - Keep unknown, policy-dependent, unsupported, brace-style, XML, JSON, or unexpanded inheritance evidence as `MANUAL_REQUIRED`.

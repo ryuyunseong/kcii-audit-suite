@@ -48,6 +48,18 @@ def _extract_facts(text: str) -> dict[str, Any]:
                 "collection_status": "needs_display_set",
                 "manual_reason": "Junos brace-style configuration is not parsed by the v1.2.0 MVP; provide show configuration | display set output",
             }
+        if _looks_like_xml_config(text):
+            return {
+                "recognized": False,
+                "collection_status": "unsupported_format",
+                "manual_reason": "Junos XML configuration is not parsed by the display-set parser",
+            }
+        if _looks_like_json_config(text):
+            return {
+                "recognized": False,
+                "collection_status": "unsupported_format",
+                "manual_reason": "Junos JSON configuration is not parsed by the display-set parser",
+            }
         return {
             "recognized": False,
             "collection_status": "unsupported_output",
@@ -95,12 +107,14 @@ def _extract_facts(text: str) -> dict[str, Any]:
     snmp_communities = _snmp_community_tokens(active_lines)
     snmp_lines = _matching_lines(active_lines, r"set\s+snmp\s+community\s+\S+\b")
     weak_snmp = any(_is_weak_snmp_line(line) for line in snmp_lines)
+    inheritance_required = _has_apply_groups(active_lines)
 
     return {
         "recognized": True,
         "collection_status": "collected",
         "input_format": "junos_display_set",
         "inactive_lines_ignored": bool(inactive_lines),
+        "inheritance_required": inheritance_required,
         "password_configured": password_configured,
         "encrypted_passwords_only": encrypted_passwords_only,
         "plaintext_password_present": plaintext_password_present,
@@ -155,6 +169,8 @@ def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
     }
     if facts.get("inactive_lines_ignored"):
         base["inactive_lines_ignored"] = True
+    if facts.get("inheritance_required"):
+        base["inheritance_required"] = True
 
     if item_id == "N-01":
         return base | {"password_configured": facts["password_configured"]}
@@ -189,7 +205,7 @@ def _evidence_for_item(item_id: str, facts: dict[str, Any]) -> dict[str, Any]:
         return base | {field: facts[field]}
     return base | {
         "manual_required": True,
-        "reason": "official network item is registered, but the Junos display-set MVP parser does not automate this item yet",
+        "reason": _manual_reason(facts),
     }
 
 
@@ -198,6 +214,7 @@ def _split_display_set_lines(text: str) -> tuple[list[str], list[str]]:
     inactive: list[str] = []
     for raw_line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
         line = raw_line.replace("\x08", "").replace("--More--", "").strip()
+        line = _strip_prompt_prefix(line)
         if not line or line.startswith("#") or re.fullmatch(r"[-=]{3,}", line):
             continue
         lowered = line.lower()
@@ -218,8 +235,35 @@ def _split_display_set_lines(text: str) -> tuple[list[str], list[str]]:
     return active, inactive
 
 
+def _strip_prompt_prefix(line: str) -> str:
+    return re.sub(r"^\S+@\S+[>#]\s+", "", line)
+
+
 def _looks_like_brace_config(text: str) -> bool:
     return bool(re.search(r"(?m)^\s*(system|interfaces|security|protocols|snmp|firewall)\s*\{", text)) and "}" in text
+
+
+def _looks_like_xml_config(text: str) -> bool:
+    stripped = text.lstrip()
+    return stripped.startswith("<") and bool(re.search(r"<(configuration|system|interfaces|security|protocols)\b", stripped, re.IGNORECASE))
+
+
+def _looks_like_json_config(text: str) -> bool:
+    stripped = text.lstrip()
+    return stripped.startswith("{") and bool(re.search(r'"(configuration|system|interfaces|security|protocols)"\s*:', stripped, re.IGNORECASE))
+
+
+def _has_apply_groups(lines: list[str]) -> bool:
+    return any(
+        re.search(r"(?i)^set\s+(apply-groups\b|.+\sapply-groups\b)", line)
+        for line in lines
+    )
+
+
+def _manual_reason(facts: dict[str, Any]) -> str:
+    if facts.get("inheritance_required"):
+        return "Junos apply-groups or inherited configuration is present; full inheritance expansion is not automated and assessor review is required"
+    return "official network item is registered, but the Junos display-set MVP parser does not automate this item yet"
 
 
 def _line_exists(lines: list[str], pattern: str) -> bool:
@@ -252,7 +296,7 @@ def _management_acl_applied(lines: list[str]) -> bool | None:
     applied_filters = {
         match.group("name")
         for line in lines
-        if (match := re.search(r"(?i)^set\s+interfaces\s+\S+.*\s+family\s+inet\s+filter\s+input\s+(?P<name>\S+)\b", line))
+        if (match := re.search(r"(?i)^set\s+interfaces\s+\S+.*\s+family\s+inet\s+filter\s+input\s+(?P<name>\S+)(?:\s|$)", line))
     }
     return bool(filter_names & applied_filters)
 

@@ -203,6 +203,8 @@ Before any real lab, GNS3, CML, or device-derived Junos output is committed, it 
 - IP address or prefix -> `[IP_1]`
 - username -> `[USER_1]`
 - SNMP community -> `[COMMUNITY_1]`
+- configuration group name -> `[GROUP_1]`
+- firewall filter or prefix-list name -> `[FILTER_1]`, `[PREFIX_LIST_1]`
 - serial number -> `[SERIAL_1]`
 - domain -> `[DOMAIN_1]`
 - file path or config backup path -> `[PATH_1]`

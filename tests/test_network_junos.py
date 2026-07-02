@@ -25,6 +25,9 @@ SENSITIVE_PLACEHOLDERS = [
     "[COMMUNITY_1]",
     "[BANNER_1]",
     "[SECRET_1]",
+    "[GROUP_1]",
+    "[FILTER_1]",
+    "[PREFIX_LIST_1]",
 ]
 
 
@@ -84,6 +87,44 @@ def test_junos_brace_style_config_fails_closed_to_manual_required():
     assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
     assert {record.evidence["collection_status"] for record in records} == {"needs_display_set"}
     assert all("display set" in record.evidence["reason"] for record in records)
+
+
+def test_junos_realistic_display_set_handles_prompts_inactive_and_apply_groups():
+    records = records_from_junos_paste(
+        _fixture("realistic/display_set_realistic_sanitized.txt"),
+        asset_id="network-junos-realistic",
+    )
+    results = evaluate_evidence(records)
+    counts = Counter(result.status for result in results)
+
+    assert [record.item_id for record in records] == [f"N-{index:02d}" for index in range(1, 39)]
+    assert counts[AssessmentStatus.GOOD] == 14
+    assert counts[AssessmentStatus.MANUAL_REQUIRED] == 24
+    assert counts[AssessmentStatus.VULNERABLE] == 0
+    assert all(record.evidence.get("inactive_lines_ignored") is True for record in records)
+    assert all(record.evidence.get("inheritance_required") is True for record in records)
+    manual_reasons = [
+        record.evidence.get("reason", "")
+        for record in records
+        if record.evidence.get("manual_required")
+    ]
+    assert manual_reasons
+    assert all("inheritance expansion" in reason for reason in manual_reasons)
+
+
+def test_junos_xml_and_json_configs_fail_closed_to_manual_required():
+    samples = [
+        "<configuration><system><services><ssh /></services></system></configuration>",
+        '{"configuration": {"system": {"services": {"ssh": {}}}}}',
+    ]
+
+    for sample in samples:
+        records = records_from_junos_paste(sample, asset_id="network-junos-unsupported")
+        results = evaluate_evidence(records)
+
+        assert len(results) == 38
+        assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
+        assert {record.evidence["collection_status"] for record in records} == {"unsupported_format"}
 
 
 def test_junos_classify_file_creates_outputs_without_sensitive_values(tmp_path):

@@ -36,6 +36,8 @@ Before adding a lab or device-derived fixture, replace sensitive values with sta
 | IP address or network prefix | `[IP_1]` |
 | username | `[USER_1]` |
 | SNMP community | `[COMMUNITY_1]` |
+| configuration group name | `[GROUP_1]` |
+| firewall filter or prefix-list name | `[FILTER_1]`, `[PREFIX_LIST_1]` |
 | serial number | `[SERIAL_1]` |
 | domain | `[DOMAIN_1]` |
 | file path or config backup path | `[PATH_1]` |
@@ -49,5 +51,6 @@ Do not store customer configuration exports, live output, commercial images, VM 
 - The fixture contains no real hostnames, IP addresses, account names, communities, serials, domains, paths, keys, tokens, password hashes, or license text.
 - Active evidence appears as `set ...` lines.
 - Inactive or deactivated statements are preserved only when the test intentionally validates that they are ignored.
+- `apply-groups` or inherited configuration must remain a manual-review signal until inheritance expansion is explicitly implemented.
 - Every fixture is synthetic or sanitized before commit.
 - `python -m pytest tests/test_network_junos.py tests/test_network_vendor_regression.py` passes.
