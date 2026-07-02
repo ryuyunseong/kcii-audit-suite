@@ -93,7 +93,7 @@ def test_release_version_is_final_candidate():
     assert __version__ == "1.2.0"
 
 
-def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status():
+def test_release_documents_state_v1_2_0_released_and_v1_3_0_development_status():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
     release_notes_v1_2_0 = Path("RELEASE_NOTES_v1.2.0.md").read_text(encoding="utf-8")
@@ -106,13 +106,19 @@ def test_release_documents_state_v1_1_0_released_and_v1_2_0_development_status()
         assert "v1.1.0" in text
         assert "31f624e" in text
 
+    for text in [readme, release_index, release_notes_v1_2_0, readiness_v1_2_0, coverage, changelog]:
+        assert "v1.2.0" in text
+        assert "9296245" in text
+
     assert "latest final GitHub Release" in readme
     assert "is the final private GitHub Release" in release_notes
-    assert "dev/v1.2.0" in readme
-    assert "No `v1.2.0` tag or GitHub Release has been created yet." in release_index
-    assert "No `v1.2.0` tag or GitHub Release has been created." in release_notes_v1_2_0
-    assert "`v1.2.0` tag: not created" in readiness_v1_2_0
+    assert "dev/v1.3.0" in readme
+    assert "`v1.2.0` is fixed at commit `9296245`" in release_index
+    assert "No `v1.3.0` tag or GitHub Release has been created." in release_index
+    assert "private GitHub Release" in release_notes_v1_2_0
+    assert "`v1.2.0` tag: not created" not in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
+    assert "v1.3.0 Development Scope" in coverage
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0

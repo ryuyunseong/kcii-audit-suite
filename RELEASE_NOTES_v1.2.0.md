@@ -1,12 +1,12 @@
-# kcii-audit-suite v1.2.0 Development Draft
+# kcii-audit-suite v1.2.0
 
-`kcii-audit-suite v1.2.0` is currently a development draft on `dev/v1.2.0`. No `v1.2.0` tag or GitHub Release has been created.
+`kcii-audit-suite v1.2.0` is the final private GitHub Release for the `dev/v1.2.0` branch. The release tag is `v1.2.0` and points to commit `9296245`.
 
 The baseline final release remains `v1.1.0`, fixed at commit `31f624e`. The `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags also remain fixed and must not be moved.
 
 ## Summary
 
-This draft documents the Juniper Junos parser MVP completed after `v1.1.0`:
+This release documents the Juniper Junos parser MVP completed after `v1.1.0`:
 
 - Network profile now has a second vendor MVP for Juniper Junos.
 - Package version metadata is prepared as `1.2.0` for release smoke, build, checksum, and installed-wheel validation.
@@ -81,7 +81,7 @@ Validation completed before this draft was written:
 - release checksum file: `SHA256SUMS.txt` generated for wheel and source distribution
 - installed-wheel smoke from a clean non-repository working directory: OK
 
-Run the current validation gate in `docs/V1_2_0_READINESS.md` before any `v1.2.0` tag or private GitHub Release is considered.
+The `docs/V1_2_0_READINESS.md` checklist records the validation gate used before the `v1.2.0` tag and private GitHub Release were created.
 
 ## Security Notes
 
@@ -106,6 +106,6 @@ No migration is expected for existing offline evidence flows. Existing Cisco IOS
 
 ## Next Steps
 
-- Keep `v1.2.0` untagged until release readiness, build, checksum, installed-wheel smoke, and explicit release approval are complete.
+- Do not move the `v1.2.0` tag or replace release assets.
 - Compare sanitized real Junos display-set output from approved labs against the synthetic fixture.
 - Consider inheritance-aware Junos fixture expansion only as a later scoped task.

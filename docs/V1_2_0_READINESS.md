@@ -1,20 +1,20 @@
-# v1.2.0 Readiness Draft
+# v1.2.0 Readiness Record
 
-This document is the draft readiness checklist for the `dev/v1.2.0` branch. It is not a release record. Do not create a `v1.2.0` tag or GitHub Release until explicit approval is given.
+This document records the readiness checklist used for the `dev/v1.2.0` branch before the final private `v1.2.0` GitHub Release was created. Do not move the published `v1.2.0` tag or replace its release assets.
 
-`v1.2.0` is not tagged or released.
+`v1.2.0` is tagged, pushed, and published as a final private GitHub Release fixed at `9296245`.
 
 ## Branch And Tag State
 
 - Development branch: `dev/v1.2.0`
 - Package version metadata: `1.2.0`
 - Baseline final release: `v1.1.0`
+- `v1.2.0` tag remains fixed at `9296245`
 - `v1.1.0` tag remains fixed at `31f624e`
 - `v1.0.0` tag remains fixed at `31983bd`
 - `v1.0.0rc2` tag remains fixed at `59d3d38`
 - `v1.0.0rc1` tag remains fixed at `e93d18b`
-- `v1.2.0` tag: not created
-- GitHub Release for `v1.2.0`: not created
+- GitHub Release for `v1.2.0`: final private release
 - PyPI/TestPyPI publishing: deferred
 - Public repository conversion: out of scope
 
@@ -157,11 +157,11 @@ Release assets should be limited to:
 
 ## Private GitHub Release Pre-Checks
 
-Before a private GitHub Release is created:
+Before any replacement or follow-up private GitHub Release action is considered:
 
 - confirm `git status --short --branch` is clean
 - confirm the package version is `1.2.0`
-- confirm the annotated `v1.2.0` tag points to the intended commit
+- confirm the annotated `v1.2.0` tag still points to `9296245`
 - confirm `v1.1.0`, `v1.0.0`, `v1.0.0rc1`, and `v1.0.0rc2` have not moved
 - confirm wheel, source distribution, and checksum assets are rebuilt from the intended commit
 - confirm downloaded release assets match `SHA256SUMS.txt`

@@ -160,6 +160,8 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 
 `v1.0.0` is fixed at commit `31983bd`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.0.0` tag.
 
-`v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
+`v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
 
-`dev/v1.2.0` is the current post-v1.1.0 feature branch. Its selected feature is the Juniper Junos parser MVP, limited to sanitized `show configuration | display set` output. Package version metadata is prepared as `1.2.0` for release smoke, build, checksum, and installed-wheel validation. Brace-style, XML, JSON, and inheritance-expanded Junos configuration parsing are out of the MVP scope. No `v1.2.0` tag or GitHub Release has been created. Patch-only fixes should be separated to `dev/v1.1.1`.
+`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as the latest final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
+
+`dev/v1.3.0` is the current post-v1.2.0 feature branch. Its first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening. Patch-only fixes should be separated to `dev/v1.2.1`.

@@ -193,6 +193,26 @@ kcii-audit classify-file --profile network --vendor cisco_ios --input lab\realis
 
 네트워크 랩은 Containerlab + FRRouting을 기본 경량 테스트로 둡니다. GNS3/EVE-NG는 Cisco, Juniper, FortiGate 등 벤더 이미지 기반 검증이 필요한 경우 선택적으로 사용합니다. 상용 장비 이미지, 라이선스 파일, 운영 설정 원문은 저장소에 포함하지 않습니다.
 
+#### Junos display-set fixture handling
+
+Junos fixture work starts with offline `show configuration | display set` output only. The parser does not connect to Junos devices and does not collect live data.
+
+Before any real lab, GNS3, CML, or device-derived Junos output is committed, it must be converted into a sanitized fixture:
+
+- hostname -> `[HOST_1]`
+- IP address or prefix -> `[IP_1]`
+- username -> `[USER_1]`
+- SNMP community -> `[COMMUNITY_1]`
+- serial number -> `[SERIAL_1]`
+- domain -> `[DOMAIN_1]`
+- file path or config backup path -> `[PATH_1]`
+- banner text -> `[BANNER_1]`
+- key, token, hash, password, or credential value -> `[SECRET_1]`
+
+Keep brace-style, XML, JSON, group, `apply-groups`, and inheritance-expanded configuration out of deterministic judgment unless a separate parser task is approved. In the current scope those inputs must remain `MANUAL_REQUIRED` or `needs_display_set`.
+
+Do not store customer configuration exports, raw live output, Junos images, CML images, VM disks, or license files in the repository.
+
 ### Security Appliance
 
 Security appliance MVP flow:

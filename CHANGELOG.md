@@ -1,6 +1,19 @@
 # Changelog
 
-## [1.2.0] - Unreleased
+## [1.3.0] - Unreleased
+
+### Added
+
+- Started `dev/v1.3.0` for Junos real display-set output compatibility and Network regression hardening.
+- Added Junos fixture sanitization guidance for future real lab, GNS3, CML, or device-derived display-set samples.
+- Added Cisco IOS/Junos common Network regression tests for full `N-01` to `N-38` result emission.
+
+### Security
+
+- v1.3.0 planning keeps the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
+- Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+## [1.2.0] - 2026-07-02
 
 ### Added
 
@@ -17,6 +30,10 @@
 
 - v1.2.0 planning keeps the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags immutable.
 - Real customer evidence, live output, commercial device images, license files, public repository conversion, and PyPI/TestPyPI publishing remain out of scope.
+
+### Release
+
+- `v1.2.0` is published as a final private GitHub Release fixed at `9296245`.
 
 ## [1.1.0] - 2026-07-02
 
