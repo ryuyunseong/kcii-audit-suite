@@ -15,6 +15,15 @@ show configuration | display inheritance
 
 The display-set fixture remains the primary active configuration evidence. The display-inheritance fixture is supplemental evidence used to understand how `apply-groups` affects effective settings.
 
+## Fixture Inventory
+
+Current planning fixtures:
+
+- `display_set_with_apply_groups.txt`: display-set evidence with `apply-groups` but no reliable inheritance context. Expected current behavior is `MANUAL_REQUIRED` with `inheritance_required` evidence.
+- `display_inheritance_effective_good.txt`: clear inherited effective evidence candidate. Expected current behavior is still `MANUAL_REQUIRED` until parser support is implemented.
+- `display_inheritance_conflict.txt`: conflicting inherited evidence from multiple groups. Expected behavior remains `MANUAL_REQUIRED`.
+- `display_inheritance_incomplete.txt`: incomplete source group or effective line context. Expected behavior remains `MANUAL_REQUIRED`.
+
 ## Sanitization
 
 Replace sensitive values with stable placeholders:

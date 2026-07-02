@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Iterable
@@ -26,8 +27,11 @@ SENSITIVE_PLACEHOLDERS = [
     "[BANNER_1]",
     "[SECRET_1]",
     "[GROUP_1]",
+    "[GROUP_2]",
     "[FILTER_1]",
+    "[FILTER_2]",
     "[PREFIX_LIST_1]",
+    "[PREFIX_LIST_2]",
 ]
 
 
@@ -125,6 +129,72 @@ def test_junos_xml_and_json_configs_fail_closed_to_manual_required():
         assert len(results) == 38
         assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
         assert {record.evidence["collection_status"] for record in records} == {"unsupported_format"}
+
+
+def test_junos_inheritance_fixtures_are_synthetic_and_sanitized():
+    fixture_names = [
+        "inheritance/display_set_with_apply_groups.txt",
+        "inheritance/display_inheritance_effective_good.txt",
+        "inheritance/display_inheritance_conflict.txt",
+        "inheritance/display_inheritance_incomplete.txt",
+    ]
+    forbidden_patterns = [
+        r"-----BEGIN (RSA |DSA |EC |OPENSSH )?PRIVATE KEY-----",
+        r"AKIA[0-9A-Z]{16}",
+        r"ASIA[0-9A-Z]{16}",
+        r"ghp_[A-Za-z0-9_]{20,}",
+        r"github_pat_[A-Za-z0-9_]+",
+        r"sk-[A-Za-z0-9]{20,}",
+        r"\b(?:\d{1,3}\.){3}\d{1,3}\b",
+        r"(?i)\b(serial|license)\s+[A-Za-z0-9_-]{4,}",
+    ]
+
+    for name in fixture_names:
+        text = _fixture(name)
+        assert "[HOST_1]" in text
+        assert "[USER_1]" in text
+        for pattern in forbidden_patterns:
+            assert not re.search(pattern, text), name
+
+
+def test_junos_display_set_apply_groups_without_inheritance_context_stays_manual_required():
+    records = records_from_junos_paste(
+        _fixture("inheritance/display_set_with_apply_groups.txt"),
+        asset_id="network-junos-inheritance-required",
+    )
+    results = evaluate_evidence(records)
+
+    assert len(results) == 38
+    assert [record.item_id for record in records] == [f"N-{index:02d}" for index in range(1, 39)]
+    counts = Counter(result.status for result in results)
+
+    assert counts[AssessmentStatus.VULNERABLE] == 0
+    assert counts[AssessmentStatus.MANUAL_REQUIRED] >= 24
+    assert all(record.evidence.get("inheritance_required") is True for record in records)
+    assert all(record.evidence.get("input_format") == "junos_display_set" for record in records)
+    assert all(
+        "inheritance expansion" in record.evidence.get("reason", "")
+        for record in records
+        if record.evidence.get("manual_required")
+    )
+
+
+def test_junos_inheritance_only_fixtures_fail_closed_until_parser_support_exists():
+    fixture_names = [
+        "inheritance/display_inheritance_effective_good.txt",
+        "inheritance/display_inheritance_conflict.txt",
+        "inheritance/display_inheritance_incomplete.txt",
+    ]
+
+    for name in fixture_names:
+        records = records_from_junos_paste(_fixture(name), asset_id=f"network-junos-{name}")
+        results = evaluate_evidence(records)
+
+        assert len(results) == 38
+        assert [record.item_id for record in records] == [f"N-{index:02d}" for index in range(1, 39)]
+        assert {result.status for result in results} == {AssessmentStatus.MANUAL_REQUIRED}
+        assert {record.evidence["collection_status"] for record in records} == {"unsupported_output"}
+        assert all("display-set configuration lines were not found" in record.evidence["reason"] for record in records)
 
 
 def test_junos_classify_file_creates_outputs_without_sensitive_values(tmp_path):

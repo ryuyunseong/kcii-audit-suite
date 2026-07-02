@@ -1,0 +1,12 @@
+# Synthetic Junos display-inheritance sample with clear effective inherited evidence.
+# This file is intentionally not parsed as deterministic evidence until inheritance support is implemented.
+[USER_1]@[HOST_1]> show configuration | display inheritance | no-more
+inheritance-source [GROUP_1]
+effective-statement system services ssh source-group [GROUP_1]
+effective-statement system services telnet absent source-group [GROUP_1]
+effective-statement system syslog host [IP_1] source-group [GROUP_1]
+effective-statement system ntp server [IP_2] source-group [GROUP_1]
+effective-statement snmp community [COMMUNITY_1] authorization read-only source-group [GROUP_1]
+effective-statement firewall family inet filter [FILTER_1] term allow-mgmt from source-prefix-list [PREFIX_LIST_1] source-group [GROUP_1]
+
+[USER_1]@[HOST_1]>

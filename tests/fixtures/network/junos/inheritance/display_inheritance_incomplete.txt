@@ -1,0 +1,11 @@
+# Synthetic Junos display-inheritance sample with incomplete source context.
+# Missing source-group detail must remain MANUAL_REQUIRED.
+[USER_1]@[HOST_1]> show configuration | display inheritance | no-more
+inheritance-source missing
+effective-statement system services ssh source-group unknown
+effective-statement system login idle-timeout unknown
+effective-statement snmp community [COMMUNITY_1] authorization unknown source-group missing
+effective-statement firewall family inet filter [FILTER_1] source-prefix-list missing
+apply-groups-except present source-group [GROUP_1]
+
+[USER_1]@[HOST_1]>

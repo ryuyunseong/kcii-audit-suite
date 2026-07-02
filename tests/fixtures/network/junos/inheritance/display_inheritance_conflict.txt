@@ -1,0 +1,13 @@
+# Synthetic Junos display-inheritance sample with conflicting inherited evidence.
+# Conflicts must stay MANUAL_REQUIRED until a conservative merge rule is implemented.
+[USER_1]@[HOST_1]> show configuration | display inheritance | no-more
+inheritance-source [GROUP_1]
+inheritance-source [GROUP_2]
+conflict-statement system services ssh enabled source-group [GROUP_1]
+conflict-statement system services ssh disabled source-group [GROUP_2]
+conflict-statement snmp community [COMMUNITY_1] authorization read-only source-group [GROUP_1]
+conflict-statement snmp community [COMMUNITY_1] authorization read-write source-group [GROUP_2]
+conflict-statement firewall family inet filter [FILTER_1] term allow-mgmt from source-prefix-list [PREFIX_LIST_1] source-group [GROUP_1]
+conflict-statement firewall family inet filter [FILTER_2] term allow-mgmt from source-prefix-list [PREFIX_LIST_2] source-group [GROUP_2]
+
+[USER_1]@[HOST_1]>

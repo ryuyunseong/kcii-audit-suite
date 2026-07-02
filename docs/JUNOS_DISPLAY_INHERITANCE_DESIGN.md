@@ -81,8 +81,8 @@ Initial files should be synthetic and sanitized:
 
 - `display_set_with_apply_groups.txt`
 - `display_inheritance_effective_good.txt`
-- `display_inheritance_conflict_manual.txt`
-- `display_inheritance_incomplete_manual.txt`
+- `display_inheritance_conflict.txt`
+- `display_inheritance_incomplete.txt`
 
 Each fixture must avoid real hostnames, IP addresses, usernames, SNMP communities, serials, domains, paths, keys, tokens, hashes, passwords, and license text.
 

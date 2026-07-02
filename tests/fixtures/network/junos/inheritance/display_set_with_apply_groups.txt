@@ -1,0 +1,10 @@
+# Synthetic Junos display-set sample with apply-groups and no inheritance context.
+[USER_1]@[HOST_1]> show configuration | display set | no-more
+set system host-name [HOST_1]
+set system apply-groups [GROUP_1]
+set system syslog host [IP_1] any any
+set groups [GROUP_1] system services ssh
+set groups [GROUP_1] system login idle-timeout 10
+set groups [GROUP_1] snmp community [COMMUNITY_1] authorization read-only
+
+[USER_1]@[HOST_1]>
