@@ -55,8 +55,11 @@ def test_readme_states_release_boundary_and_offline_model():
     assert "security_advisory.xlsx" in readme
     assert "Docker, Containerlab, GNS3, EVE-NG" in readme
     assert "Portfolio Snapshot" in readme
+    assert "Portfolio License Notice" in readme
     assert "PORTFOLIO.md" in readme
     assert "docs/PUBLIC_READINESS.md" in readme
+    assert "all rights are reserved" in readme
+    assert "No permission is granted for reuse, redistribution, or derivative works" in readme
 
 
 def test_profile_coverage_document_mentions_every_profile_and_counts():
@@ -175,7 +178,12 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "Public repository conversion requires a separate review" in maintenance
     assert "오프라인 보안 진단 자동화 도구" in portfolio
     assert "MANUAL_REQUIRED" in portfolio
+    assert "포트폴리오 검토 목적" in portfolio
+    assert "무단 복제, 수정, 재배포" in portfolio
     assert "repository visibility to public" in public_readiness
+    assert "All rights reserved / Proprietary" in public_readiness
+    assert "Public visibility is for review, not open-source reuse" in public_readiness
+    assert "No permission is granted for reuse, redistribution, or derivative works" in public_readiness
     assert "not an official KISA tool" in public_readiness
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0

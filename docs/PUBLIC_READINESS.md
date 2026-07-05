@@ -8,10 +8,14 @@ The project can be prepared as a public portfolio repository, but public convers
 
 Changing repository visibility to public must be an explicit, final action after this checklist passes.
 
+The intended public policy is portfolio review only with `All rights reserved / Proprietary` licensing. Public visibility is for review, not open-source reuse. No permission is granted for reuse, redistribution, or derivative works without explicit written permission.
+
+The project is not an official KISA tool and does not replace manual security assessment judgment.
+
 ## Blocking Checks Before Public Visibility
 
-- Choose and add a repository license or intentionally keep all rights reserved.
-- Replace or clarify `pyproject.toml` license metadata if the selected public license changes.
+- Confirm `All rights reserved / Proprietary` remains intentional for portfolio review.
+- Replace or clarify `pyproject.toml` license metadata only if the selected public license changes.
 - Re-check that fixtures are synthetic and sanitized.
 - Confirm no real customer evidence, live output, commercial device images, license files, `.env`, raw outputs, or generated reports are tracked.
 - Confirm README states the tool is not an official KISA tool.
@@ -23,6 +27,7 @@ Changing repository visibility to public must be an explicit, final action after
 - Keep detailed release history in docs instead of the first screen.
 - Add screenshots only if they are generated from synthetic fixtures.
 - Keep PyPI/TestPyPI publishing deferred unless separately approved.
+- Keep `v1.4.0` release tags and assets immutable.
 - Enable GitHub secret scanning and Dependabot alerts when repository settings allow it.
 
 ## Public Content Boundary

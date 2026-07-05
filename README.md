@@ -12,6 +12,12 @@ This repository demonstrates an offline infrastructure security assessment autom
 
 For a Korean portfolio summary, see [PORTFOLIO.md](PORTFOLIO.md). Before changing repository visibility to public, review [docs/PUBLIC_READINESS.md](docs/PUBLIC_READINESS.md).
 
+## Portfolio License Notice
+
+This repository may be published for portfolio review purposes. Unless otherwise stated, all rights are reserved. No permission is granted for reuse, redistribution, or derivative works without explicit written permission.
+
+This project is not an official KISA tool and does not replace manual security assessment judgment.
+
 ## Operating Model
 
 This tool is not a remote automatic collector.
