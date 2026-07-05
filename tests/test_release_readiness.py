@@ -15,6 +15,7 @@ runner = CliRunner()
 def test_release_documents_exist_and_are_linked_from_readme():
     required = [
         Path("RELEASE_NOTES.md"),
+        Path("PORTFOLIO.md"),
         Path("RELEASE_NOTES_v1.4.0.md"),
         Path("RELEASE_NOTES_v1.3.0.md"),
         Path("RELEASE_NOTES_v1.2.0.md"),
@@ -23,6 +24,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("RELEASE_NOTES_v1.0.0rc2.md"),
         Path("CHANGELOG.md"),
         Path("docs/RELEASE_CHECKLIST.md"),
+        Path("docs/PUBLIC_READINESS.md"),
         Path("docs/PROJECT_COMPLETION.md"),
         Path("docs/MAINTENANCE_POLICY.md"),
         Path("docs/PROFILE_COVERAGE.md"),
@@ -52,6 +54,9 @@ def test_readme_states_release_boundary_and_offline_model():
     assert "security_advisory.md" in readme
     assert "security_advisory.xlsx" in readme
     assert "Docker, Containerlab, GNS3, EVE-NG" in readme
+    assert "Portfolio Snapshot" in readme
+    assert "PORTFOLIO.md" in readme
+    assert "docs/PUBLIC_READINESS.md" in readme
 
 
 def test_profile_coverage_document_mentions_every_profile_and_counts():
@@ -113,6 +118,8 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
     completion = Path("docs/PROJECT_COMPLETION.md").read_text(encoding="utf-8")
     maintenance = Path("docs/MAINTENANCE_POLICY.md").read_text(encoding="utf-8")
+    portfolio = Path("PORTFOLIO.md").read_text(encoding="utf-8")
+    public_readiness = Path("docs/PUBLIC_READINESS.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
     for text in [readme, release_index, release_notes, readiness_v1_2_0, coverage, changelog]:
@@ -166,6 +173,10 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "`dev/v1.5.0`: new compatible features" in completion
     assert "Published release tags and assets are immutable" in maintenance
     assert "Public repository conversion requires a separate review" in maintenance
+    assert "오프라인 보안 진단 자동화 도구" in portfolio
+    assert "MANUAL_REQUIRED" in portfolio
+    assert "repository visibility to public" in public_readiness
+    assert "not an official KISA tool" in public_readiness
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
@@ -195,6 +206,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         path.read_text(encoding="utf-8")
         for path in [
             Path("README.md"),
+            Path("PORTFOLIO.md"),
             Path("RELEASE_NOTES.md"),
             Path("RELEASE_NOTES_v1.4.0.md"),
             Path("RELEASE_NOTES_v1.3.0.md"),
@@ -204,6 +216,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("RELEASE_NOTES_v1.0.0rc2.md"),
             Path("CHANGELOG.md"),
             Path("docs/RELEASE_CHECKLIST.md"),
+            Path("docs/PUBLIC_READINESS.md"),
             Path("docs/PROJECT_COMPLETION.md"),
             Path("docs/MAINTENANCE_POLICY.md"),
             Path("docs/PROFILE_COVERAGE.md"),

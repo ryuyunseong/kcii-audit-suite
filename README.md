@@ -6,6 +6,12 @@ The project is fixed to the local `kcii-2025-12` rulepack baseline. The rulepack
 
 `v1.4.0` is the private baseline product completion release for the current offline workflow. Further patch work should use `dev/v1.4.1`, and compatible feature work should use `dev/v1.5.0` or later. See [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md) and [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md).
 
+## Portfolio Snapshot
+
+This repository demonstrates an offline infrastructure security assessment automation workflow. It focuses on rulepack-driven judgment, parser design, report generation, conservative security decisions, test fixtures, packaging, and release verification.
+
+For a Korean portfolio summary, see [PORTFOLIO.md](PORTFOLIO.md). Before changing repository visibility to public, review [docs/PUBLIC_READINESS.md](docs/PUBLIC_READINESS.md).
+
 ## Operating Model
 
 This tool is not a remote automatic collector.
@@ -140,6 +146,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 ## Release Documents
 
 - [CHANGELOG.md](CHANGELOG.md)
+- [PORTFOLIO.md](PORTFOLIO.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
 - [RELEASE_NOTES_v1.4.0.md](RELEASE_NOTES_v1.4.0.md)
 - [RELEASE_NOTES_v1.3.0.md](RELEASE_NOTES_v1.3.0.md)
@@ -149,6 +156,7 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [RELEASE_NOTES_v1.0.0rc1.md](RELEASE_NOTES_v1.0.0rc1.md)
 - [RELEASE_NOTES_v1.0.0rc2.md](RELEASE_NOTES_v1.0.0rc2.md)
 - [docs/RELEASE_CHECKLIST.md](docs/RELEASE_CHECKLIST.md)
+- [docs/PUBLIC_READINESS.md](docs/PUBLIC_READINESS.md)
 - [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md)
 - [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
