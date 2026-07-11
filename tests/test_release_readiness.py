@@ -17,6 +17,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("RELEASE_NOTES.md"),
         Path("PORTFOLIO.md"),
         Path("RELEASE_NOTES_v1.4.0.md"),
+        Path("RELEASE_NOTES_v1.4.1.md"),
         Path("RELEASE_NOTES_v1.3.0.md"),
         Path("RELEASE_NOTES_v1.2.0.md"),
         Path("RELEASE_NOTES_v1.1.0.md"),
@@ -28,8 +29,10 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("docs/PROJECT_COMPLETION.md"),
         Path("docs/MAINTENANCE_POLICY.md"),
         Path("docs/PROFILE_COVERAGE.md"),
+        Path("docs/END_TO_END_SUPPORT_MATRIX.md"),
         Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
         Path("docs/V1_4_0_READINESS.md"),
+        Path("docs/V1_4_1_READINESS.md"),
         Path("docs/V1_3_0_READINESS.md"),
         Path("docs/V1_2_0_READINESS.md"),
         Path("docs/V1_1_0_READINESS.md"),
@@ -47,19 +50,19 @@ def test_release_documents_exist_and_are_linked_from_readme():
 def test_readme_states_release_boundary_and_offline_model():
     readme = Path("README.md").read_text(encoding="utf-8")
 
-    assert "not an official KISA tool" in readme
-    assert "not a remote automatic collector" in readme
-    assert "Windows work PC" in readme
+    assert "KISA 공식 도구가 아니며" in readme
+    assert "직접 원격 접속하지 않습니다" in readme
+    assert "Windows 작업 PC" in readme
     assert "MANUAL_REQUIRED" in readme
     assert "security_advisory.md" in readme
     assert "security_advisory.xlsx" in readme
-    assert "Docker, Containerlab, GNS3, EVE-NG" in readme
-    assert "Portfolio Snapshot" in readme
-    assert "Portfolio License Notice" in readme
+    assert "Docker Compose, Containerlab, GNS3, EVE-NG" in readme
+    assert "포트폴리오 요약" in readme
+    assert "공개 및 라이선스" in readme
     assert "PORTFOLIO.md" in readme
     assert "docs/PUBLIC_READINESS.md" in readme
-    assert "all rights are reserved" in readme
-    assert "No permission is granted for reuse, redistribution, or derivative works" in readme
+    assert "모든 권리는 저작자에게" in readme
+    assert "재사용, 재배포 또는 파생 저작물" in readme
 
 
 def test_profile_coverage_document_mentions_every_profile_and_counts():
@@ -101,21 +104,23 @@ def test_cli_help_smoke_for_release_commands():
     for command in commands:
         result = runner.invoke(app, command)
         assert result.exit_code == 0, result.output
-        assert "offline" in result.output.lower()
+        assert "오프라인" in result.output
 
 
 def test_release_version_is_final_candidate():
-    assert __version__ == "1.4.0"
+    assert __version__ == "1.4.1"
 
 
 def test_release_documents_state_current_releases_and_v1_4_0_completion():
     readme = Path("README.md").read_text(encoding="utf-8")
     release_index = Path("RELEASE_NOTES.md").read_text(encoding="utf-8")
     release_notes_v1_4_0 = Path("RELEASE_NOTES_v1.4.0.md").read_text(encoding="utf-8")
+    release_notes_v1_4_1 = Path("RELEASE_NOTES_v1.4.1.md").read_text(encoding="utf-8")
     release_notes_v1_3_0 = Path("RELEASE_NOTES_v1.3.0.md").read_text(encoding="utf-8")
     release_notes_v1_2_0 = Path("RELEASE_NOTES_v1.2.0.md").read_text(encoding="utf-8")
     release_notes = Path("RELEASE_NOTES_v1.1.0.md").read_text(encoding="utf-8")
     readiness_v1_4_0 = Path("docs/V1_4_0_READINESS.md").read_text(encoding="utf-8")
+    readiness_v1_4_1 = Path("docs/V1_4_1_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_3_0 = Path("docs/V1_3_0_READINESS.md").read_text(encoding="utf-8")
     readiness_v1_2_0 = Path("docs/V1_2_0_READINESS.md").read_text(encoding="utf-8")
     coverage = Path("docs/PROFILE_COVERAGE.md").read_text(encoding="utf-8")
@@ -125,15 +130,16 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     public_readiness = Path("docs/PUBLIC_READINESS.md").read_text(encoding="utf-8")
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
 
-    for text in [readme, release_index, release_notes, readiness_v1_2_0, coverage, changelog]:
+    for text in [release_index, release_notes, readiness_v1_2_0, coverage, changelog]:
         assert "v1.1.0" in text
         assert "31f624e" in text
 
-    for text in [readme, release_index, release_notes_v1_2_0, readiness_v1_2_0, coverage, changelog]:
+    for text in [release_index, release_notes_v1_2_0, readiness_v1_2_0, coverage, changelog]:
         assert "v1.2.0" in text
         assert "9296245" in text
 
-    assert "latest final GitHub Release" in readme
+    assert "최신 릴리스" in readme
+    assert "최신 릴리스: `v1.4.1`" in readme
     assert "is the final private GitHub Release" in release_notes
     assert "dev/v1.4.1" in readme
     assert "dev/v1.5.0" in readme
@@ -171,16 +177,21 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "kcii_audit_suite-1.4.0-py3-none-any.whl" in readiness_v1_4_0
     assert "clean installed-wheel smoke: passed" in readiness_v1_4_0
     assert "conflicting inherited values keep all items `MANUAL_REQUIRED`" in readiness_v1_4_0
+    assert "Package version metadata: `1.4.1`" in readiness_v1_4_1
+    assert "kcii_audit_suite-1.4.1-py3-none-any.whl" in readiness_v1_4_1
+    assert "한글 질의서 export/import" in readiness_v1_4_1
+    assert "v1.4.0" in release_notes_v1_4_1
+    assert "MANUAL_REQUIRED" in release_notes_v1_4_1
     assert "baseline product completion" in completion
-    assert "`dev/v1.4.1`: documentation fixes and narrow bug fixes only" in completion
-    assert "`dev/v1.5.0`: new compatible features" in completion
+    assert "`dev/v1.4.1`: 문서 수정과 좁은 범위의 버그 수정" in completion
+    assert "`dev/v1.5.0`: 하위 호환 신규 기능" in completion
     assert "Published release tags and assets are immutable" in maintenance
-    assert "Public repository conversion requires a separate review" in maintenance
+    assert "PyPI/TestPyPI 배포와 저장소 라이선스 변경은 별도 승인" in maintenance
     assert "오프라인 보안 진단 자동화 도구" in portfolio
     assert "MANUAL_REQUIRED" in portfolio
     assert "포트폴리오 검토 목적" in portfolio
     assert "무단 복제, 수정, 재배포" in portfolio
-    assert "repository visibility to public" in public_readiness
+    assert "visibility: PUBLIC" in public_readiness
     assert "All rights reserved / Proprietary" in public_readiness
     assert "Public visibility is for review, not open-source reuse" in public_readiness
     assert "No permission is granted for reuse, redistribution, or derivative works" in public_readiness
@@ -217,6 +228,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("PORTFOLIO.md"),
             Path("RELEASE_NOTES.md"),
             Path("RELEASE_NOTES_v1.4.0.md"),
+            Path("RELEASE_NOTES_v1.4.1.md"),
             Path("RELEASE_NOTES_v1.3.0.md"),
             Path("RELEASE_NOTES_v1.2.0.md"),
             Path("RELEASE_NOTES_v1.1.0.md"),
@@ -230,6 +242,7 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
             Path("docs/PROFILE_COVERAGE.md"),
             Path("docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md"),
             Path("docs/V1_4_0_READINESS.md"),
+            Path("docs/V1_4_1_READINESS.md"),
             Path("docs/V1_3_0_READINESS.md"),
             Path("docs/V1_2_0_READINESS.md"),
             Path("docs/V1_1_0_READINESS.md"),
@@ -247,3 +260,21 @@ def test_release_documents_do_not_include_sensitive_fixture_placeholders():
         "not-a-real-token",
     ]:
         assert forbidden not in combined
+
+
+def test_runtime_resources_do_not_contain_damaged_korean_markers():
+    paths = [
+        Path("rulepacks/kcii-2025-12/unix.yaml"),
+        Path("rulepacks/kcii-2025-12/unix_items_manifest.yaml"),
+        Path("rulepacks/kcii-2025-12/security_appliance.yaml"),
+        Path("rulepacks/kcii-2025-12/security_appliance_items_manifest.yaml"),
+        Path("questionnaires/security_appliance_schema.yaml"),
+        Path("src/kcii_audit/resources/rulepacks/kcii-2025-12/unix.yaml"),
+        Path("src/kcii_audit/resources/rulepacks/kcii-2025-12/unix_items_manifest.yaml"),
+        Path("src/kcii_audit/resources/rulepacks/kcii-2025-12/security_appliance.yaml"),
+        Path("src/kcii_audit/resources/rulepacks/kcii-2025-12/security_appliance_items_manifest.yaml"),
+        Path("src/kcii_audit/resources/questionnaires/security_appliance_schema.yaml"),
+    ]
+
+    for path in paths:
+        assert "???" not in path.read_text(encoding="utf-8"), path
