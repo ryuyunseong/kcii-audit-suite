@@ -1,8 +1,22 @@
 # Release Notes
 
+## v1.4.1 Final Release
+
+`v1.4.1`은 commit `1a298ff`에 고정된 최신 공개 정식 GitHub Release입니다. 한글 리소스 손상 복구, 한글 보안장비 질의서 호환성, 전 프로파일 end-to-end 산출물 계약을 검증한 patch release입니다.
+
+상세 변경은 `RELEASE_NOTES_v1.4.1.md`, 검증 기록은 `docs/V1_4_1_READINESS.md`, 현재 지원 범위는 `docs/END_TO_END_SUPPORT_MATRIX.md`에서 확인할 수 있습니다.
+
+### Validation
+
+- 전체 테스트: `189 passed`
+- 모든 지원 프로파일 기본 7개 산출물 smoke 통과
+- 한글 질의서 export/import와 기존 영어 헤더 import 호환성 검증
+- wheel, sdist, checksum 및 clean wheel 설치 검증
+- `v1.4.1`과 이전 공개 태그 및 Release asset 불변
+
 ## v1.4.0 Final Release
 
-`v1.4.0` is fixed at commit `178369b`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is the baseline product completion release for the private offline workflow.
+`v1.4.0` is fixed at commit `178369b` and was published as a final private GitHub Release. It established the first baseline product completion point before the repository became public and `v1.4.1` superseded it as the latest patch release.
 
 The detailed v1.4.0 notes are maintained in `RELEASE_NOTES_v1.4.0.md`, the release-readiness checklist is maintained in `docs/V1_4_0_READINESS.md`, and the baseline completion boundary is maintained in `docs/PROJECT_COMPLETION.md`.
 

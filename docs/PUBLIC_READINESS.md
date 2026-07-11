@@ -7,7 +7,9 @@
 - 저장소: `ryuyunseong/kcii-audit-suite`
 - visibility: PUBLIC
 - 기본 브랜치: `main`
-- 기준 릴리스: `v1.4.0`
+- 최신 릴리스: `v1.4.1` (`1a298ff`)
+- 최초 기본 제품 완료 기준: `v1.4.0` (`178369b`)
+- 전체 테스트: `189 passed`
 - 라이선스: All rights reserved / Proprietary
 - PyPI/TestPyPI: 미배포
 
@@ -20,10 +22,11 @@ No permission is granted for reuse, redistribution, or derivative works without 
 - README와 `PORTFOLIO.md`에 프로젝트 목적과 한계를 표시했습니다.
 - 이 프로젝트가 not an official KISA tool임을 표시했습니다.
 - 원격 자동 수집기가 아니며 수동 보안 판단을 대신하지 않는다고 명시했습니다.
-- `v1.4.0` 태그와 Release asset을 변경하지 않았습니다.
+- `v1.4.1`과 이전 태그 및 Release asset을 변경하지 않았습니다.
 - 실제 고객 증적과 상용 장비 자료를 포함하지 않았습니다.
 - secret pattern과 금지 경로 검사를 수행했습니다.
 - wheel/sdist/checksum과 clean wheel 설치를 검증했습니다.
+- 합성 fixture로 생성한 7개 결과 미리보기를 별도 예제 디렉터리에 공개했습니다.
 
 ## 공개 가능한 자료
 
@@ -33,6 +36,7 @@ No permission is granted for reuse, redistribution, or derivative works without 
 - Excel/Markdown report writer
 - 보안장비 한글 질의서 양식
 - command-response simulator
+- synthetic fixture 기반 결과 미리보기
 - 테스트, 패키징과 릴리스 검증 문서
 
 ## 공개 금지 자료

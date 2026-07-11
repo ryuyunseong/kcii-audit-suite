@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Documentation
+
+- 공개 문서의 최신 상태를 `v1.4.1`, `189 passed`, 다음 patch 브랜치 `dev/v1.4.2` 기준으로 정리했습니다.
+- 합성 Windows Server fixture로 생성한 7개 결과 미리보기와 재현 절차를 추가했습니다.
+- 포트폴리오에서 지원 매트릭스, 결과 미리보기와 최신 Release에 바로 접근할 수 있도록 링크를 보강했습니다.
+
 ## [1.4.1] - 2026-07-12
 
 ### Changed
