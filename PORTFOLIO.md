@@ -8,7 +8,7 @@
 
 ## 공개 및 라이선스 정책
 
-본 저장소는 포트폴리오 검토 목적으로 공개될 수 있는 프로젝트입니다.
+본 저장소는 포트폴리오 검토 목적으로 공개된 프로젝트입니다.
 
 별도 명시가 없는 한 모든 권리는 저작자에게 있으며, 명시적인 서면 허가 없이 무단 복제, 수정, 재배포, 파생 저작물 작성을 허용하지 않습니다.
 
@@ -49,7 +49,7 @@
 - Parser: 운영체제, DBMS, 네트워크 장비별 evidence normalization
 - Report: `openpyxl`과 Markdown 기반 상세/요약/권고문 산출
 - Packaging: wheel/sdist 빌드, checksum 생성, clean venv 설치 검증
-- Release: private GitHub Release 기준으로 버전별 검증 기록 유지
+- Release: GitHub Release 기준으로 버전별 검증 기록 유지
 - Test: fixture 기반 parser/rulepack/report 회귀 테스트
 
 ## 검증 상태
@@ -79,7 +79,7 @@
 - 운영정책, 담당자 인터뷰, 대체통제 확인이 필요한 항목은 수동확인이 필요합니다.
 - Junos inheritance는 충돌/불완전 evidence에서 보수적으로 처리합니다.
 - 보안장비는 질의서와 sanitized summary 중심입니다.
-- public 공개 전에는 라이선스, 책임 범위, sample sanitization을 별도로 검토해야 합니다.
+- 공개 저장소에는 실제 고객 자료를 포함하지 않으며, 라이선스와 책임 범위 정책을 유지합니다.
 
 ## 지원 직무와 연결되는 역량
 

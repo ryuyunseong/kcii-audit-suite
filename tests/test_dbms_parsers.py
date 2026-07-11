@@ -333,4 +333,4 @@ def test_dbms_profile_requires_supported_dbms(tmp_path):
     )
 
     assert result.exit_code == 2
-    assert "Only --dbms postgresql" in result.output
+    assert "--dbms postgresql, mysql, mariadb만 지원합니다" in result.output

@@ -1,263 +1,119 @@
-# Profile Coverage
+# 프로파일 지원 범위
 
-This document summarizes the release-candidate coverage for the `kcii-2025-12` rulepack baseline. The tool is an offline assessment helper and not an official KISA tool.
+이 문서는 `kcii-2025-12` rulepack의 등록 범위, 자동화 수준과 알려진 제한사항을 정리합니다. 이 도구는 KISA 공식 도구가 아니라 오프라인 분석·평가 보조 도구입니다.
 
-## Summary
+## 전체 현황
 
-| Profile | Registered items | Auto | Partial | Manual | Notes |
+| Profile | Registered items | Auto | Partial | Manual | 설명 |
 | --- | ---: | ---: | ---: | ---: | --- |
-| Windows Server | 64 | 8 | 7 | 49 | Full Windows manifest, expanded rc2 automatic and partial judgment |
-| Linux Server | 8 | 0 | 8 | 0 | MVP-only rulepack, not full official Linux coverage |
-| Unix Server | 67 | 0 | 28 | 39 | AIX, Solaris, HP-UX, Linux fixture-based parser |
-| DBMS | 26 | 0 | 12 | 14 | PostgreSQL, MySQL, MariaDB offline parser with JSON and key/value fixture coverage |
-| Network | 38 | 27 | 0 | 11 | Cisco IOS simulator/parser with expanded command-response checks; Junos display-set parser MVP |
-| Security Appliance | 23 | 0 | 23 | 0 | Questionnaire-centered evidence flow |
+| Windows Server | 64 | 8 | 7 | 49 | 전체 항목 등록, 일부 자동·부분 판정 |
+| Linux Server | 8 | 0 | 8 | 0 | `L-01`~`L-08` MVP, 전체 공식 범위 아님 |
+| Unix Server | 67 | 0 | 28 | 39 | AIX·Solaris·HP-UX·Linux 호환 출력 |
+| DBMS | 26 | 0 | 12 | 14 | PostgreSQL·MySQL·MariaDB 오프라인 parser |
+| Network | 38 | 27 | 0 | 11 | Cisco IOS·Junos parser와 Cisco IOS simulator |
+| Security Appliance | 23 | 0 | 23 | 0 | 질의서·인터뷰 중심 증적 흐름 |
+
+자동화 수준의 의미:
+
+- `auto`: 현재 parser가 지원하는 증적만으로 결정론적 판정이 가능합니다.
+- `partial`: 일부 조건은 자동판정하지만 운영 맥락이나 추가 증적 확인이 필요할 수 있습니다.
+- `manual`: 항목은 결과에 포함되며 진단자의 수동확인이 필요합니다.
+- `unsupported`: 현재 parser 범위 밖이며 지원 예정 범위로 문서화합니다.
 
 ## Windows Server
 
-- Scope: `W-01` to `W-64`
-- Status: full item registration, partial automatic judgment
-- Known limits:
-  - Many account, service, share, audit, and IIS-related items require manual review.
-  - English and Korean command output coverage needs continued expansion.
-- Next automation candidates:
-  - Password policy edge cases
-  - Audit policy
-  - Unnecessary services
-  - Share and anonymous access checks
-  - Event log retention policy
+- 범위: `W-01` to `W-64`
+- 상태: 전체 항목 등록, 부분 자동판정
+- 주요 자동화: 계정 잠금, 일부 비밀번호 정책, 기본 공유, 일부 위험 서비스, 감사·이벤트 로그 요약
+- 제한사항: 계정 목록, 공유 권한, IIS, 운영정책과 예외 검토는 수동확인 비중이 높습니다.
+- 다음 후보: 감사정책, 서비스, 공유·익명 접근, 이벤트 로그 보존정책 확대
 
 ## Linux Server
 
-- Scope: `L-01` to `L-08` MVP
-- Status: MVP deterministic checks
-- Known limits:
-  - This is not a full official Linux item set.
-  - Container results cannot replace VM or real host evidence for PAM, audit, and service-manager behavior.
-- Next automation candidates:
-  - Expand from MVP items to full official Linux/Unix alignment where appropriate.
-  - Add more distro-specific fixture coverage.
+- 범위: `L-01` to `L-08`
+- 상태: MVP 결정론적 점검
+- 제한사항: 전체 공식 Linux 항목 집합이 아닙니다. PAM, audit와 서비스 관리자 동작은 컨테이너 결과만으로 실제 서버를 대체할 수 없습니다.
+- 다음 후보: 전체 Unix/Linux 기준 정합성 확대와 배포판별 fixture 추가
 
 ## Unix Server
 
-- Scope: `U-01` to `U-67`
-- Supported offline fixture flavors: AIX, Solaris, HP-UX, Linux-compatible output
-- Status: full item registration with conservative parser coverage
-- Known limits:
-  - Real AIX, Solaris, and HP-UX command output varies by version and vendor configuration.
-  - Unsupported or ambiguous output remains `MANUAL_REQUIRED`.
-- Next automation candidates:
-  - Real-world sanitized AIX/Solaris/HP-UX output normalization
-  - Service and log policy evidence expansion
+- 범위: `U-01` to `U-67`
+- 지원 유형: AIX, Solaris, HP-UX, Linux 호환 출력
+- 상태: 전체 항목 등록, fixture 기반 보수적 parser
+- 제한사항: 실제 출력은 OS 버전과 벤더 설정에 따라 달라집니다. 명령 미지원, 권한 부족, 모호한 출력은 `MANUAL_REQUIRED`입니다.
+- 다음 후보: 비식별 실제 출력 정규화, 서비스·로그 정책 증적 확대
 
 ## DBMS
 
-- Scope: `D-01` to `D-26`
-- Supported MVP DBMS: PostgreSQL, MySQL, MariaDB
-- Status: offline parser MVP with JSON and key/value fixture coverage; Docker Compose remains a development verification lab
-- Known limits:
-  - Oracle, MSSQL, Tibero, Altibase, and Cubrid are not implemented.
-  - Password policy, audit, role, and remote restriction evidence remains conservative.
-  - Permission-denied and unsupported outputs remain `MANUAL_REQUIRED` rather than runtime failures.
-- Next automation candidates:
-  - Password policy evidence expansion
-  - Audit/log setting checks
-  - Remote access restriction checks
-  - Additional DBMS engines
+- 범위: `D-01` to `D-26`
+- 지원 DBMS: PostgreSQL, MySQL, MariaDB
+- 상태: JSON 및 key/value 오프라인 parser, Docker Compose 개발 랩 검증
+- 제한사항: Oracle, MSSQL, Tibero, Altibase, Cubrid는 구현하지 않았습니다. 비밀번호 정책, 감사, 역할, 원격 제한은 보수적으로 판정합니다.
+- 다음 후보: 패스워드 정책, 감사·로그, 원격 접근 제한, 추가 DBMS 엔진
 
 ## Network
 
-- Scope: `N-01` to `N-38`
-- Supported MVP vendors: Cisco IOS, Juniper Junos
-- Status: Cisco IOS simulator/parser MVP; Junos display-set parser MVP with conservative display-inheritance skeleton
-- Known limits:
-  - Cisco IOS parser coverage is limited to deterministic command-response evidence.
-  - Junos parser coverage is centered on `show configuration | display set` output.
-  - Junos display-inheritance support is limited to sanitized synthetic `effective-statement` evidence and conservative conflict/incomplete detection.
-  - Brace-style, XML, JSON, and full inheritance-expanded Junos configuration interpretation are not supported in the MVP.
-  - FortiGate and other network OS support remains future work.
-  - Configuration context often requires manual review.
-- Next automation candidates:
-  - AAA and management access policy
-  - Real Cisco IOS, GNS3, CML, and lab output normalization
-  - Junos display-set fixture expansion
-
-## v1.1.0 Development Scope
-
-The `dev/v1.1.0` branch started after the private `v1.0.0` release. The first development slice expanded Cisco IOS automatic judgment only where sanitized command output can be interpreted deterministically.
-
-`v1.1.0` is fixed at `31f624e` and published as a final private GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
-
-Included in this slice:
-
-- Preserve the published `v1.0.0`, `v1.0.0rc1`, and `v1.0.0rc2` tags.
-- Keep `kcii-netlab-sim` as a command-response simulator, not a packet or routing emulator.
-- Expand Cisco IOS checks for timestamp logging, SNMP ACL and authorization, TFTP, TCP keepalives, management web service, small services, Bootp, CDP, directed-broadcast, source-route, proxy ARP, ICMP control messages, identd, domain lookup, pad, and mask-reply indicators.
-- Add sanitized realistic Cisco IOS fixture coverage for common `show run`, multi-`line vty`, SNMP, logging, NTP, and service-hardening output variants.
-- Leave policy-dependent items such as password complexity, AAA lockout, user privilege design, auxiliary port review, patch status, logging policy completeness, SNMP necessity, spoofing controls, DDoS controls, and unused interface judgment as `MANUAL_REQUIRED`.
-- Keep fixtures synthetic and sanitized; do not store customer configuration exports or live device output.
-
-## v1.2.0 Release Scope
-
-The `dev/v1.2.0` branch started from the fixed private `v1.1.0` release. The selected feature for this branch was Juniper Junos parser MVP.
-
-`v1.2.0` is fixed at `9296245` and published as a final private GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
-
-Included in this MVP scope:
-
-- Preserve the published `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
-- Add Juniper Junos as the next Network vendor target without changing Cisco IOS `N-01` to `N-38` behavior.
-- Use sanitized offline `show configuration | display set` fixtures only.
-- Keep unknown, policy-dependent, or unsupported Junos evidence as `MANUAL_REQUIRED`.
-- Treat brace-style Junos configuration as `needs_display_set` rather than attempting full parsing.
-- Current sanitized Junos good-fixture smoke emits all `N-01` to `N-38` items with `GOOD 14` and `MANUAL_REQUIRED 24`.
-
-Excluded from this MVP scope unless separately approved:
-
-- FRRouting parser and Containerlab fixture work.
-- Security Appliance questionnaire enhancements.
-- `--save-raw-local` raw vault behavior.
-- Unix AIX/HP-UX/Solaris fixture expansion.
-- Public repository conversion or PyPI/TestPyPI publishing.
-
-## v1.3.0 Development Scope
-
-The `dev/v1.3.0` branch starts from the fixed private `v1.2.0` release. The selected first scope is Junos real display-set output compatibility and Cisco IOS/Junos Network regression hardening.
-
-`v1.3.0` is fixed at `30490b4` and published as a final private GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
-
-Included in the initial v1.3.0 scope:
-
-- Preserve the published `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
-- Add fixture sanitization guidance for Junos display-set output.
-- Add sanitized realistic Junos display-set fixture coverage for prompt lines, blank lines, inactive statements, and `apply-groups` evidence.
-- Keep real device, GNS3, CML, or approved lab outputs out of source control unless they are sanitized fixtures.
-- Strengthen common Cisco IOS and Junos regression tests so both vendors continue to emit all `N-01` to `N-38` items.
-- Keep unknown, policy-dependent, unsupported, brace-style, XML, JSON, or unexpanded inheritance evidence as `MANUAL_REQUIRED`.
-
-Excluded from the initial v1.3.0 scope unless separately approved:
-
-- Moving or replacing any published release tag or asset.
-- Direct device collection, NETCONF collection, or active scanning.
-- Storing raw customer configs, live output, device images, license files, keys, tokens, passwords, or password hashes.
-- Public repository conversion or PyPI/TestPyPI publishing.
-
-## v1.4.0 Release Scope
-
-The `dev/v1.4.0` branch started from the fixed private `v1.3.0` release. The selected scope was a conservative Junos `display inheritance` parser skeleton and fixture coverage.
-
-`v1.4.0` is fixed at `178369b` and published as the latest final private GitHub Release. It is the baseline product completion release for the private offline workflow. Do not move the `v1.4.0` tag or replace its release assets.
-
-Included in the initial v1.4.0 scope:
-
-- Preserve the published `v1.3.0`, `v1.2.0`, `v1.1.0`, `v1.0.0`, `v1.0.0rc2`, and `v1.0.0rc1` tags.
-- Document how sanitized `show configuration | display set` evidence can be paired with sanitized `display inheritance` evidence.
-- Parse sanitized synthetic display-inheritance fixture lines into limited partial evidence.
-- Define merge rules for active display-set lines, inherited source-group evidence, inactive statements, and conflicting inherited values.
-- Separate deterministic inherited evidence candidates from items that must remain `MANUAL_REQUIRED`.
-- Keep direct device collection, NETCONF collection, active scanning, and raw live output out of scope.
-
-Initial automation candidates:
-
-- Management protocol evidence when an inherited active statement clearly enables or disables SSH, Telnet, or web management.
-- Syslog, NTP, and SNMP evidence when inherited values are explicit and not contradicted by local configuration.
-- Management ACL evidence when inherited firewall filter or prefix-list references can be matched to sanitized active evidence.
-
-Manual-review cases:
-
-- Multiple matching groups define conflicting values.
-- `apply-groups-except` or partial inheritance changes the effective value.
-- Inherited evidence depends on platform defaults, policy context, inactive statements, or omitted group source data.
-- The fixture has display-set evidence without the corresponding sanitized inheritance context.
-
-Excluded from the initial v1.4.0 scope unless separately approved:
-
-- Full Junos configuration interpreter behavior.
-- Brace-style, XML, or JSON parser implementation.
-- Replacing the conservative `MANUAL_REQUIRED` boundary for ambiguous inherited settings.
-- Public repository conversion or PyPI/TestPyPI publishing.
+- 범위: `N-01` to `N-38`
+- Cisco IOS: 자동 27, 수동 11
+- Junos: `show configuration | display set` 중심 MVP, 보수적 `display inheritance` skeleton
+- simulator: `kcii-netlab-sim`은 Cisco IOS command-response simulator이며 패킷·라우팅 에뮬레이터가 아닙니다.
+- 제한사항: Junos brace-style, XML, JSON 전체 해석과 완전한 inheritance 확장은 지원하지 않습니다. 모호한 설정은 `MANUAL_REQUIRED`입니다.
+- 다음 후보: 실제 장비·GNS3·CML 비식별 출력 확대, AAA와 관리 접근 정책 자동화
 
 ## Security Appliance
 
-- Scope: `S-01` to `S-23`
-- Supported MVP appliance types:
-  - Firewall
-  - IPS/IDS
-  - WAF
-  - VPN
-  - Anti-DDoS
-  - FortiGate
-  - Palo Alto PAN-OS
-  - Cisco ASA
-  - F5 BIG-IP
-- Status: questionnaire Excel export/import and sanitized config-summary parser
-- Known limits:
-  - Vendor-specific config parsers are wrappers around the common sanitized parser.
-  - Policy review, monitoring, backup, and operational process evidence often requires interviews.
-- Next automation candidates:
-  - FortiGate config summary parser
-  - PAN-OS config summary parser
-  - Cisco ASA config summary parser
-  - F5 BIG-IP config summary parser
+- 범위: `S-01` to `S-23`
+- 대상 유형: Firewall, IPS/IDS, WAF, VPN, Anti-DDoS, FortiGate, Palo Alto PAN-OS, Cisco ASA, F5 BIG-IP
+- 상태: 한글 질의서 Excel export/import, 인터뷰 증적, 비식별 설정 요약 parser
+- 제한사항: 벤더별 parser는 공통 비식별 요약 parser를 감싸는 초기 구현입니다. 정책 검토, 관제, 백업과 운영 절차는 질의서·인터뷰 확인이 필요합니다.
+- 다음 후보: FortiGate, PAN-OS, Cisco ASA, F5 설정 요약 parser 심화
 
-## Common Interpretation
+## 결과 해석
 
-`GOOD` means the supplied sanitized evidence matched the rulepack's good condition.
+- `GOOD` / 양호: 제공된 비식별 증적이 양호 조건을 충족했습니다.
+- `VULNERABLE` / 취약: 제공된 비식별 증적이 취약 조건과 일치했습니다.
+- `MANUAL_REQUIRED` / 수동확인: 추가 증적, 인터뷰, 대체통제 또는 진단자 판단이 필요합니다. 프로그램 실패가 아닙니다.
 
-`VULNERABLE` means the supplied sanitized evidence matched the rulepack's vulnerable condition.
+지원되는 모든 프로파일은 등록된 전체 항목을 결과에 유지합니다. parser 실패, 명령 미지원과 권한 부족은 항목을 누락하지 않고 `MANUAL_REQUIRED` 근거로 처리합니다.
 
-`MANUAL_REQUIRED` means the item remains in scope but needs additional evidence, interview confirmation, compensating-control review, or assessor judgment. It is not a runtime failure.
+## 산출물
 
-## Automation Levels
+기본 판정은 다음 7개 파일을 생성합니다.
 
-- `auto`: deterministic judgment is possible from the sanitized evidence shape currently supported by the parser.
-- `partial`: the item has one or more deterministic checks, but additional operating-context review may still be required.
-- `manual`: the item is registered and intentionally emitted as `MANUAL_REQUIRED` unless reviewed evidence is supplied by an assessor.
-- `unsupported`: the item or platform is out of the current parser scope and must remain a documented future candidate.
+- `evidence.jsonl`
+- `results.json`
+- `detail.xlsx`
+- `summary.xlsx`
+- `report.md`
+- `security_advisory.md`
+- `security_advisory.xlsx`
 
-## v1.0.0rc2 Scope
+취약·수동확인 항목은 기본적으로 보안 권고문에 포함됩니다.
 
-The `dev/v1.0.0rc2` branch is for release-candidate hardening after the private `v1.0.0rc1` pre-release. The rc2 goal is practical completeness, not full automation.
+## 공식 가이드 반영 원칙
 
-Targets:
+1. 항목 ID, 항목명, 중요도와 영역을 승인된 로컬 가이드 원문과 대조합니다.
+2. 공식 항목명을 임의로 만들지 않습니다.
+3. 가이드 원문을 저장소에 장문 복제하지 않습니다.
+4. manifest와 rulepack에 공식 항목을 함께 등록합니다.
+5. 증적이 충분할 때만 `auto` 또는 `partial`로 지정합니다.
+6. 정책 의존적이거나 모호한 항목은 `manual`로 유지합니다.
+7. 실제 고객 정보 대신 synthetic·sanitized fixture만 사용합니다.
 
-- Preserve full registered manifests for Windows Server, Unix Server, DBMS, Network, and Security Appliance.
-- Keep Linux Server as the current MVP unless a separately scoped Linux expansion is approved.
-- Increase automatic judgment only where sanitized evidence can be interpreted deterministically.
-- Ensure every registered item still produces `GOOD`, `VULNERABLE`, or `MANUAL_REQUIRED`.
-- Include vulnerable and manual-check items in `security_advisory.md` and `security_advisory.xlsx`.
-- Keep the seven-file output bundle stable for every supported profile.
-- Document profile-level auto, partial, manual, and unsupported coverage before each release candidate.
+## 민감정보 처리
 
-## v1.0.0rc2 Exclusions
+- 실제 고객 증적, 설정 원문, `.env`, 비밀번호, 해시, 토큰, 키, 인증서 본문, hostname, 도메인, 계정명, 시리얼과 IP를 저장하지 않습니다.
+- boolean, integer, enum, count, masked identifier, warning과 `raw_evidence_hash`만 저장합니다.
+- 출력 형식 미지원이나 권한 부족을 양호로 해석하지 않습니다.
 
-The following are excluded from rc2 unless separately approved:
+## 릴리스 이력
 
-- Moving, deleting, or reusing the published `v1.0.0rc1` tag.
-- Public repository publication.
-- PyPI or TestPyPI publishing.
-- Production remote collection from customer targets.
-- Storing raw customer evidence in normal report, advisory, workbook, or fixture outputs.
-- Broad parser rewrites unrelated to a scoped profile improvement.
-- New secret, token, credential, certificate, or license material in samples, fixtures, docs, or release assets.
+- `v1.0.0rc1`: `e93d18b`
+- `v1.0.0rc2`: `59d3d38`
+- `v1.0.0`: `31983bd`
+- `v1.1.0`: `31f624e`, Cisco IOS 자동판정 확대
+- `v1.2.0`: `9296245`, Juniper Junos parser MVP
+- `v1.3.0`: `30490b4`, realistic Junos 출력 정규화
+- `v1.4.0`: `178369b`, Junos display inheritance 보수적 지원과 baseline product completion
 
-## Official Guide Reflection Procedure
-
-Rulepack changes must stay tied to the local `kcii-2025-12` baseline used by this project.
-
-When updating manifest or rulepack content:
-
-1. Check the item ID, title, severity, and domain against the approved local guide source.
-2. Do not invent item names.
-3. Do not copy long guide passages into the repository.
-4. Add every official item to both the profile manifest and profile rulepack.
-5. Mark deterministic checks as `auto` or `partial` only when the parser evidence is sufficient.
-6. Leave ambiguous or policy-dependent items as `manual`.
-7. Keep source notes concise and avoid customer-specific examples.
-
-## Sensitive Evidence Handling
-
-- Fixtures must remain synthetic and sanitized.
-- Do not commit customer evidence, raw config exports, `.env` files, passwords, hashes, tokens, keys, certificate bodies, hostnames, domains, account names, serial numbers, policy names, object names, internal URLs, or IP addresses.
-- Store boolean, integer, enum, count, masked identifier, warning, and `raw_evidence_hash` values rather than raw evidence text.
-- Treat parser failures, unsupported output, and permission-denied collection as classification evidence that can lead to `MANUAL_REQUIRED`, not as a reason to drop the item from results.
+`v1.4.0 Release Scope`은 현재 공개 포트폴리오 기준선입니다. 공개된 태그와 Release asset은 이동하거나 교체하지 않습니다.

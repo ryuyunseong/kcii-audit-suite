@@ -16,6 +16,21 @@ FALSE_ANSWERS = {"no", "n", "false", "0", "아니오", "미적용", "취약", "�
 MISSING_EVIDENCE = {"missing", "none", "no", "n", "없음", "누락", "미제출", "미첨부"}
 CONTRADICTORY_EVIDENCE = {"contradictory", "conflict", "inconsistent", "모순", "불일치"}
 
+HEADER_ALIASES = {
+    "항목ID": "item_id",
+    "질문": "question",
+    "답변유형": "answer_type",
+    "필요증적": "required_evidence",
+    "선택지": "options",
+    "판정규칙": "mapping_rule",
+    "답변": "answer",
+    "증적상태": "evidence_status",
+    "비고": "notes",
+    "인터뷰주제": "interview_topic",
+    "답변요약": "answer_summary",
+    "검증경고": "validation_warning",
+}
+
 
 def records_from_security_appliance_questionnaire(
     path: Path,
@@ -103,7 +118,8 @@ def _normalized_header(row: tuple[Any, ...]) -> dict[str, int]:
     for index, value in enumerate(row):
         if value is None:
             continue
-        header[str(value).strip()] = index
+        name = str(value).strip()
+        header[HEADER_ALIASES.get(name, name)] = index
     return header
 
 

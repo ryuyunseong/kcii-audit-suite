@@ -18,8 +18,8 @@ def _fill_answers(path: Path, answer: str, evidence_status: str = "provided") ->
         if sheet.title not in QUESTIONNAIRE_SHEETS[2:9]:
             continue
         headers = [cell.value for cell in sheet[1]]
-        answer_col = headers.index("answer") + 1
-        evidence_col = headers.index("evidence_status") + 1
+        answer_col = headers.index("답변") + 1
+        evidence_col = headers.index("증적상태") + 1
         for row in range(2, sheet.max_row + 1):
             if not sheet.cell(row=row, column=1).value:
                 continue
@@ -32,6 +32,9 @@ def test_security_appliance_questionnaire_template_exists_with_required_sheets()
     workbook = load_workbook("questionnaires/templates/security_appliance_questionnaire.xlsx")
 
     assert workbook.sheetnames == QUESTIONNAIRE_SHEETS
+    headers = [cell.value for cell in workbook["02_계정관리"][1]]
+    assert headers == ["항목ID", "질문", "답변유형", "필요증적", "선택지", "판정규칙", "답변", "증적상태", "비고"]
+    assert "???" not in workbook["02_계정관리"].cell(row=2, column=2).value
 
 
 def test_security_appliance_questionnaire_export_cli_creates_template(tmp_path):
@@ -180,7 +183,7 @@ def test_security_appliance_questionnaire_outputs_do_not_store_sensitive_notes(t
     workbook = load_workbook(questionnaire)
     sheet = workbook["02_계정관리"]
     headers = [cell.value for cell in sheet[1]]
-    notes_col = headers.index("notes") + 1
+    notes_col = headers.index("비고") + 1
     sheet.cell(row=2, column=notes_col).value = "fw-prod-01.example.invalid 198.51.100.80 [APPLIANCE_ADMIN]"
     workbook.save(questionnaire)
 
@@ -221,8 +224,8 @@ def test_security_appliance_interview_sheet_adds_warning_without_storing_free_te
     workbook = load_workbook(questionnaire)
     sheet = workbook["09_인터뷰결과"]
     headers = [cell.value for cell in sheet[1]]
-    answer_col = headers.index("answer_summary") + 1
-    warning_col = headers.index("validation_warning") + 1
+    answer_col = headers.index("답변요약") + 1
+    warning_col = headers.index("검증경고") + 1
     sheet.cell(row=2, column=answer_col).value = "fw-prod-01.example.invalid 198.51.100.80 [APPLIANCE_ADMIN]"
     sheet.cell(row=2, column=warning_col).value = "담당자 답변과 증적 불일치"
     workbook.save(questionnaire)

@@ -13,15 +13,15 @@ sheets:
 - 09_인터뷰결과
 - 10_자동판정
 headers:
-- item_id
-- question
-- answer_type
-- required_evidence
-- options
-- mapping_rule
-- answer
-- evidence_status
-- notes
+- 항목ID
+- 질문
+- 답변유형
+- 필요증적
+- 선택지
+- 판정규칙
+- 답변
+- 증적상태
+- 비고
 answer_policy:
   blank: MANUAL_REQUIRED
   'yes': GOOD
@@ -30,209 +30,209 @@ answer_policy:
   contradictory: warning:validation_warning
 questions:
 - item_id: S-01
-  question: 보안 장비 Default 계정 변경 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안 장비 Default 계정 변경 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: default_account_changed
 - item_id: S-02
-  question: 비밀번호 관리정책 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 비밀번호 관리정책 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: password_policy_configured
 - item_id: S-03
-  question: 보안 장비 계정별 권한 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안 장비 계정별 권한 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: role_based_admin_privileges_configured
 - item_id: S-04
-  question: 보안 장비 계정 관리 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안 장비 계정 관리 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: admin_account_review_performed
 - item_id: S-05
-  question: 계정 잠금 임계값 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 계정 잠금 임계값 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: account_lockout_configured
 - item_id: S-06
-  question: 보안장비 원격 관리 접근 통제 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안장비 원격 관리 접근 통제 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: management_access_restricted
 - item_id: S-07
-  question: 보안장비 보안 접속 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안장비 보안 접속 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: secure_management_protocols_enforced
 - item_id: S-08
-  question: 세션 종료 시간 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 세션 종료 시간 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: session_timeout_configured
 - item_id: S-09
-  question: 주기적 보안 패치 및 벤더 권고사항 적용 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 주기적 보안 패치 및 벤더 권고사항 적용 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: patch_review_performed
 - item_id: S-10
-  question: 보안장비 로그 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안장비 로그 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: logging_enabled
 - item_id: S-11
-  question: 보안장비 로그 보관 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안장비 로그 보관 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: log_retention_configured
 - item_id: S-12
-  question: 보안장비 정책 백업 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 보안장비 정책 백업 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: policy_backup_configured
 - item_id: S-13
-  question: 원격 로그 서버 사용 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 원격 로그 서버 사용 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: remote_log_server_enabled
 - item_id: S-14
-  question: NTP 및 시각 동기화 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: NTP 및 시각 동기화 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: time_sync_configured
 - item_id: S-15
-  question: 정책 관리 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 정책 관리 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: policy_review_performed
 - item_id: S-16
-  question: NAT 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: NAT 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: nat_policy_reviewed
 - item_id: S-17
-  question: DMZ 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: DMZ 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: dmz_policy_reviewed
 - item_id: S-18
-  question: 최소한의 서비스만 제공 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 최소한의 서비스만 제공 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: minimal_services_exposed
 - item_id: S-19
-  question: 이상징후 탐지 모니터링 수행 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 이상징후 탐지 모니터링 수행 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: anomaly_monitoring_performed
 - item_id: S-20
-  question: 장비 사용량 검토 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 장비 사용량 검토 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: capacity_usage_reviewed
 - item_id: S-21
-  question: SNMP 서비스 확인 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: SNMP 서비스 확인 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: snmp_service_controlled
 - item_id: S-22
-  question: SNMP Community String 복잡성 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: SNMP Community String 복잡성 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: snmp_community_complex
 - item_id: S-23
-  question: 유해 트래픽 탐지/차단 정책 설정 ??? ?? ??? ?? ??? ?? ?? ?? ???? ?????
+  question: 유해 트래픽 탐지/차단 정책 설정 항목이 기관 정책과 운영 기준에 따라 설정 또는 수행되어 있습니까?
   answer_type: boolean
-  required_evidence: sanitized screenshot/export summary or interview confirmation
+  required_evidence: 비식별 화면 또는 설정 요약, 담당자 인터뷰 확인
   options:
-  - '?'
-  - ???
-  - ???
+  - 예
+  - 아니오
+  - 미확인
   mapping_rule: harmful_traffic_policy_configured

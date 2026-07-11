@@ -1,160 +1,202 @@
-﻿# kcii-audit-suite
+# kcii-audit-suite
 
-`kcii-audit-suite` is an offline helper for Korean critical information infrastructure vulnerability assessment evidence review. It is not an official KISA tool and does not replace assessor judgment, customer policy, or compensating-control review.
+주요정보통신기반시설 기술적 취약점 분석·평가 업무를 위한 **오프라인 인프라 보안 점검 보조 도구**입니다.
 
-The project is fixed to the local `kcii-2025-12` rulepack baseline. The rulepacks register the item IDs, titles, and severities transcribed from the provided KISA guide tables, but the guide text is not copied in bulk.
+대상 서버나 장비에 직접 원격 접속하지 않습니다. 담당자가 대상 환경에서 read-only 명령, SQL, 설정 요약 또는 질의서를 수집해 Windows 작업 PC로 전달하면 `kcii-audit`가 rulepack 기준으로 `GOOD`, `VULNERABLE`, `MANUAL_REQUIRED`를 판정하고 Excel·JSON·Markdown 보고서를 생성합니다.
 
-`v1.4.0` is the private baseline product completion release for the current offline workflow. Further patch work should use `dev/v1.4.1`, and compatible feature work should use `dev/v1.5.0` or later. See [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md) and [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md).
+> 이 프로젝트는 KISA 공식 도구가 아니며, 진단자의 수동 판단과 고객사 정책·대체통제 검토를 대신하지 않습니다.
 
-## Portfolio Snapshot
+## 포트폴리오 요약
 
-This repository demonstrates an offline infrastructure security assessment automation workflow. It focuses on rulepack-driven judgment, parser design, report generation, conservative security decisions, test fixtures, packaging, and release verification.
+- 기준 가이드: KISA 「주요정보통신기반시설 기술적 취약점 분석·평가 방법 상세가이드」 2025-12-24 등록본
+- rulepack 기준: `kcii-2025-12`
+- 최신 릴리스: `v1.4.1`
+- 불변 기준 태그: `v1.4.0` (`178369b`)
+- 실행 환경: Python 3.12 이상, Windows 작업 PC
+- 저장소 공개 목적: 채용 포트폴리오 검토
 
-For a Korean portfolio summary, see [PORTFOLIO.md](PORTFOLIO.md). Before changing repository visibility to public, review [docs/PUBLIC_READINESS.md](docs/PUBLIC_READINESS.md).
+프로젝트의 문제 정의와 설계 의도는 [PORTFOLIO.md](PORTFOLIO.md), 공개 전 점검 기록은 [docs/PUBLIC_READINESS.md](docs/PUBLIC_READINESS.md)에서 확인할 수 있습니다.
 
-## Portfolio License Notice
+프로파일별 입력·판정·산출물·미지원 범위는 [docs/END_TO_END_SUPPORT_MATRIX.md](docs/END_TO_END_SUPPORT_MATRIX.md)에 정리했습니다.
 
-This repository may be published for portfolio review purposes. Unless otherwise stated, all rights are reserved. No permission is granted for reuse, redistribution, or derivative works without explicit written permission.
+## 공개 및 라이선스
 
-This project is not an official KISA tool and does not replace manual security assessment judgment.
+본 저장소는 포트폴리오 검토 목적으로 공개되었습니다. 별도 명시가 없는 한 모든 권리는 저작자에게 있습니다. 명시적인 서면 허가 없이 재사용, 재배포 또는 파생 저작물 작성을 허용하지 않습니다.
 
-## Operating Model
+Public 공개는 오픈소스 사용 허가를 의미하지 않습니다. PyPI/TestPyPI에는 배포하지 않았습니다.
 
-This tool is not a remote automatic collector.
+## 운영 흐름
 
-Operational flow:
+```text
+대상 시스템 담당자
+  └─ read-only 명령/SQL/설정 요약/질의서 수집
+           ↓
+Windows 작업 PC로 결과 전달
+           ↓
+kcii-audit classify-file 또는 classify-paste
+           ↓
+kcii-2025-12 rulepack 판정
+           ↓
+Excel·JSON·Markdown 보고서와 보안 권고문 생성
+```
 
-1. The target system, DBMS, network device, or security appliance owner runs approved read-only commands, SQL, scripts, show commands, config export, or questionnaire collection.
-2. The result file or pasted text is moved to the Windows work PC.
-3. `kcii-audit classify-file` or `kcii-audit classify-paste` parses the offline evidence.
-4. The deterministic rulepack creates results, Excel workbooks, a Markdown report, and security advisory files.
+Docker Compose, Containerlab, GNS3, EVE-NG와 `kcii-netlab-sim`은 개발·검증 랩용입니다. 운영 고객사 자동 수집이나 원격 접속에 사용하지 않습니다.
 
-Docker, Containerlab, GNS3, EVE-NG, DBMS Docker Compose, and simulator assets are development and verification lab tools only. They are not production collection flows.
+DBMS Docker Compose 랩은 운영 고객사 DBMS 자동 수집용이 아닙니다.
 
-DBMS Docker Compose lab은 운영 고객사 DBMS 자동 수집용이 아닙니다.
+## 지원 범위
 
-## Current Coverage
-
-| Profile | Registered scope | Current automation level |
+| 프로파일 | 등록 범위 | 현재 지원 수준 |
 | --- | --- | --- |
-| Windows Server | `W-01` to `W-64` | Full item registration, partial automatic judgment |
-| Linux Server | `L-01` to `L-08` MVP | MVP deterministic checks |
-| Unix Server | `U-01` to `U-67` | AIX, Solaris, HP-UX, Linux fixture-based offline parser |
-| DBMS | `D-01` to `D-26` | PostgreSQL, MySQL, MariaDB offline parser and Docker live verification |
-| Network | `N-01` to `N-38` | Cisco IOS command-response simulator/parser; Junos display-set parser MVP with conservative display-inheritance support |
-| Security Appliance | `S-01` to `S-23` | Questionnaire Excel export/import and sanitized summary parser |
+| Windows Server | `W-01`~`W-64` | 전체 항목 등록, 자동 8·부분 7·수동 49 |
+| Linux Server | `L-01`~`L-08` | MVP 범위, 전체 공식 항목 집합은 아님 |
+| Unix Server | `U-01`~`U-67` | AIX·Solaris·HP-UX·Linux 호환 출력, 보수적 판정 |
+| DBMS | `D-01`~`D-26` | PostgreSQL·MySQL·MariaDB 오프라인 parser |
+| Network | `N-01`~`N-38` | Cisco IOS·Junos parser, Cisco IOS 명령-응답 simulator |
+| Security Appliance | `S-01`~`S-23` | 질의서 Excel·인터뷰·비식별 설정 요약 중심 |
 
-`MANUAL_REQUIRED` is a valid result. It means the item is registered but the available sanitized evidence is insufficient for deterministic judgment. It is not a program failure.
+상세 자동화 개수와 제한사항은 [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)를 참고하십시오.
 
-Detailed per-profile counts and known limitations are in [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md).
+`MANUAL_REQUIRED`는 오류가 아닙니다. 증적 부족, 권한 제한, 운영정책 확인, 지원하지 않는 출력 형식처럼 자동판정 근거가 충분하지 않을 때 수동확인이 필요하다는 뜻입니다.
 
-For `dev/v1.0.0rc2`, Windows Server classification expands deterministic and partial checks for password policy summaries, default administrative shares, selected risky services, audit policy summaries, and Event Log settings. `secedit /export` and `auditpol /get` are used only as read-only evidence collection inputs; raw export text is not stored in normal outputs.
+## 판정 결과
 
-For `dev/v1.0.0rc2`, DBMS classification accepts sanitized JSON and key/value output for PostgreSQL, MySQL, and MariaDB. The DBMS parser keeps only boolean, integer, enum, count, manual-check state, and `raw_evidence_hash` values; account lists, database lists, connection strings, password hashes, and raw log text are ignored.
+| 내부 상태 | 보고서 표시 | 의미 |
+| --- | --- | --- |
+| `GOOD` | 양호 | 제공된 증적이 rulepack의 양호 조건을 충족 |
+| `VULNERABLE` | 취약 | 제공된 증적이 rulepack의 취약 조건과 일치 |
+| `MANUAL_REQUIRED` | 수동확인 | 추가 증적·인터뷰·대체통제 검토 필요 |
+| `NOT_APPLICABLE` | 해당없음 | 대상 환경에 적용되지 않음 |
+| `ERROR` | 오류 | 입력 또는 처리 오류 |
 
-## Outputs
+## 기본 산출물
 
-Default classification creates seven files:
+기본 판정은 다음 7개 파일을 생성합니다.
 
-- `evidence.jsonl`: normalized sanitized evidence summaries
-- `results.json`: deterministic judgment results
-- `detail.xlsx`: detailed result workbook
-- `summary.xlsx`: summary workbook
-- `report.md`: Markdown assessment report
-- `security_advisory.md`: remediation and manual-check advisory summary
-- `security_advisory.xlsx`: advisory workbook
+- `evidence.jsonl`: 정규화·비식별화된 증적 요약
+- `results.json`: 항목별 판정 결과
+- `detail.xlsx`: 상세결과, 취약점, 수동확인, 권고문 시트
+- `summary.xlsx`: 종합통계, 분야별통계, 권고문통계
+- `report.md`: Markdown 결과 보고서
+- `security_advisory.md`: 취약·수동확인 보안 권고문
+- `security_advisory.xlsx`: 보안 권고문 Excel
 
-Use `--no-advisory` to create only the first five files. Use `--include-good-advisory` only when good items should also be included as maintenance advisories.
+`--no-advisory`를 사용하면 권고문 2개를 제외한 5개 파일만 생성합니다.
 
-Security advisory files include vulnerable and manual-check items by default. They do not store raw evidence text.
-
-## Install
-
-Python 3.12 or later is required.
+## 설치
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -e ".[dev]"
+.\.venv\Scripts\kcii-audit --help
 ```
 
-Clean environment verification:
-
-```powershell
-python -m venv tmp\venv-release-check
-tmp\venv-release-check\Scripts\python -m pip install -e ".[dev]"
-tmp\venv-release-check\Scripts\kcii-audit --help
-tmp\venv-release-check\Scripts\python -m pytest
-```
-
-`tmp/` is ignored and can be removed after verification.
-
-## CLI Smoke Commands
+## 사용 예시
 
 Windows Server:
 
 ```powershell
-kcii-audit classify-file --profile windows --input tests\fixtures\windows\paste\good-collector.json --output out\smoke-windows
-Get-Content tests\fixtures\windows\paste\manual-key-value.txt | kcii-audit classify-paste --profile windows --output out\smoke-windows-paste
-```
-
-Linux Server:
-
-```powershell
-kcii-audit classify-file --profile linux --input tests\fixtures\linux_server\good.json --output out\smoke-linux
-Get-Content tests\fixtures\linux_server\permission_denied.json | kcii-audit classify-paste --profile linux --output out\smoke-linux-paste
+kcii-audit classify-file `
+  --profile windows `
+  --input tests\fixtures\windows\paste\good-collector.json `
+  --output out\windows
 ```
 
 Unix Server:
 
 ```powershell
-kcii-audit classify-file --profile unix --unix aix --input tests\fixtures\unix_server\aix\good.json --output out\smoke-unix-aix
-Get-Content tests\fixtures\unix_server\solaris\manual_required.txt | kcii-audit classify-paste --profile unix --unix solaris --output out\smoke-unix-solaris-paste
+kcii-audit classify-file `
+  --profile unix `
+  --unix aix `
+  --input tests\fixtures\unix_server\aix\good.json `
+  --output out\unix-aix
 ```
 
 DBMS:
 
 ```powershell
-kcii-audit classify-file --profile dbms --dbms postgresql --input tests\fixtures\dbms\postgresql\good.json --output out\smoke-dbms-postgresql
-Get-Content tests\fixtures\dbms\mysql\manual_required.txt | kcii-audit classify-paste --profile dbms --dbms mysql --output out\smoke-dbms-mysql-paste
+kcii-audit classify-file `
+  --profile dbms `
+  --dbms postgresql `
+  --input tests\fixtures\dbms\postgresql\good.json `
+  --output out\dbms-postgresql
 ```
 
 Network:
 
 ```powershell
-kcii-audit classify-file --profile network --vendor cisco_ios --input tests\fixtures\network\cisco_ios\good.txt --output out\smoke-network-cisco
-Get-Content tests\fixtures\network\cisco_ios\mixed.txt | kcii-audit classify-paste --profile network --vendor cisco_ios --output out\smoke-network-cisco-paste
-kcii-audit classify-file --profile network --vendor junos --input tests\fixtures\network\junos\display_set_good.txt --output out\smoke-network-junos
+kcii-audit classify-file `
+  --profile network `
+  --vendor cisco_ios `
+  --input tests\fixtures\network\cisco_ios\good.txt `
+  --output out\network-cisco
+
+kcii-audit classify-file `
+  --profile network `
+  --vendor junos `
+  --input tests\fixtures\network\junos\display_set_good.txt `
+  --output out\network-junos
 ```
 
-Security Appliance:
+보안장비 질의서:
 
 ```powershell
-kcii-audit questionnaire export --profile security-appliance --output out\security_appliance_questionnaire.xlsx
-kcii-audit questionnaire import --profile security-appliance --input out\security_appliance_questionnaire.xlsx --output out\smoke-security-appliance-questionnaire
-kcii-audit classify-file --profile security-appliance --appliance-type firewall --input tests\fixtures\security_appliance\good.txt --output out\smoke-security-appliance
-Get-Content tests\fixtures\security_appliance\manual_required.txt | kcii-audit classify-paste --profile security-appliance --appliance-type firewall --output out\smoke-security-appliance-paste
+kcii-audit questionnaire export `
+  --profile security-appliance `
+  --output out\security_appliance_questionnaire.xlsx
+
+kcii-audit questionnaire import `
+  --profile security-appliance `
+  --input out\security_appliance_questionnaire.xlsx `
+  --output out\security-appliance
 ```
 
-No-advisory smoke:
+표준 입력에 결과를 붙여넣는 `classify-paste`도 각 프로파일에서 동일하게 사용할 수 있습니다.
+
+## 네트워크 검증 도구
+
+`tools/kcii-netlab-sim`은 Cisco IOS 명령에 대해 synthetic `good`, `mixed`, `vulnerable` 출력을 반환하는 command-response simulator입니다.
+
+실제 패킷 포워딩이나 라우팅 프로토콜을 구현한 Packet Tracer급 에뮬레이터가 아닙니다. 실제 장비·GNS3·CML 출력은 반드시 비식별화한 fixture만 저장소에 포함합니다.
+
+Junos는 `show configuration | display set`을 우선 지원하며, `display inheritance`는 충돌하거나 불완전한 경우 `MANUAL_REQUIRED`로 유지합니다. Brace-style, XML, JSON 전체 해석은 지원하지 않습니다.
+
+## 보안장비 질의서
+
+보안장비는 설정 export만으로 판단하기 어려운 운영정책 항목이 많아 다음 시트를 포함한 한글 Excel 질의서를 제공합니다.
+
+- 작성안내와 자산목록
+- 계정·접근·정책·로그·업데이트·백업·관제연동
+- 인터뷰결과
+- 자동판정 안내
+
+`예`는 `GOOD`, `아니오`는 `VULNERABLE`, 공란 또는 `미확인`은 `MANUAL_REQUIRED`로 처리합니다. 증적 누락과 답변 모순은 경고로 기록합니다.
+
+## 보안 원칙
+
+- 운영 대상에는 read-only 명령과 SQL만 사용합니다.
+- 실제 고객 증적, 설정 원문, live output, 장비 이미지와 라이선스 파일을 저장소에 포함하지 않습니다.
+- 비밀번호, 해시, 토큰, 키, 인증서 본문, 실제 IP, hostname, 계정명과 시리얼을 산출물에 저장하지 않습니다.
+- fixture는 synthetic·sanitized 데이터만 사용합니다.
+- 원본 대신 boolean, integer, enum, count, warning과 `raw_evidence_hash`를 보관합니다.
+- 모르는 출력이나 근거가 부족한 항목을 양호로 단정하지 않습니다.
+
+## 검증
 
 ```powershell
-kcii-audit classify-file --profile linux --input tests\fixtures\linux_server\good.json --output out\smoke-no-advisory --no-advisory
+.\.venv\Scripts\python -m pytest
+git diff --check
 ```
 
-## Security Rules
+`v1.4.0` 기준 전체 테스트는 `176 passed`였으며, wheel/sdist 빌드, checksum, clean wheel 설치와 프로파일별 smoke를 검증했습니다.
 
-Do not commit real customer evidence, raw config exports, `.env` files, passwords, password hashes, tokens, keys, certificate bodies, hostnames, domains, account names, serial numbers, policy names, object names, internal URLs, or IP addresses.
-
-Repository samples must stay synthetic and sanitized. `out/`, `raw/`, `tmp/`, `.env`, and `.env.*` are ignored. Keep only `.env.example` placeholders when an example is needed.
-
-The parser should store boolean, integer, enum, count, masked identifier, warning, and `raw_evidence_hash` values only. It should not store full raw evidence in reports, advisory files, workbooks, or fixtures.
-
-## Release Documents
+## 문서
 
 - [CHANGELOG.md](CHANGELOG.md)
 - [PORTFOLIO.md](PORTFOLIO.md)
 - [RELEASE_NOTES.md](RELEASE_NOTES.md)
 - [RELEASE_NOTES_v1.4.0.md](RELEASE_NOTES_v1.4.0.md)
+- [RELEASE_NOTES_v1.4.1.md](RELEASE_NOTES_v1.4.1.md)
 - [RELEASE_NOTES_v1.3.0.md](RELEASE_NOTES_v1.3.0.md)
 - [RELEASE_NOTES_v1.2.0.md](RELEASE_NOTES_v1.2.0.md)
 - [RELEASE_NOTES_v1.1.0.md](RELEASE_NOTES_v1.1.0.md)
@@ -166,29 +208,20 @@ The parser should store boolean, integer, enum, count, masked identifier, warnin
 - [docs/PROJECT_COMPLETION.md](docs/PROJECT_COMPLETION.md)
 - [docs/MAINTENANCE_POLICY.md](docs/MAINTENANCE_POLICY.md)
 - [docs/PROFILE_COVERAGE.md](docs/PROFILE_COVERAGE.md)
+- [docs/END_TO_END_SUPPORT_MATRIX.md](docs/END_TO_END_SUPPORT_MATRIX.md)
 - [docs/NETWORK_OUTPUT_SANITIZATION.md](docs/NETWORK_OUTPUT_SANITIZATION.md)
 - [docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md](docs/JUNOS_DISPLAY_INHERITANCE_DESIGN.md)
 - [docs/V1_4_0_READINESS.md](docs/V1_4_0_READINESS.md)
+- [docs/V1_4_1_READINESS.md](docs/V1_4_1_READINESS.md)
 - [docs/V1_3_0_READINESS.md](docs/V1_3_0_READINESS.md)
 - [docs/V1_2_0_READINESS.md](docs/V1_2_0_READINESS.md)
 - [docs/V1_1_0_READINESS.md](docs/V1_1_0_READINESS.md)
 - [docs/V1_0_0_READINESS.md](docs/V1_0_0_READINESS.md)
 - [docs/V1_0_0RC2_READINESS.md](docs/V1_0_0RC2_READINESS.md)
 
-## Current Release Status
+## 유지보수 기준
 
-`v1.0.0rc1` is fixed at commit `e93d18b`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc1` tag.
-
-`v1.0.0rc2` is fixed at commit `59d3d38`, pushed to the private GitHub repository, and published as a GitHub pre-release. Do not move the `v1.0.0rc2` tag.
-
-`v1.0.0` is fixed at commit `31983bd`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.0.0` tag.
-
-`v1.1.0` is fixed at commit `31f624e`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.1.0` tag or replace its release assets.
-
-`v1.2.0` is fixed at commit `9296245`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.2.0` tag or replace its release assets.
-
-`v1.3.0` is fixed at commit `30490b4`, pushed to the private GitHub repository, and published as a final GitHub Release. Do not move the `v1.3.0` tag or replace its release assets.
-
-`v1.4.0` is fixed at commit `178369b`, pushed to the private GitHub repository, and published as the latest final GitHub Release. It is the baseline product completion release for the private offline workflow. Do not move the `v1.4.0` tag or replace its release assets.
-
-Patch-only fixes after `v1.4.0` should be separated to `dev/v1.4.1`. New compatible feature work should be separated to `dev/v1.5.0` or later.
+- `v1.4.0` 태그와 Release asset은 변경하지 않습니다.
+- 문서·작은 버그 수정은 `dev/v1.4.1`에서 관리합니다.
+- 하위 호환 기능 추가는 `dev/v1.5.0` 이후에서 관리합니다.
+- 공개 저장소에 실제 고객 자료를 추가하지 않습니다.
