@@ -203,4 +203,4 @@ def test_unix_profile_requires_supported_flavor(tmp_path):
     )
 
     assert result.exit_code == 2
-    assert "Only --unix aix" in result.output
+    assert "--unix aix, solaris, hpux, linux만 지원합니다" in result.output

@@ -13,7 +13,7 @@ REPORT_TEMPLATE = """# K-CII 점검 결과 보고서
 ## 개요
 
 - 기준 버전: {{ guide_version }}
-- 산출 상태: scaffold placeholder
+- 산출 상태: 판정 완료
 - 원본 민감정보 포함 여부: 포함하지 않음
 
 ## 종합 결과
@@ -69,7 +69,7 @@ REPORT_TEMPLATE = """# K-CII 점검 결과 보고서
 
 ## 부록
 
-원본 증적은 보고서에 포함하지 않고, 향후 local vault와 hash 기반 참조로 분리합니다.
+원본 증적은 보고서에 포함하지 않고 `raw_evidence_hash` 기반으로 참조합니다.
 """
 
 

@@ -1,83 +1,62 @@
-# Public Portfolio Readiness
+# 공개 포트폴리오 점검 기록
 
-This document tracks what must be true before this repository is made public for portfolio use.
+이 문서는 `kcii-audit-suite`를 채용 포트폴리오 검토 목적으로 공개하기 전에 적용한 범위와 안전 경계를 기록합니다.
 
-## Current Decision
+## 공개 상태
 
-The project can be prepared as a public portfolio repository, but public conversion itself is a separate action. Do not change repository visibility until the checklist below is reviewed.
+- 저장소: `ryuyunseong/kcii-audit-suite`
+- visibility: PUBLIC
+- 기본 브랜치: `main`
+- 기준 릴리스: `v1.4.0`
+- 라이선스: All rights reserved / Proprietary
+- PyPI/TestPyPI: 미배포
 
-Changing repository visibility to public must be an explicit, final action after this checklist passes.
+Public visibility is for review, not open-source reuse.
 
-The intended public policy is portfolio review only with `All rights reserved / Proprietary` licensing. Public visibility is for review, not open-source reuse. No permission is granted for reuse, redistribution, or derivative works without explicit written permission.
+No permission is granted for reuse, redistribution, or derivative works without explicit written permission.
 
-The project is not an official KISA tool and does not replace manual security assessment judgment.
+## 공개 전 확인 항목
 
-## Blocking Checks Before Public Visibility
+- README와 `PORTFOLIO.md`에 프로젝트 목적과 한계를 표시했습니다.
+- 이 프로젝트가 not an official KISA tool임을 표시했습니다.
+- 원격 자동 수집기가 아니며 수동 보안 판단을 대신하지 않는다고 명시했습니다.
+- `v1.4.0` 태그와 Release asset을 변경하지 않았습니다.
+- 실제 고객 증적과 상용 장비 자료를 포함하지 않았습니다.
+- secret pattern과 금지 경로 검사를 수행했습니다.
+- wheel/sdist/checksum과 clean wheel 설치를 검증했습니다.
 
-- Confirm `All rights reserved / Proprietary` remains intentional for portfolio review.
-- Replace or clarify `pyproject.toml` license metadata only if the selected public license changes.
-- Re-check that fixtures are synthetic and sanitized.
-- Confirm no real customer evidence, live output, commercial device images, license files, `.env`, raw outputs, or generated reports are tracked.
-- Confirm README states the tool is not an official KISA tool.
-- Confirm release assets are not replaced during public conversion.
+## 공개 가능한 자료
 
-## Non-Blocking But Recommended
+- Python source와 parser 구조
+- YAML rulepack과 manifest
+- synthetic·sanitized fixture
+- Excel/Markdown report writer
+- 보안장비 한글 질의서 양식
+- command-response simulator
+- 테스트, 패키징과 릴리스 검증 문서
 
-- Add a short Korean portfolio summary link near the top of README.
-- Keep detailed release history in docs instead of the first screen.
-- Add screenshots only if they are generated from synthetic fixtures.
-- Keep PyPI/TestPyPI publishing deferred unless separately approved.
-- Keep `v1.4.0` release tags and assets immutable.
-- Enable GitHub secret scanning and Dependabot alerts when repository settings allow it.
+## 공개 금지 자료
 
-## Public Content Boundary
+- 실제 고객 증적, live output와 설정 export
+- 장비 이미지와 라이선스 파일
+- 실제 IP, hostname, 계정명, 시리얼과 정책명
+- 비밀번호, 해시, 토큰, 키와 인증서 본문
+- `.env`, `out/`, `raw/`, `tmp/`, `dist/`
 
-Allowed:
+## 책임 범위
 
-- source code
-- synthetic fixtures
-- sanitized sample outputs generated from synthetic fixtures
-- README, portfolio summary, and release documentation
-- rulepack metadata and concise source notes
+- KISA 상세가이드는 rulepack 항목과 판정 기준을 구성하기 위한 기준 자료입니다.
+- 이 도구는 공식 진단 도구나 법적 적합성 보증 수단이 아닙니다.
+- `MANUAL_REQUIRED` 항목은 담당자 인터뷰, 추가 증적과 대체통제 검토가 필요합니다.
+- 조직 정책과 운영 예외를 반영한 최종 판정은 진단자가 수행합니다.
 
-Not allowed:
+## 공개 후 유지 원칙
 
-- real customer files
-- raw operational evidence
-- passwords, password hashes, tokens, keys, or certificates
-- hostnames, account names, IP addresses, serial numbers, object names, policy names, or license files from real environments
-- proprietary device images or VM disks
+- 기존 Release tag와 asset을 이동하거나 교체하지 않습니다.
+- 실제 고객 자료를 fixture나 문서 예시로 추가하지 않습니다.
+- 공개 저장소의 라이선스를 임의로 오픈소스 라이선스로 변경하지 않습니다.
+- 새 기능과 버그 수정은 새 브랜치와 새 버전으로 분리합니다.
 
-## Portfolio Positioning
+## 제출 URL
 
-The public repository should present the project as:
-
-- an offline infrastructure security assessment helper
-- a rulepack and parser-based automation project
-- a conservative security reporting workflow
-- a packaging, testing, and release-engineering example
-
-Avoid presenting it as:
-
-- an official KISA tool
-- a fully automated vulnerability scanner
-- a production remote collector
-- a tool that stores raw customer evidence
-
-## Final Public Conversion Gate
-
-Before making the repository public, run:
-
-```powershell
-git status --short --branch
-python -m pytest
-git diff --check
-git ls-files | Select-String -Pattern '^(out/|raw/|tmp/|dist/|\\.env)'
-```
-
-Then review the public GitHub page after visibility changes:
-
-- README renders correctly.
-- License state is intentional.
-- Release tags still point to the expected commits.
-- No generated or private-only files are visible.
+`https://github.com/ryuyunseong/kcii-audit-suite`

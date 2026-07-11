@@ -58,7 +58,7 @@ def write_detail_workbook(
 
     cover = workbook["00_표지"]
     cover.append(["문서", "K-CII 상세결과"])
-    cover.append(["상태", "scaffold placeholder"])
+    cover.append(["상태", "판정 완료"])
 
     asset_sheet = workbook["01_자산목록"]
     asset_sheet.append(["자산ID", "분야"])
@@ -69,6 +69,11 @@ def write_detail_workbook(
     stats_sheet.append(["판정", "건수"])
     for status, count in Counter(result.status_label for result in results).items():
         stats_sheet.append([status, count])
+
+    domain_stats_sheet = workbook["03_분야별통계"]
+    domain_stats_sheet.append(["분야", "판정", "건수"])
+    for (platform, status), count in Counter((result.platform, result.status_label) for result in results).items():
+        domain_stats_sheet.append([platform, status, count])
 
     detail_sheet = workbook["04_상세결과"]
     detail_sheet.append(DETAIL_HEADERS)
@@ -96,11 +101,41 @@ def write_detail_workbook(
             ]
         )
 
+    vulnerable_sheet = workbook["05_취약점목록"]
+    vulnerable_sheet.append(["자산ID", "항목ID", "항목명", "판정근거", "조치방안"])
+    for result in results:
+        if result.status.value == "VULNERABLE":
+            vulnerable_sheet.append(
+                [
+                    result.asset_id,
+                    result.item_id,
+                    result.item_title,
+                    result.reason,
+                    "보안 권고문을 참고해 관련 설정을 조치한 후 재점검합니다.",
+                ]
+            )
+
     manual_sheet = workbook["06_수동확인"]
     manual_sheet.append(["자산ID", "항목ID", "사유"])
     for result in results:
         if result.status.value == "MANUAL_REQUIRED":
             manual_sheet.append([result.asset_id, result.item_id, result.reason])
+
+    exception_sheet = workbook["07_예외및대체통제"]
+    exception_sheet.append(["자산ID", "항목ID", "예외사유", "대체통제", "승인상태"])
+
+    ai_log_sheet = workbook["08_AI판정로그"]
+    ai_log_sheet.append(["자산ID", "항목ID", "AI사용여부", "마스킹여부", "원본증적해시"])
+    for result in results:
+        ai_log_sheet.append(
+            [
+                result.asset_id,
+                result.item_id,
+                "Y" if result.ai_used else "N",
+                "Y" if result.masked else "N",
+                result.raw_evidence_hash or "",
+            ]
+        )
 
     advisory_sheet = workbook["09_보안권고문"]
     advisory_sheet.append(ADVISORY_HEADERS)

@@ -27,10 +27,10 @@ from kcii_audit.schemas.evidence import EvidenceRecord
 from kcii_audit.schemas.result import EvaluationResult
 
 app = typer.Typer(
-    help="Offline K-CII vulnerability assessment helper. Not an official KISA tool and not a remote collector.",
+    help="K-CII 오프라인 취약점 분석·평가 보조 도구입니다. KISA 공식 도구나 원격 수집기가 아닙니다.",
     no_args_is_help=True,
 )
-questionnaire_app = typer.Typer(help="Offline questionnaire template export and import commands.")
+questionnaire_app = typer.Typer(help="오프라인 보안장비 질의서 내보내기·가져오기 명령입니다.")
 app.add_typer(questionnaire_app, name="questionnaire")
 
 
@@ -56,7 +56,7 @@ def _load_evidence_jsonl(path: Path) -> list[EvidenceRecord]:
         try:
             records.append(EvidenceRecord.model_validate_json(line))
         except Exception as exc:  # pragma: no cover - pydantic message shape can change
-            raise typer.BadParameter(f"invalid evidence JSONL at line {line_number}: {exc}") from exc
+            raise typer.BadParameter(f"증적 JSONL {line_number}번째 줄이 올바르지 않습니다: {exc}") from exc
     return records
 
 
@@ -64,7 +64,7 @@ def _load_results(path: Path) -> list[EvaluationResult]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     items = payload.get("results", payload if isinstance(payload, list) else None)
     if not isinstance(items, list):
-        raise typer.BadParameter("results file must contain a JSON list or a {'results': [...]} object")
+        raise typer.BadParameter("결과 파일에는 JSON 목록 또는 {'results': [...]} 객체가 있어야 합니다")
     return [EvaluationResult.model_validate(item) for item in items]
 
 
@@ -124,20 +124,20 @@ def _write_output_bundle(
 
 @app.command()
 def scan(
-    target: str = typer.Option("local", "--target", help="Local lab target. Stub supports local only."),
-    profile: str = typer.Option("linux", "--profile", help="Local lab profile. Stub supports linux only."),
-    output: Path = typer.Option(Path("out"), "--output", "-o", help="Output directory."),
-    no_color: bool = typer.Option(False, "--no-color", help="Disable color output for future rich UI."),
-    no_advisory: bool = typer.Option(False, "--no-advisory", help="Do not create security advisory files."),
-    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="Include GOOD items as maintenance advisories."),
+    target: str = typer.Option("local", "--target", help="로컬 검증 대상입니다. 현재 local만 지원합니다."),
+    profile: str = typer.Option("linux", "--profile", help="로컬 검증 프로파일입니다. 현재 linux만 지원합니다."),
+    output: Path = typer.Option(Path("out"), "--output", "-o", help="산출물 디렉터리입니다."),
+    no_color: bool = typer.Option(False, "--no-color", help="향후 컬러 UI 출력을 사용하지 않습니다."),
+    no_advisory: bool = typer.Option(False, "--no-advisory", help="보안 권고문 파일을 생성하지 않습니다."),
+    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="양호 항목도 유지관리 권고문에 포함합니다."),
 ) -> None:
-    """Create local lab placeholder outputs; not an operational or remote collector."""
+    """운영 수집이 아닌 로컬 검증용 예시 산출물을 생성합니다."""
     _ = no_color
     if target != "local":
-        typer.echo("Only --target local is supported in the scaffold.", err=True)
+        typer.echo("현재 --target local만 지원합니다.", err=True)
         raise typer.Exit(code=2)
     if profile != "linux":
-        typer.echo("Only --profile linux is supported in the scaffold.", err=True)
+        typer.echo("현재 로컬 검증에서는 --profile linux만 지원합니다.", err=True)
         raise typer.Exit(code=2)
 
     records = LinuxCollector().collect(asset_id=target)
@@ -151,35 +151,35 @@ def scan(
         include_good_advisory=include_good_advisory,
     )
 
-    typer.echo(f"Created scaffold outputs in {output}")
+    typer.echo(f"로컬 검증 산출물을 생성했습니다: {output}")
 
 
 @questionnaire_app.command("export")
 def questionnaire_export(
-    profile: str = typer.Option(..., "--profile", help="Questionnaire profile. Supports security-appliance."),
-    output: Path = typer.Option(..., "--output", "-o", help="Output questionnaire workbook path."),
+    profile: str = typer.Option(..., "--profile", help="질의서 프로파일입니다. security-appliance를 지원합니다."),
+    output: Path = typer.Option(..., "--output", "-o", help="질의서 Excel 저장 경로입니다."),
 ) -> None:
-    """Export an offline questionnaire workbook template for manual/interview evidence."""
+    """수동확인·인터뷰 증적용 보안장비 질의서 Excel을 생성합니다."""
     if _normalize_profile(profile) != "security-appliance":
-        typer.echo("Only --profile security-appliance is supported for questionnaire export.", err=True)
+        typer.echo("질의서 내보내기는 --profile security-appliance만 지원합니다.", err=True)
         raise typer.Exit(code=2)
     write_security_appliance_questionnaire(output)
-    typer.echo(f"Wrote security appliance questionnaire to {output}")
+    typer.echo(f"보안장비 질의서를 생성했습니다: {output}")
 
 
 @questionnaire_app.command("import")
 def questionnaire_import(
-    profile: str = typer.Option(..., "--profile", help="Questionnaire profile. Supports security-appliance."),
-    input_path: Path = typer.Option(..., "--input", "-i", help="Completed questionnaire workbook."),
-    output: Path = typer.Option(Path("out"), "--output", "-o", help="Output directory."),
-    appliance_type: str = typer.Option("firewall", "--appliance-type", help="Security appliance type."),
-    asset_id: str = typer.Option("security-appliance-questionnaire", "--asset-id", help="Asset identifier used in outputs."),
-    no_advisory: bool = typer.Option(False, "--no-advisory", help="Do not create security advisory files."),
-    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="Include GOOD items as maintenance advisories."),
+    profile: str = typer.Option(..., "--profile", help="질의서 프로파일입니다. security-appliance를 지원합니다."),
+    input_path: Path = typer.Option(..., "--input", "-i", help="답변을 작성한 질의서 Excel입니다."),
+    output: Path = typer.Option(Path("out"), "--output", "-o", help="산출물 디렉터리입니다."),
+    appliance_type: str = typer.Option("firewall", "--appliance-type", help="보안장비 유형입니다."),
+    asset_id: str = typer.Option("security-appliance-questionnaire", "--asset-id", help="산출물에 사용할 비식별 자산 ID입니다."),
+    no_advisory: bool = typer.Option(False, "--no-advisory", help="보안 권고문 파일을 생성하지 않습니다."),
+    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="양호 항목도 유지관리 권고문에 포함합니다."),
 ) -> None:
-    """Import a completed offline questionnaire and create the seven-file output bundle."""
+    """작성된 보안장비 질의서를 가져와 기본 7개 산출물을 생성합니다."""
     if _normalize_profile(profile) != "security-appliance":
-        typer.echo("Only --profile security-appliance is supported for questionnaire import.", err=True)
+        typer.echo("질의서 가져오기는 --profile security-appliance만 지원합니다.", err=True)
         raise typer.Exit(code=2)
     try:
         records = records_from_security_appliance_questionnaire(
@@ -199,7 +199,7 @@ def questionnaire_import(
         write_advisory=not no_advisory,
         include_good_advisory=include_good_advisory,
     )
-    typer.echo(f"Imported security appliance questionnaire into {output}")
+    typer.echo(f"보안장비 질의서를 분석해 산출물을 생성했습니다: {output}")
 
 
 @app.command("classify-paste")
@@ -208,19 +208,19 @@ def classify_paste(
         None,
         "--input",
         "-i",
-        help="Target server/device result file. Omit to read pasted evidence from standard input.",
+        help="대상 서버·장비의 결과 파일입니다. 생략하면 표준 입력의 붙여넣기 증적을 읽습니다.",
     ),
-    profile: str = typer.Option("windows", "--profile", help="Offline evidence profile. Supports windows, linux, unix, network, dbms, and security-appliance."),
-    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios and junos."),
-    dbms: str | None = typer.Option(None, "--dbms", help="DBMS parser. Required for --profile dbms; supports postgresql, mysql, mariadb."),
-    unix: str | None = typer.Option(None, "--unix", help="Unix parser. Required for --profile unix; supports aix, solaris, hpux, linux."),
-    appliance_type: str | None = typer.Option(None, "--appliance-type", help="Security appliance type. Supports firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
-    asset_id: str = typer.Option("windows-paste", "--asset-id", help="Asset identifier used in outputs."),
-    output: Path = typer.Option(Path("out"), "--output", "-o", help="Output directory."),
-    no_advisory: bool = typer.Option(False, "--no-advisory", help="Do not create security advisory files."),
-    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="Include GOOD items as maintenance advisories."),
+    profile: str = typer.Option("windows", "--profile", help="오프라인 증적 프로파일입니다: windows, linux, unix, network, dbms, security-appliance."),
+    vendor: str | None = typer.Option(None, "--vendor", help="네트워크 벤더입니다. network에서 필수이며 cisco_ios, junos를 지원합니다."),
+    dbms: str | None = typer.Option(None, "--dbms", help="DBMS 종류입니다. dbms에서 필수이며 postgresql, mysql, mariadb를 지원합니다."),
+    unix: str | None = typer.Option(None, "--unix", help="Unix 종류입니다. unix에서 필수이며 aix, solaris, hpux, linux를 지원합니다."),
+    appliance_type: str | None = typer.Option(None, "--appliance-type", help="보안장비 유형입니다: firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
+    asset_id: str = typer.Option("windows-paste", "--asset-id", help="산출물에 사용할 비식별 자산 ID입니다."),
+    output: Path = typer.Option(Path("out"), "--output", "-o", help="산출물 디렉터리입니다."),
+    no_advisory: bool = typer.Option(False, "--no-advisory", help="보안 권고문 파일을 생성하지 않습니다."),
+    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="양호 항목도 유지관리 권고문에 포함합니다."),
 ) -> None:
-    """Classify pasted/copied offline evidence with rulepack decisions."""
+    """복사하거나 붙여넣은 오프라인 증적을 rulepack 기준으로 판정합니다."""
     _classify_text(input_path, profile, vendor, dbms, unix, appliance_type, asset_id, output, no_advisory, include_good_advisory)
 
 
@@ -230,19 +230,19 @@ def classify_file(
         ...,
         "--input",
         "-i",
-        help="Target server/device result file copied to the Windows work PC.",
+        help="Windows 작업 PC로 가져온 대상 서버·장비 결과 파일입니다.",
     ),
-    profile: str = typer.Option("windows", "--profile", help="Offline evidence profile. Supports windows, linux, unix, network, dbms, and security-appliance."),
-    vendor: str | None = typer.Option(None, "--vendor", help="Network vendor parser. Required for --profile network; supports cisco_ios and junos."),
-    dbms: str | None = typer.Option(None, "--dbms", help="DBMS parser. Required for --profile dbms; supports postgresql, mysql, mariadb."),
-    unix: str | None = typer.Option(None, "--unix", help="Unix parser. Required for --profile unix; supports aix, solaris, hpux, linux."),
-    appliance_type: str | None = typer.Option(None, "--appliance-type", help="Security appliance type. Supports firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
-    asset_id: str = typer.Option("windows-paste", "--asset-id", help="Asset identifier used in outputs."),
-    output: Path = typer.Option(Path("out"), "--output", "-o", help="Output directory."),
-    no_advisory: bool = typer.Option(False, "--no-advisory", help="Do not create security advisory files."),
-    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="Include GOOD items as maintenance advisories."),
+    profile: str = typer.Option("windows", "--profile", help="오프라인 증적 프로파일입니다: windows, linux, unix, network, dbms, security-appliance."),
+    vendor: str | None = typer.Option(None, "--vendor", help="네트워크 벤더입니다. network에서 필수이며 cisco_ios, junos를 지원합니다."),
+    dbms: str | None = typer.Option(None, "--dbms", help="DBMS 종류입니다. dbms에서 필수이며 postgresql, mysql, mariadb를 지원합니다."),
+    unix: str | None = typer.Option(None, "--unix", help="Unix 종류입니다. unix에서 필수이며 aix, solaris, hpux, linux를 지원합니다."),
+    appliance_type: str | None = typer.Option(None, "--appliance-type", help="보안장비 유형입니다: firewall, ips, ids, waf, vpn, anti-ddos, fortigate, paloalto, cisco-asa, f5."),
+    asset_id: str = typer.Option("windows-paste", "--asset-id", help="산출물에 사용할 비식별 자산 ID입니다."),
+    output: Path = typer.Option(Path("out"), "--output", "-o", help="산출물 디렉터리입니다."),
+    no_advisory: bool = typer.Option(False, "--no-advisory", help="보안 권고문 파일을 생성하지 않습니다."),
+    include_good_advisory: bool = typer.Option(False, "--include-good-advisory", help="양호 항목도 유지관리 권고문에 포함합니다."),
 ) -> None:
-    """Classify an offline evidence file copied to the Windows work PC."""
+    """Windows 작업 PC로 가져온 오프라인 증적 파일을 판정합니다."""
     _classify_text(input_path, profile, vendor, dbms, unix, appliance_type, asset_id, output, no_advisory, include_good_advisory)
 
 
@@ -260,7 +260,7 @@ def _classify_text(
 ) -> None:
     normalized_profile = _normalize_profile(profile)
     if normalized_profile not in {"windows", "linux", "unix", "network", "dbms", "security-appliance"}:
-        typer.echo("Only --profile windows, --profile linux, --profile unix, --profile network, --profile dbms, and --profile security-appliance are supported for offline classification.", err=True)
+        typer.echo("오프라인 판정은 --profile windows, linux, unix, network, dbms, security-appliance만 지원합니다.", err=True)
         raise typer.Exit(code=2)
 
     if normalized_profile == "security-appliance" and _is_excel_input(input_path):
@@ -281,12 +281,12 @@ def _classify_text(
             write_advisory=not no_advisory,
             include_good_advisory=include_good_advisory,
         )
-        typer.echo(f"Classified {len(results)} copied {normalized_profile} item(s) into {output}")
+        typer.echo(f"{normalized_profile} 항목 {len(results)}개를 판정해 산출물을 생성했습니다: {output}")
         return
 
     text = _read_text_input(input_path) if input_path else typer.get_text_stream("stdin").read()
     if not text.strip():
-        typer.echo("Pasted output is empty.", err=True)
+        typer.echo("입력한 증적이 비어 있습니다.", err=True)
         raise typer.Exit(code=2)
 
     if normalized_profile == "windows":
@@ -296,7 +296,7 @@ def _classify_text(
     elif normalized_profile == "unix":
         normalized_unix = (unix or "").strip().lower()
         if normalized_unix not in {"aix", "solaris", "hpux", "linux"}:
-            typer.echo("Only --unix aix, --unix solaris, --unix hpux, and --unix linux are supported for --profile unix.", err=True)
+            typer.echo("--profile unix에서는 --unix aix, solaris, hpux, linux만 지원합니다.", err=True)
             raise typer.Exit(code=2)
         records = records_from_unix_paste(
             text,
@@ -316,7 +316,7 @@ def _classify_text(
                 asset_id=asset_id if asset_id != "windows-paste" else "network-junos-paste",
             )
         else:
-            typer.echo("Only --vendor cisco_ios and --vendor junos are supported for --profile network.", err=True)
+            typer.echo("--profile network에서는 --vendor cisco_ios와 junos만 지원합니다.", err=True)
             raise typer.Exit(code=2)
     elif normalized_profile == "dbms":
         normalized_dbms = (dbms or "").strip().lower()
@@ -336,7 +336,7 @@ def _classify_text(
                 asset_id=asset_id if asset_id != "windows-paste" else "dbms-mariadb-paste",
             )
         else:
-            typer.echo("Only --dbms postgresql, --dbms mysql, and --dbms mariadb are supported for --profile dbms.", err=True)
+            typer.echo("--profile dbms에서는 --dbms postgresql, mysql, mariadb만 지원합니다.", err=True)
             raise typer.Exit(code=2)
     else:
         try:
@@ -356,39 +356,39 @@ def _classify_text(
         write_advisory=not no_advisory,
         include_good_advisory=include_good_advisory,
     )
-    typer.echo(f"Classified {len(results)} copied {normalized_profile} item(s) into {output}")
+    typer.echo(f"{normalized_profile} 항목 {len(results)}개를 판정해 산출물을 생성했습니다: {output}")
 
 
 @app.command()
 def evaluate(
-    evidence: Path = typer.Option(..., "--evidence", "-e", help="Input evidence JSONL file."),
-    output: Path = typer.Option(Path("results.json"), "--output", "-o", help="Output results JSON file."),
+    evidence: Path = typer.Option(..., "--evidence", "-e", help="입력 증적 JSONL 파일입니다."),
+    output: Path = typer.Option(Path("results.json"), "--output", "-o", help="판정 결과 JSON 파일입니다."),
 ) -> None:
-    """Evaluate evidence with the placeholder deterministic engine."""
+    """정규화된 증적을 결정론적 rulepack 엔진으로 판정합니다."""
     records = _load_evidence_jsonl(evidence)
     results = evaluate_evidence(records)
     _write_json(output, {"results": [result.model_dump(mode="json") for result in results]})
-    typer.echo(f"Wrote evaluation results to {output}")
+    typer.echo(f"판정 결과를 저장했습니다: {output}")
 
 
 @app.command()
 def report(
-    results: Path = typer.Option(..., "--results", "-r", help="Input results JSON file."),
-    output: Path = typer.Option(Path("report.md"), "--output", "-o", help="Output Markdown report."),
+    results: Path = typer.Option(..., "--results", "-r", help="입력 판정 결과 JSON 파일입니다."),
+    output: Path = typer.Option(Path("report.md"), "--output", "-o", help="Markdown 결과 보고서 경로입니다."),
 ) -> None:
-    """Generate a placeholder Markdown report from evaluation results."""
+    """판정 결과로 Markdown 보고서를 생성합니다."""
     loaded_results = _load_results(results)
     guide_version = loaded_results[0].guide_version if loaded_results else "unknown"
     write_markdown_report(output, loaded_results, guide_version=guide_version)
-    typer.echo(f"Wrote report to {output}")
+    typer.echo(f"보고서를 생성했습니다: {output}")
 
 
 @app.command()
 def redact(
-    input_path: Path = typer.Option(..., "--input", "-i", help="Input evidence JSONL file."),
-    output: Path = typer.Option(Path("masked_evidence.jsonl"), "--output", "-o", help="Masked JSONL output."),
+    input_path: Path = typer.Option(..., "--input", "-i", help="입력 증적 JSONL 파일입니다."),
+    output: Path = typer.Option(Path("masked_evidence.jsonl"), "--output", "-o", help="마스킹된 JSONL 저장 경로입니다."),
 ) -> None:
-    """Mask sensitive values from JSONL records before AI-assisted review."""
+    """AI 보조 검토 전에 JSONL 증적의 민감정보를 마스킹합니다."""
     masked_rows: list[dict[str, Any]] = []
     for line_number, line in enumerate(input_path.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip():
@@ -396,10 +396,10 @@ def redact(
         try:
             payload = json.loads(line)
         except json.JSONDecodeError as exc:
-            raise typer.BadParameter(f"invalid JSON at line {line_number}: {exc}") from exc
+            raise typer.BadParameter(f"JSON {line_number}번째 줄이 올바르지 않습니다: {exc}") from exc
         masked_rows.append(redact_record(payload))
     _write_jsonl(output, masked_rows)
-    typer.echo(f"Wrote masked evidence to {output}")
+    typer.echo(f"마스킹된 증적을 저장했습니다: {output}")
 
 
 if __name__ == "__main__":

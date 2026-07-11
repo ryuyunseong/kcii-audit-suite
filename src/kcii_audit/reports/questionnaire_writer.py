@@ -24,15 +24,15 @@ QUESTIONNAIRE_SHEETS = [
 ]
 
 QUESTION_HEADERS = [
-    "item_id",
-    "question",
-    "answer_type",
-    "required_evidence",
-    "options",
-    "mapping_rule",
-    "answer",
-    "evidence_status",
-    "notes",
+    "항목ID",
+    "질문",
+    "답변유형",
+    "필요증적",
+    "선택지",
+    "판정규칙",
+    "답변",
+    "증적상태",
+    "비고",
 ]
 
 ITEM_SHEET_BY_CATEGORY = {
@@ -78,11 +78,11 @@ def _write_guide_sheet(sheet) -> None:
 
 
 def _write_asset_sheet(sheet) -> None:
-    sheet.append(["field", "value"])
-    sheet.append(["asset_alias", ""])
-    sheet.append(["appliance_type", ""])
-    sheet.append(["evidence_date", ""])
-    sheet.append(["reviewer_role", ""])
+    sheet.append(["항목", "값"])
+    sheet.append(["비식별 자산명", ""])
+    sheet.append(["보안장비 유형", ""])
+    sheet.append(["증적 기준일", ""])
+    sheet.append(["검토자 역할", ""])
 
 
 def _write_question_sheets(workbook: Workbook) -> None:
@@ -121,12 +121,12 @@ def _required_evidence(category: str) -> str:
 
 
 def _write_interview_sheet(sheet) -> None:
-    sheet.append(["item_id", "interview_topic", "answer_summary", "evidence_status", "validation_warning"])
+    sheet.append(["항목ID", "인터뷰주제", "답변요약", "증적상태", "검증경고"])
     for item in SECURITY_APPLIANCE_ITEMS:
         sheet.append([item["item_id"], item["title"], "", "", ""])
 
 
 def _write_auto_decision_sheet(sheet) -> None:
-    sheet.append(["item_id", "mapping_rule", "decision_hint"])
+    sheet.append(["항목ID", "판정규칙", "판정안내"])
     for item in SECURITY_APPLIANCE_ITEMS:
         sheet.append([item["item_id"], SECURITY_APPLIANCE_FACT_BY_ITEM[item["item_id"]], "예=GOOD, 아니오=VULNERABLE, 공란=MANUAL_REQUIRED"])
