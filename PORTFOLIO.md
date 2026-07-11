@@ -54,15 +54,26 @@
 
 ## 검증 상태
 
-`v1.4.0` 기준 검증 결과:
+최신 정식 Release인 `v1.4.1` 기준 검증 결과:
 
-- 전체 테스트: `176 passed`
+- 전체 테스트: `189 passed`
 - 기본 profile smoke 통과
 - Network Cisco IOS/Junos smoke 통과
 - Junos display-inheritance 보수적 처리 검증
 - wheel/sdist build 및 checksum 검증
 - clean wheel install smoke 통과
 - 민감정보/금지 경로 검사 통과
+
+## 결과 미리보기
+
+[합성 Windows Server 판정 결과](examples/portfolio-preview/README.md)에서 실제 CLI가 생성한 7개 산출물과 핵심 통계를 확인할 수 있습니다.
+
+- 입력: `tests/fixtures/windows_server/vulnerable.json`
+- 결과: `VULNERABLE` 7건, `MANUAL_REQUIRED` 57건
+- 확인 가능 항목: 상세결과, 취약점목록, 수동확인, 종합통계, 분야별통계, 보안 권고문
+- 데이터 경계: 실제 고객 정보 없이 synthetic fixture와 마스킹된 자산 식별자만 사용
+
+최신 배포 파일과 checksum은 [v1.4.1 Release](https://github.com/ryuyunseong/kcii-audit-suite/releases/tag/v1.4.1)에 고정되어 있습니다.
 
 ## 보안 설계 원칙
 

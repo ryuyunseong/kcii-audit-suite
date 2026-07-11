@@ -115,5 +115,6 @@
 - `v1.2.0`: `9296245`, Juniper Junos parser MVP
 - `v1.3.0`: `30490b4`, realistic Junos 출력 정규화
 - `v1.4.0`: `178369b`, Junos display inheritance 보수적 지원과 baseline product completion
+- `v1.4.1`: `1a298ff`, 한글 리소스·질의서 호환성과 전 프로파일 산출물 계약 보강
 
-`v1.4.0 Release Scope`은 현재 공개 포트폴리오 기준선입니다. 공개된 태그와 Release asset은 이동하거나 교체하지 않습니다.
+`v1.4.0 Release Scope`은 최초 기본 제품 완료 기준이며, 현재 공개 포트폴리오의 최신 정식 릴리스는 `v1.4.1`입니다. 공개된 태그와 Release asset은 이동하거나 교체하지 않습니다.

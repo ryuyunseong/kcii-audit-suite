@@ -39,6 +39,7 @@ def test_release_documents_exist_and_are_linked_from_readme():
         Path("docs/NETWORK_OUTPUT_SANITIZATION.md"),
         Path("docs/V1_0_0_READINESS.md"),
         Path("docs/V1_0_0RC2_READINESS.md"),
+        Path("examples/portfolio-preview/README.md"),
     ]
     readme = Path("README.md").read_text(encoding="utf-8")
 
@@ -61,6 +62,8 @@ def test_readme_states_release_boundary_and_offline_model():
     assert "공개 및 라이선스" in readme
     assert "PORTFOLIO.md" in readme
     assert "docs/PUBLIC_READINESS.md" in readme
+    assert "examples/portfolio-preview/README.md" in readme
+    assert "v1.4.1 Release" in readme
     assert "모든 권리는 저작자에게" in readme
     assert "재사용, 재배포 또는 파생 저작물" in readme
 
@@ -141,7 +144,8 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "최신 릴리스" in readme
     assert "최신 릴리스: `v1.4.1`" in readme
     assert "is the final private GitHub Release" in release_notes
-    assert "dev/v1.4.1" in readme
+    assert "최신 `v1.4.1` Release 기준 전체 테스트는 `189 passed`" in readme
+    assert "dev/v1.4.2" in readme
     assert "dev/v1.5.0" in readme
     assert "`v1.2.0` is fixed at commit `9296245`" in release_index
     assert "`v1.3.0` is fixed at commit `30490b4`" in release_index
@@ -157,6 +161,7 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "`v1.2.0` tag: not created" not in readiness_v1_2_0
     assert "Juniper Junos parser MVP" in coverage
     assert "v1.4.0 Release Scope" in coverage
+    assert "현재 공개 포트폴리오의 최신 정식 릴리스는 `v1.4.1`" in coverage
     assert "display inheritance" in coverage
     assert "RELEASE_NOTES_v1.4.0.md" in readme
     assert "docs/V1_4_0_READINESS.md" in readme
@@ -183,7 +188,9 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "v1.4.0" in release_notes_v1_4_1
     assert "MANUAL_REQUIRED" in release_notes_v1_4_1
     assert "baseline product completion" in completion
-    assert "`dev/v1.4.1`: 문서 수정과 좁은 범위의 버그 수정" in completion
+    assert "최신 릴리스: `v1.4.1`" in completion
+    assert "전체 테스트: `189 passed`" in completion
+    assert "`dev/v1.4.2`: 문서 수정과 좁은 범위의 버그 수정" in completion
     assert "`dev/v1.5.0`: 하위 호환 신규 기능" in completion
     assert "Published release tags and assets are immutable" in maintenance
     assert "PyPI/TestPyPI 배포와 저장소 라이선스 변경은 별도 승인" in maintenance
@@ -196,9 +203,43 @@ def test_release_documents_state_current_releases_and_v1_4_0_completion():
     assert "Public visibility is for review, not open-source reuse" in public_readiness
     assert "No permission is granted for reuse, redistribution, or derivative works" in public_readiness
     assert "not an official KISA tool" in public_readiness
+    assert "최신 릴리스: `v1.4.1` (`1a298ff`)" in public_readiness
+    assert "전체 테스트: `189 passed`" in public_readiness
     assert "show configuration | display set" in release_notes_v1_2_0
     assert "GOOD 14" in release_notes_v1_2_0
     assert "MANUAL_REQUIRED 24" in release_notes_v1_2_0
+
+
+def test_portfolio_preview_contains_expected_synthetic_outputs():
+    preview_root = Path("examples/portfolio-preview")
+    generated = preview_root / "generated"
+    expected = {
+        "evidence.jsonl",
+        "results.json",
+        "detail.xlsx",
+        "summary.xlsx",
+        "report.md",
+        "security_advisory.md",
+        "security_advisory.xlsx",
+    }
+
+    assert (preview_root / "README.md").exists()
+    assert (preview_root / "INPUT_AND_SANITIZATION.md").exists()
+    assert {path.name for path in generated.iterdir() if path.is_file()} == expected
+
+    preview = (preview_root / "README.md").read_text(encoding="utf-8")
+    boundary = (preview_root / "INPUT_AND_SANITIZATION.md").read_text(encoding="utf-8")
+    assert "합성 Windows Server 증적" in preview
+    assert "tests\\fixtures\\windows_server\\vulnerable.json" in preview
+    assert "취약 | 7" in preview
+    assert "수동확인 | 57" in preview
+    assert "실제 고객" in boundary
+    assert "raw_evidence_hash" in boundary
+
+    for path in [preview_root / "README.md", preview_root / "INPUT_AND_SANITIZATION.md"]:
+        text = path.read_text(encoding="utf-8")
+        assert "\ufffd" not in text
+        assert "???" not in text
 
 
 def test_packaged_runtime_resources_are_available_from_non_repo_cwd(tmp_path, monkeypatch):
